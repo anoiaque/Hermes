@@ -1,0 +1,7 @@
+create database TEST;
+use TEST;
+create table  SAMPLE(
+id int primary key auto_increment,
+number int, 
+chaine varchar(250)
+);
