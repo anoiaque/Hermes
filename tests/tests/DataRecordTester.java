@@ -9,6 +9,15 @@ public class DataRecordTester extends TestCase {
 
 	Sample sample = new Sample();
 
+	public void  setUp(){
+		sample.setNumber(1000);
+		sample.setChaine("toto");
+	}
+	
+	public void tearDown(){
+		//sample.delete(sample.getId());
+	}
+	
 	public void testNomTable() {
 		assertEquals("Sample", sample.getTable_name());
 	}
@@ -22,8 +31,6 @@ public class DataRecordTester extends TestCase {
 	}
 
 	public void testSaveAndFind() {
-		sample.setNumber(1000);
-		sample.setChaine("toto");
 		sample.save();
 		sample.setNumber(0);
 		sample.setChaine("");
@@ -32,8 +39,6 @@ public class DataRecordTester extends TestCase {
 		assertEquals("toto", sample.getChaine());
 	}
 	public void testDelete() {
-		sample.setNumber(1);
-		sample.setChaine("titi");
 		sample.save();
 		sample.delete(sample.getId());
         assertFalse(sample.find(sample.getId()));
