@@ -2,11 +2,10 @@ package datarecord;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.sql.PreparedStatement;
 
 import com.mysql.jdbc.Statement;
 
@@ -18,20 +17,17 @@ public class DataRecord {
 	private HashMap<String, Object> fieldsValue = new HashMap<String, Object>();
 	private int id = 0;
 
+	//Public methods
 	public boolean save() {
 		setFieldsType();
 		setFieldsValue();
-		String fields = fieldsType.keySet().toString().replace("[", "")
-				.replace("]", "");
+		String fields = fieldsType.keySet().toString().replace("[", "").replace("]", "");
 		String values = getSQLValues();
-		String sql = "insert into  " + table_name + "(" + fields + ")"
-				+ "values (" + values + ")";
+		String sql = "insert into  " + table_name + "(" + fields + ")" + "values (" + values + ")";
 		boolean saved = false;
 		ResultSet rs = null;
-
 		try {
-			PreparedStatement statement = connexion.prepareStatement(sql,
-					Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement statement = connexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			saved = statement.execute();
 			rs = statement.getGeneratedKeys();
 			rs.next();
@@ -67,8 +63,7 @@ public class DataRecord {
 		boolean found = false;
 		ResultSet rs = null;
 		try {
-			PreparedStatement statement = connexion.prepareStatement(sql,
-					Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement statement = connexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			rs = statement.executeQuery();
 			if (rs.next()) {
 				found = true;
@@ -92,24 +87,13 @@ public class DataRecord {
 	// Constructeurs
 
 	public DataRecord() {
-		if (connexion == null)
-			getConnexion();
+		connexion = ConnectionPool.getInstance().getConnexion();
 		setTable_name(this.getClass().getSimpleName());
 		setFieldsType();
 		setFieldsValue();
 	}
 
 	// Private methods
-	private void getConnexion() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			connexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost/test", "root", "");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	private String SQLType(String simplename) {
 		if (simplename.equals("int"))
@@ -135,8 +119,7 @@ public class DataRecord {
 	// Getters & Setters
 	private void setFieldsType() {
 		for (Field field : this.getClass().getDeclaredFields())
-			fieldsType.put(field.getName(), SQLType(field.getType()
-					.getSimpleName()));
+			fieldsType.put(field.getName(), SQLType(field.getType().getSimpleName()));
 	}
 
 	private void setFieldsValue() {
