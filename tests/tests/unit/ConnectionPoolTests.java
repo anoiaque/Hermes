@@ -1,9 +1,10 @@
-package tests;
+package tests.unit;
+
+import hermes.ConnectionPool;
 
 import java.sql.Connection;
 
 import junit.framework.TestCase;
-import datarecord.ConnectionPool;
 
 public class ConnectionPoolTests extends TestCase {
 

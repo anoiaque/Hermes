@@ -1,4 +1,6 @@
-package datarecord;
+package hermes;
+
+import hermes.Config.DBMSConfig;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -7,7 +9,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Properties;
 
-import datarecord.Config.DBMSConfig;
 
 public class ConnectionPool {
 
@@ -55,12 +56,7 @@ public class ConnectionPool {
 	public void release(Connection connection) {
 		for (Connection conn : pool.keySet())
 			if (connection.equals(conn)) {
-				try {
-					connection.close();
-					pool.put(connection, true);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+		        pool.put(connection, true);
 			}
 	}
 
@@ -72,6 +68,7 @@ public class ConnectionPool {
 		}
 		return nbFree;
 	}
+	
 
 	// private methods
 	private String driverNameFor(String dbmsName) {

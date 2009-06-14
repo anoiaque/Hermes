@@ -1,4 +1,4 @@
-package datarecord;
+package hermes;
 
 public class Config {
 	
