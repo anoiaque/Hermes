@@ -1,35 +1,32 @@
 package classfortests;
 
 import hermes.Hermes;
+import hermes.RelationnalConfig;
 
 public class Sample extends Hermes {
+    private int    number = 0;
+    private String chaine = "";
+    private Adress adresse;
 
-	private int number = 0;
-	private String chaine = "";
-	private  Adress adresse;
+    public Sample() {
+        hasOne("adresse", new RelationnalConfig(true));
+    }
 
-	
-	
-	public Sample(){
-	    hasOne("adresse");
-	}
-	
-	
-	public void setNumber(int number) {
-		this.number = number;
-	}
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
-	public int getNumber() {
-		return number;
-	}
+    public int getNumber() {
+        return number;
+    }
 
-	public void setChaine(String chaine) {
-		this.chaine = chaine;
-	}
+    public void setChaine(String chaine) {
+        this.chaine = chaine;
+    }
 
-	public String getChaine() {
-		return chaine;
-	}
+    public String getChaine() {
+        return chaine;
+    }
 
     public void setAdresse(Adress adresse) {
         this.adresse = adresse;
@@ -38,5 +35,4 @@ public class Sample extends Hermes {
     public Adress getAdresse() {
         return adresse;
     }
-
 }

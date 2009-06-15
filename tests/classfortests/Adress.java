@@ -3,9 +3,16 @@ package classfortests;
 import hermes.Hermes;
 
 public class Adress extends Hermes {
-    
-    private int numero;
+    private int    numero;
     private String rue;
+
+    public Adress(){
+        
+    }
+    public Adress(int num, String rue) {
+        this.numero = num;
+        this.rue = rue;
+    }
 
     public int getNumero() {
         return numero;

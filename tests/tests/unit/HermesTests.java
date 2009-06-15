@@ -36,10 +36,6 @@ public class HermesTests extends TestCase {
         assertFalse(fields.containsKey("adresse"));
     }
 
-    public void testRelationConfig() {
-        assertEquals(Adress.class, sample.getHasOneRelations().get("adresse").getClasse());
-    }
-
     public void testSaveAndFind() {
         sample.save();
         sample.setNumber(0);
@@ -60,5 +56,27 @@ public class HermesTests extends TestCase {
         Sample sample2 = new Sample();
         sample2.save();
         assertEquals(sample.getId() + 1, sample2.getId());
+        sample2.delete();
+    }
+
+    public void testRelationConfig() {
+        assertTrue(sample.getHasOneRelationsShip().containsKey("adresse"));
+    }
+
+    public void testSaveRelationHasOne() {
+        sample.setAdresse(new Adress(13, "rue Tabarly"));
+        sample.save();
+        sample.setAdresse(new Adress(122222, "rue des hibous"));
+        sample.find(sample.getId());
+        assertEquals(13, sample.getAdresse().getNumero());
+        assertEquals("rue Tabarly", sample.getAdresse().getRue());
+    }
+
+    public void testCascadeDeleteWithRelationHasOne() {
+        Sample sample = new Sample();
+        sample.setAdresse(new Adress(11, "rue Tabarly"));
+        sample.save();
+        sample.delete();
+        assertFalse(new Adress().find(sample.getAdresse().getId()));
     }
 }

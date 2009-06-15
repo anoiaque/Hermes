@@ -6,16 +6,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import com.mysql.jdbc.Statement;
 
 public class Hermes {
     private String                             table_name;
-    private HashMap<String, String>            fieldsType       = null;
-    private HashMap<String, Object>            fieldsValue      = null;
-    private HashMap<String, RelationnalConfig> hasOneRelations  = new HashMap<String, RelationnalConfig>();
-    private HashMap<String, RelationnalConfig> hasManyRelations = new HashMap<String, RelationnalConfig>();
-    private int                                id               = 0;
+    private HashMap<String, String>            fieldsType           = null;
+    private HashMap<String, Object>            fieldsValue          = null;
+    private HashMap<String, RelationnalConfig> hasOneRelationsShip  = new HashMap<String, RelationnalConfig>();
+    private HashMap<String, RelationnalConfig> hasManyRelationsShip = new HashMap<String, RelationnalConfig>();
+    private int                                id                   = 0;
 
     // Public methods
     public boolean save() {
@@ -23,8 +24,11 @@ public class Hermes {
         ConnectionPool pool = ConnectionPool.getInstance();
         setFieldsType();
         setFieldsValue();
+        saveHasOneRelations();
         String fields = fieldsType.keySet().toString().replace("[", "").replace("]", "");
         String values = getSQLValues();
+        fields += foreignKeys();
+        values += foreignKeysValues();
         String sql = "insert into  " + table_name + "(" + fields + ")" + "values (" + values + ")";
         boolean saved = false;
         ResultSet rs = null;
@@ -49,6 +53,44 @@ public class Hermes {
         return saved;
     }
 
+    private String foreignKeysValues() {
+        String values = "";
+        Iterator<String> attributs = hasOneRelationsShip.keySet().iterator();
+        while (attributs.hasNext()) {
+            values += ",";
+            int fkvalue = hasOneRelationsShip.get(attributs.next()).getForeignKeyValue();
+            values += (fkvalue == -1) ? null : fkvalue;
+        }
+        return values;
+    }
+
+    private String foreignKeys() {
+        String fKeys = "";
+        Iterator<String> attributs = hasOneRelationsShip.keySet().iterator();
+        while (attributs.hasNext()) {
+            fKeys += ",";
+            fKeys += hasOneRelationsShip.get(attributs.next()).getForeignKeyName();
+        }
+        return fKeys;
+    }
+
+    private void saveHasOneRelations() {
+        for (String attribute : hasOneRelationsShip.keySet()) {
+            try {
+                Field field = this.getClass().getDeclaredField(attribute);
+                field.setAccessible(true);
+                Hermes obj = (Hermes) field.get(this);
+                if (obj != null) {
+                    obj.save();
+                    hasOneRelationsShip.get(attribute).setForeignKeyValue(obj.getId());
+                } else
+                    hasOneRelationsShip.get(attribute).setForeignKeyValue(-1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public boolean delete() {
         Connection connexion = null;
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -64,7 +106,23 @@ public class Hermes {
         } finally {
             pool.release(connexion);
         }
+        deleteHasOneRelations();
         return deleted;
+    }
+
+    private void deleteHasOneRelations() {
+        for (String attribute : hasOneRelationsShip.keySet())
+            if (hasOneRelationsShip.get(attribute).isCascadeDelete()) {
+                try {
+                    Field field = this.getClass().getDeclaredField(attribute);
+                    field.setAccessible(true);
+                    Hermes obj = (Hermes) field.get(this);
+                    if (obj != null)
+                        obj.delete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
     }
 
     public boolean find(int id) {
@@ -79,10 +137,13 @@ public class Hermes {
             rs = statement.executeQuery();
             if (rs.next()) {
                 found = true;
-                for (Field field : this.getClass().getDeclaredFields()) {
+                for (String attribute : this.fieldsType.keySet()) {
+                    Field field = this.getClass().getDeclaredField(attribute);
                     field.setAccessible(true);
                     field.set(this, rs.getObject(field.getName()));
                 }
+                this.id = id;
+                setRelationnalFields(rs);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,19 +159,31 @@ public class Hermes {
         return found;
     }
 
-    public void hasOne(String attributeName, RelationnalConfig rc) {
-        Class<?> classe = getClassOf(attributeName);
-        rc.setClasse(classe);
-        hasOneRelations.put(attributeName, rc);
+    private void setRelationnalFields(ResultSet rs) {
+        for (String attr : hasOneRelationsShip.keySet()) {
+            try {
+                Field field = this.getClass().getDeclaredField(attr);
+                Hermes obj = (Hermes) field.getType().newInstance();
+                obj.find(hasOneRelationsShip.get(attr).getForeignKeyValue());
+                field.setAccessible(true);
+                field.set(this, obj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void hasOne(String attribute, RelationnalConfig rc) {
+        rc.setForeignKeyName(attribute + "_id");
+        hasOneRelationsShip.put(attribute, rc);
         setFieldsType();
         setFieldsValue();
     }
 
-    public void hasOne(String attributeName) {
+    public void hasOne(String attribute) {
         RelationnalConfig rc = new RelationnalConfig();
-        Class<?> classe = getClassOf(attributeName);
-        rc.setClasse(classe);
-        hasOneRelations.put(attributeName, rc);
+        rc.setForeignKeyName(attribute + "_id");
+        hasOneRelationsShip.put(attribute, rc);
         setFieldsType();
         setFieldsValue();
     }
@@ -144,8 +217,7 @@ public class Hermes {
     }
 
     // Getters & Setters
-    // Génrère la liste de tous les attributs basiques (ni relation has_one ni
-    // relation has_many)
+  
     private void setFieldsType() {
         fieldsType = new HashMap<String, String>();
         for (Field field : this.getClass().getDeclaredFields())
@@ -166,21 +238,8 @@ public class Hermes {
             }
     }
 
-    private boolean isBasicField(String fieldName) {
-        boolean res = !(hasOneRelations.containsKey(fieldName) || hasManyRelations.containsKey(fieldName));
-        return res;
-    }
-
-    private Class<?> getClassOf(String attributeName) {
-        try {
-            Field field = this.getClass().getDeclaredField(attributeName);
-            return field.getType();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return Object.class;
+    private boolean isBasicField(String attributeName) {
+        return !(hasOneRelationsShip.containsKey(attributeName) || hasManyRelationsShip.containsKey(attributeName));
     }
 
     public void setTable_name(String table_name) {
@@ -199,19 +258,7 @@ public class Hermes {
         return id;
     }
 
-    public HashMap<String, RelationnalConfig> getHasOneRelations() {
-        return hasOneRelations;
-    }
-
-    public void setHasOneRelations(HashMap<String, RelationnalConfig> hasOneRelations) {
-        this.hasOneRelations = hasOneRelations;
-    }
-
-    public HashMap<String, RelationnalConfig> getHasManyRelations() {
-        return hasManyRelations;
-    }
-
-    public void setHasManyRelations(HashMap<String, RelationnalConfig> hasManyRelations) {
-        this.hasManyRelations = hasManyRelations;
+    public HashMap<String, RelationnalConfig> getHasOneRelationsShip() {
+        return hasOneRelationsShip;
     }
 }
