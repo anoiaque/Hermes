@@ -1,17 +1,24 @@
-package hermes;
+package core;
 
-public class RelationnalConfig {
-    private String  foreignKeyName;
-    private int     foreignKeyValue = 0;
-    private boolean cascadeDelete   = false;
-    private boolean lazy            = false;
-    private boolean nullable        = true;
+public class Relationnal {
 
-    public RelationnalConfig() {
+    public class Cascade {
+
+        public static final String DELETE = "delete";
     }
 
-    public RelationnalConfig(boolean cascade_delete) {
-        this.cascadeDelete = cascade_delete;
+    private String foreignKeyName;
+    private Integer foreignKeyValue;
+    private boolean cascadeDelete = false;
+    private boolean lazy = false;
+    private boolean nullable = true;
+    private Jointure jointure;
+
+    public Relationnal() {
+    }
+
+    public Relationnal(String cascade) {
+        cascadeDelete = cascade.equals(Cascade.DELETE);
     }
 
     public String getForeignKeyName() {
@@ -52,5 +59,13 @@ public class RelationnalConfig {
 
     public boolean isCascadeDelete() {
         return cascadeDelete;
+    }
+
+    public void setJointure(Jointure jointure) {
+        this.jointure = jointure;
+    }
+
+    public Jointure getJointure() {
+        return jointure;
     }
 }

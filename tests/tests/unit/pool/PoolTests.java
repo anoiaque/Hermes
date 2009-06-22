@@ -1,14 +1,14 @@
-package tests.unit;
-
-import hermes.ConnectionPool;
+package tests.unit.pool;
 
 import java.sql.Connection;
 
 import junit.framework.TestCase;
+import pool.Pool;
 
-public class ConnectionPoolTests extends TestCase {
+public class PoolTests extends TestCase {
+
     private final int defaultPoolSize = 5;
-    ConnectionPool    pool            = ConnectionPool.getInstance();
+    Pool pool = Pool.getInstance();
 
     public void testReleaseConnection() {
         assertEquals(5, pool.availableConnections());
@@ -20,7 +20,7 @@ public class ConnectionPoolTests extends TestCase {
 
     public void testgetInstance() {
         assertNotNull(pool);
-        assertEquals(pool, ConnectionPool.getInstance());
+        assertEquals(pool, Pool.getInstance());
     }
 
     public void testGetConnexionDefaultPoolSize() {

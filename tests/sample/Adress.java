@@ -1,6 +1,6 @@
-package classfortests;
+package sample;
 
-import hermes.Hermes;
+import core.Hermes;
 
 public class Adress extends Hermes {
     private int    numero;
