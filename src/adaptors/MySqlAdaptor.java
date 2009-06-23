@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import pool.Pool;
@@ -46,6 +47,29 @@ public class MySqlAdaptor {
             }
         }
         return id;
+    }
+
+    public static boolean update(String tableName, HashMap<String, Object> attributes_values,int id) {
+        Connection connexion = null;
+        Pool pool = Pool.getInstance();
+        ResultSet rs = null;
+        try {
+            connexion = pool.getConnexion();
+            PreparedStatement statement = connexion.prepareStatement(sqlUpdate(tableName, attributes_values,id));
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            pool.release(connexion);
+            try {
+                if (rs != null)
+                    rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 
     public static boolean delete(String tableName, int id) {
@@ -164,6 +188,18 @@ public class MySqlAdaptor {
         String fields = attributes_values.keySet().toString().replace("[", "").replace("]", "");
         String values = attributes_values.values().toString().replace("[", "'").replace("]", "'").replace(", ", "','").replace("'null'", "null");
         return "insert into  " + tableName + "(" + fields + ")" + "values (" + values + ")";
+    }
+
+    private static String sqlUpdate(String tableName, HashMap<String, Object> attributes_values,int id) {
+        String setClause = "";
+        Iterator<String> attrs = attributes_values.keySet().iterator();
+        while (attrs.hasNext()) {
+            String attr = attrs.next();
+            setClause += attr + "='" + attributes_values.get(attr) + "'";
+            if (attrs.hasNext())
+                setClause += ",";
+        }
+        return "update " + tableName + " set " + setClause.replace("'null'", "null")+" where id="+id;
     }
 
     private static void setTypesMapping() {

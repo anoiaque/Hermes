@@ -1,6 +1,6 @@
 package core;
 
-public class Relationnal {
+public class Relation {
 
     public class Cascade {
 
@@ -14,10 +14,10 @@ public class Relationnal {
     private boolean nullable = true;
     private Jointure jointure;
 
-    public Relationnal() {
+    public Relation() {
     }
 
-    public Relationnal(String cascade) {
+    public Relation(String cascade) {
         cascadeDelete = cascade.equals(Cascade.DELETE);
     }
 

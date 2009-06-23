@@ -3,8 +3,8 @@ package sample;
 import java.util.Set;
 
 import core.Hermes;
-import core.Relationnal;
-import core.Relationnal.Cascade;
+import core.Relation;
+import core.Relation.Cascade;
 
 public class Person extends Hermes {
 
@@ -14,8 +14,8 @@ public class Person extends Hermes {
     private Set<Pet> pets;
 
     public Person() {
-        hasOne("adresse",new Relationnal(Cascade.DELETE));
-        hasMany("pets",new Relationnal(Cascade.DELETE));
+        hasOne("adresse",new Relation(Cascade.DELETE));
+        hasMany("pets",new Relation(Cascade.DELETE));
     }
 
     public int getAge() {
