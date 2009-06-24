@@ -1,5 +1,6 @@
 package core;
 
+import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,17 +9,35 @@ import java.sql.SQLException;
 import pool.Pool;
 
 public class Jointure extends Hermes {
+
     private int leftId;
     private int rightId;
 
-    public Jointure(){
-        
+    // Constructeurs
+    public Jointure() {
     }
-    public Jointure(String jointableName) {
-        this.setTableName(jointableName);
+
+    public Jointure(Hermes object, String attribute) {
+        this.setTableName(createJoinTableName(object, attribute));
         createJoinTable();
     }
 
+    // Public methods
+    private static String createJoinTableName(Hermes object, String attribute) {
+        ParameterizedType setField;
+        String parentName = object.getTableName().toUpperCase();
+        String childName = "";
+        try {
+            setField = (ParameterizedType) object.getClass().getDeclaredField(attribute).getGenericType();
+            childName = (((Class<?>) setField.getActualTypeArguments()[0]).getSimpleName()).toUpperCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return parentName + "_" + childName;
+    }
+
+    // Private methods
     private void createJoinTable() {
         Connection connexion = null;
         Pool pool = Pool.getInstance();
@@ -41,6 +60,7 @@ public class Jointure extends Hermes {
         }
     }
 
+    // Getters & setters
     public int getLeftId() {
         return leftId;
     }

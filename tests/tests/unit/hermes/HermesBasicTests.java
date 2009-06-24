@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 import sample.Adress;
 import sample.Person;
 import configuration.Configuration;
+import core.Pluralizer;
 
 public class HermesBasicTests extends TestCase {
 
@@ -15,25 +16,28 @@ public class HermesBasicTests extends TestCase {
         person = new Person();
         person.setAge(10);
         person.setNom("toto");
+        person.save();
     }
 
     public void tearDown() {
         person.delete();
     }
 
+    // Test the name of table , function of the class name pluralized
     public void testNomTable() {
-        assertEquals("Person", person.getTableName());
+        assertEquals(Pluralizer.getPlurial("Person"), person.getTableName());
     }
 
+    // Test id obtain by get_generated_keys from database
     public void testId() {
-        person.save();
         Person person2 = new Person();
         person2.save();
         assertEquals(person.getId() + 1, person2.getId());
         person2.delete();
     }
 
-    public void testFields() {
+    // Test basics fields , type and name are right
+    public void testBasicsFields() {
         HashMap<String, String> fields = person.getDatabaseFields();
         assertTrue(fields.containsKey("age"));
         assertEquals("int", fields.get("age"));
@@ -41,8 +45,8 @@ public class HermesBasicTests extends TestCase {
         assertEquals("varchar(" + Configuration.SqlConverterConfig.varcharLength + ")", fields.get("nom"));
     }
 
-    public void testSaveAndFind() {
-        person.save();
+    // Test retrieve data with find(id) after save
+    public void testRetrieveDataWithFind() {
         person.setAge(0);
         person.setNom("");
         person.find(person.getId());
@@ -50,36 +54,38 @@ public class HermesBasicTests extends TestCase {
         assertEquals("toto", person.getNom());
     }
 
-    public void testDelete() {
-        person.save();
-        person.delete();
-        assertFalse(person.find(person.getId()));
-    }
-
+    // Test retrieve data with find(where_clause) after save
     public void testRetrieveIdWithFindWhereClause() {
-        person.save();
         int id = person.getId();
         person.setId(-1);
         person = (Person) person.find("*", "age=10").iterator().next();
         assertEquals(id, person.getId());
     }
 
+    // Test raw is deleted in database
+    public void testDelete() {
+        person.delete();
+        assertFalse(person.find(person.getId()));
+    }
+
+    // Test retrieve all occurences with find(where_clause)
     public void testGetAllWithFindWherClause() {
         Person person2 = new Person();
         person2.setAge(10);
         person2.setNom("titi");
         person2.save();
-        person.save();
         assertEquals(2, person.find("*", "age=10").size());
         person2.delete();
     }
 
+    // Test update . Ensure no new record created but the one is updated
     public void testUpdate() {
-        person.save();
+        assertEquals(1, person.find("*", "id>0").size());
         person.setAge(30);
         person.setNom("titi");
         person.setAdresse(new Adress(25, "rue de Brest"));
         person.save();
+        assertEquals(1, person.find("*", "id>0").size());
         person.setAge(0);
         person.find(person.getId());
         assertEquals(30, person.getAge());

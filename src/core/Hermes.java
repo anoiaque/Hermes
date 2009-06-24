@@ -8,7 +8,7 @@ import adaptors.MySqlAdaptor;
 
 public class Hermes {
 
-    private String tableName;
+    private  String tableName;
     private HashMap<String, String> fieldsType = null;
     private HashMap<String, Object> fieldsValue = null;
     private Relational relations = new Relational(this);
