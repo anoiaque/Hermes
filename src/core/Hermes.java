@@ -8,7 +8,7 @@ import adaptors.MySqlAdaptor;
 
 public class Hermes {
 
-    private  String tableName;
+    private String tableName;
     private HashMap<String, String> fieldsType = null;
     private HashMap<String, Object> fieldsValue = null;
     private Relational relations = new Relational(this);
@@ -31,8 +31,8 @@ public class Hermes {
             this.id = MySqlAdaptor.save(this.tableName, attributes_values);
             relations.saveHasManyRelations();
             return this.id != -1;
-        } else
-            return update();
+        }
+        else return update();
     }
 
     @SuppressWarnings("unchecked")
@@ -60,21 +60,32 @@ public class Hermes {
         return deleted;
     }
 
+    
     public boolean find(int id) {
-        Hermes object = MySqlAdaptor.find(tableName, id, this);
-        if (object == null)
-            return false;
+        Hermes object = MySqlAdaptor.find(id, this);
+        if (object == null) return false;
         relations.getRelationalFields(object);
         return true;
     }
 
+   
+    public Set<?> find(String where_clause) {
+        Set<Hermes> objects = MySqlAdaptor.find("*", where_clause, this);
+        return (Set<Hermes>) loadRelationals(objects);
+    }
     public Set<?> find(String select_clause, String where_clause) {
-        Set<Hermes> objects = MySqlAdaptor.find(this.tableName, select_clause, where_clause, this);
-        for (Hermes object : objects)
-            relations.getRelationalFields(object);
-        return objects;
+        Set<Hermes> objects = MySqlAdaptor.find(select_clause, where_clause, this);
+        return (Set<Hermes>) loadRelationals(objects);
     }
 
+    public Set<?> findAll() {
+        Set<Hermes> objects = MySqlAdaptor.find("*", null, this);
+        return (Set<Hermes>) loadRelationals(objects);
+    }
+    public Set<?> findBySql(String sqlRequest){
+        return null;
+    }
+    
     public void hasOne(String attribute, Relation rc) {
         relations.hasOne(attribute, rc);
         setFields();
@@ -95,15 +106,17 @@ public class Hermes {
         setFields();
     }
 
-    public void belongsTo(Hermes reference) {
+    // Private methods
+    private Set<Hermes> loadRelationals(Set<Hermes> objects) {
+        for (Hermes object : objects)
+            relations.getRelationalFields(object);
+        return objects;
     }
 
-    // Private methods
     private void setFieldsType() {
         fieldsType = new HashMap<String, String>();
         for (Field field : this.getClass().getDeclaredFields())
-            if (isBasicField(field.getName()))
-                fieldsType.put(field.getName(), MySqlAdaptor.javaToSql(field.getType().getSimpleName()));
+            if (isBasicField(field.getName())) fieldsType.put(field.getName(), MySqlAdaptor.javaToSql(field.getType().getSimpleName()));
     }
 
     private void setFieldsValue() {
@@ -113,7 +126,8 @@ public class Hermes {
                 field.setAccessible(true);
                 try {
                     fieldsValue.put(field.getName(), field.get(this));
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }

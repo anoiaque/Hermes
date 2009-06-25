@@ -16,6 +16,14 @@ public class PoolTests extends TestCase {
         assertEquals(pool, Pool.getInstance());
     }
 
+    // Test release connection . Available connections increment if one connection is released.
+    public void testReleaseConnection() {
+        assertEquals(5, pool.availableConnections());
+        Connection conn = pool.getConnexion();
+        assertEquals(defaultPoolSize - 1, pool.availableConnections());
+        pool.release(conn);
+        assertEquals(defaultPoolSize, pool.availableConnections());
+    }
     // Test available connexions is decrement when one is used and not realeased
     // getConnexion() must return null if no available connexion
     public void testGetConnexionDefaultPoolSize() {
@@ -27,12 +35,5 @@ public class PoolTests extends TestCase {
         assertNull(pool.getConnexion());
     }
 
-    // Test release connection . Available connections increment if one connection is released.
-    public void testReleaseConnection() {
-        assertEquals(5, pool.availableConnections());
-        Connection conn = pool.getConnexion();
-        assertEquals(defaultPoolSize - 1, pool.availableConnections());
-        pool.release(conn);
-        assertEquals(defaultPoolSize, pool.availableConnections());
-    }
+   
 }

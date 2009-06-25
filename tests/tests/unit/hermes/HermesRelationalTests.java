@@ -155,7 +155,7 @@ public class HermesRelationalTests extends TestCase {
     // Test pairs of keys are deleted in join table when person is deleted
     public void testRefreshJoinTable() {
         person.delete();
-        assertEquals(0, person.getHasManyRelationsShip().get("pets").getJointure().find("*", "id>0").size());
+        assertEquals(0, person.getHasManyRelationsShip().get("pets").getJointure().findAll().size());
     }
 
     // Test on delete cascading with has_many relations .
@@ -173,7 +173,7 @@ public class HermesRelationalTests extends TestCase {
         person.delete();
         assertTrue(new Pet().find(person.getPets().iterator().next().getId()));
         person.getHasManyRelationsShip().get("pets").setCascadeDelete(true);
-        assertEquals(0, person.getHasManyRelationsShip().get("pets").getJointure().find("*", "id>0").size());
+        assertEquals(0, person.getHasManyRelationsShip().get("pets").getJointure().findAll().size());
     }
 
     // Test if a new person has a same pet , the pet must not be duplicated in the pets table, only a new pair of keys
@@ -184,7 +184,7 @@ public class HermesRelationalTests extends TestCase {
         pets.add(person.getPets().iterator().next());
         p.setPets(pets);
         p.save();
-        assertEquals(2, (new Pet()).find("*", "id>0").size());
+        assertEquals(2, (new Pet()).findAll().size());
         p.setPets(null);
         p.find(p.getId());
         assertEquals(1, p.getPets().size());
@@ -198,7 +198,7 @@ public class HermesRelationalTests extends TestCase {
         assertEquals(3, (new Pet()).find("*", "id>0").size());
         person.find(person.getId());
         assertEquals(3, person.getPets().size());
-        assertEquals(3, person.getHasManyRelationsShip().get("pets").getJointure().find("*", "leftId>0").size());
+        assertEquals(3, person.getHasManyRelationsShip().get("pets").getJointure().findAll().size());
     }
 
     // Test if an occurence is deleted in the set , the occurence in table is not deleted , but the pair keys is deleted in the join table
@@ -207,7 +207,7 @@ public class HermesRelationalTests extends TestCase {
         person.getPets().remove(pet);
         assertEquals(1, person.getPets().size());
         person.save();
-        assertEquals(1, person.getHasManyRelationsShip().get("pets").getJointure().find("*", "leftId>0").size());
+        assertEquals(1, person.getHasManyRelationsShip().get("pets").getJointure().findAll().size());
         pet.delete();
     }
 }

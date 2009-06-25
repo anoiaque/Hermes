@@ -154,7 +154,7 @@ public class Relational {
                 Class<?> classe = (Class<?>) type.getActualTypeArguments()[0];
                 for (Jointure join : jointures) {
                     Hermes obj = (Hermes) classe.newInstance();
-                    obj.find(join.getRightId());
+                    obj.find(((Jointure) join).getRightId());
                     objects.add(obj);
                 }
                 field.setAccessible(true);

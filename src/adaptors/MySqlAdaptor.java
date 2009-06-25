@@ -1,14 +1,18 @@
 package adaptors;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pool.Pool;
 
@@ -16,6 +20,7 @@ import com.mysql.jdbc.Statement;
 
 import configuration.Configuration;
 import core.Hermes;
+import core.Pluralizer;
 
 public class MySqlAdaptor {
 
@@ -32,40 +37,43 @@ public class MySqlAdaptor {
             PreparedStatement statement = connexion.prepareStatement(sqlInsert(tableName, attributes_values), Statement.RETURN_GENERATED_KEYS);
             statement.execute();
             rs = statement.getGeneratedKeys();
-            if (rs.next())
-                id = rs.getInt(1);
-        } catch (SQLException e) {
+            if (rs.next()) id = rs.getInt(1);
+        }
+        catch (SQLException e) {
             e.printStackTrace();
             return -1;
-        } finally {
+        }
+        finally {
             pool.release(connexion);
             try {
-                if (rs != null)
-                    rs.close();
-            } catch (SQLException e) {
+                if (rs != null) rs.close();
+            }
+            catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return id;
     }
 
-    public static boolean update(String tableName, HashMap<String, Object> attributes_values,int id) {
+    public static boolean update(String tableName, HashMap<String, Object> attributes_values, int id) {
         Connection connexion = null;
         Pool pool = Pool.getInstance();
         ResultSet rs = null;
         try {
             connexion = pool.getConnexion();
-            PreparedStatement statement = connexion.prepareStatement(sqlUpdate(tableName, attributes_values,id));
+            PreparedStatement statement = connexion.prepareStatement(sqlUpdate(tableName, attributes_values, id));
             statement.execute();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } finally {
+        }
+        finally {
             pool.release(connexion);
             try {
-                if (rs != null)
-                    rs.close();
-            } catch (SQLException e) {
+                if (rs != null) rs.close();
+            }
+            catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -82,9 +90,11 @@ public class MySqlAdaptor {
             PreparedStatement statement = connexion.prepareStatement(sql);
             statement.execute();
             deleted = true;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             pool.release(connexion);
         }
         return deleted;
@@ -100,18 +110,20 @@ public class MySqlAdaptor {
             PreparedStatement statement = connexion.prepareStatement(sql);
             statement.execute();
             deleted = true;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             pool.release(connexion);
         }
         return deleted;
     }
 
-    public static Hermes find(String tableName, int id, Hermes object) {
+    public static Hermes find(int id, Hermes object) {
         Connection connexion = null;
         Pool pool = Pool.getInstance();
-        String sql = "select * from " + tableName + " where id =" + id;
+        String sql = "select * from " + object.getTableName() + " where id =" + id;
         ResultSet rs = null;
         boolean found = false;
         try {
@@ -125,24 +137,34 @@ public class MySqlAdaptor {
                 }
                 object.setId(id);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             pool.release(connexion);
             try {
                 rs.close();
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return found ? object : null;
     }
 
-    public static Set<Hermes> find(String tableName, String select_clause, String where_clause, Hermes object) {
+    public static Set<Hermes> find(String select_clause, String where_clause, Hermes object) {
         Set<Hermes> result = new HashSet<Hermes>();
         Connection connexion = null;
         Pool pool = Pool.getInstance();
-        String sql = "select " + select_clause + " from " + tableName + " where " + where_clause;
+        HashMap<String, String> joinedTables = new HashMap<String, String>();
+        if (where_clause != null) {
+            joinedTables = joinedTables(where_clause, object);
+            where_clause = attributeNameToTableName(joinedTables, where_clause, object);
+        }
+        String from_clause = sqlFrom(joinedTables, object);
+        String sqlSelect = "select " + select_clause + " from " + from_clause;
+        String sql = (where_clause == null) ? sqlSelect : sqlSelect + " where " + where_clause;
         ResultSet rs = null;
         Class<?> classe = object.getClass();
         try {
@@ -158,19 +180,22 @@ public class MySqlAdaptor {
                 }
                 try {
                     obj.setId((Integer) rs.getObject("id"));
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // pas d'id dans la table
                 }
                 result.add(obj);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             try {
-                if (rs != null)
-                    rs.close();
+                if (rs != null) rs.close();
                 pool.release(connexion);
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -178,28 +203,80 @@ public class MySqlAdaptor {
     }
 
     public static String javaToSql(String javaType) {
-        if (typesMapping == null)
-            setTypesMapping();
+        if (typesMapping == null) setTypesMapping();
         return typesMapping.get(javaType);
     }
 
     // Private methods
+    private static String sqlFrom(HashMap<String, String> joinedTables, Hermes object) {
+        String sqlFrom = object.getTableName();
+        for (String table : joinedTables.values()) {
+            sqlFrom += "," + table;
+        }
+        return sqlFrom;
+    }
+
+    private static String attributeNameToTableName(HashMap<String, String> joinedTables, String where_clause, Hermes object) {
+        String sqlWhere = where_clause;
+        Pattern pattern;
+        for (String attribute : joinedTables.keySet()) {
+            pattern = Pattern.compile(attribute + ".");
+            sqlWhere = pattern.matcher(sqlWhere).replaceAll(joinedTables.get(attribute) + ".");
+            sqlWhere += " and " + object.getHasOneRelationsShip().get(attribute).getForeignKeyName() + "=" + joinedTables.get(attribute) + ".id";
+        }
+        return sqlWhere;
+    }
+
+    public static HashMap<String, String> joinedTables(String where_clause, Hermes object) {
+        Pattern pattern = Pattern.compile("'(.)*?'");
+        String cleaned = pattern.matcher(where_clause).replaceAll("");
+        pattern = Pattern.compile("([\\w]*\\.)");
+        Matcher matcher = pattern.matcher(cleaned);
+        ArrayList<String> relationAtrributes = new ArrayList<String>();
+        while (matcher.find()) {
+            String attr = matcher.group().replace(".", "");
+            if (!relationAtrributes.contains(attr)) relationAtrributes.add(attr);
+        }
+        return tablesNamesFor(relationAtrributes, object);
+    }
+
+    private static HashMap<String, String> tablesNamesFor(ArrayList<String> relationAtrributes, Hermes object) {
+        HashMap<String, String> tablesNames = new HashMap<String, String>();
+        for (String attr : relationAtrributes) {
+            try {
+                Field field = object.getClass().getDeclaredField(attr);
+                Class<?> type = field.getType();
+                if (!type.equals(Set.class)) {
+                    tablesNames.put(attr, Pluralizer.getPlurial(type.getSimpleName()).toUpperCase());
+                }
+                else {
+                    ParameterizedType set = (ParameterizedType) object.getClass().getDeclaredField(attr).getGenericType();
+                    String setType = (((Class<?>) set.getActualTypeArguments()[0]).getSimpleName().toUpperCase());
+                    tablesNames.put(attr, Pluralizer.getPlurial(setType));
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return tablesNames;
+    }
+
     private static String sqlInsert(String tableName, HashMap<String, Object> attributes_values) {
         String fields = attributes_values.keySet().toString().replace("[", "").replace("]", "");
         String values = attributes_values.values().toString().replace("[", "'").replace("]", "'").replace(", ", "','").replace("'null'", "null");
         return "insert into  " + tableName + "(" + fields + ")" + "values (" + values + ")";
     }
 
-    private static String sqlUpdate(String tableName, HashMap<String, Object> attributes_values,int id) {
+    private static String sqlUpdate(String tableName, HashMap<String, Object> attributes_values, int id) {
         String setClause = "";
         Iterator<String> attrs = attributes_values.keySet().iterator();
         while (attrs.hasNext()) {
             String attr = attrs.next();
             setClause += attr + "='" + attributes_values.get(attr) + "'";
-            if (attrs.hasNext())
-                setClause += ",";
+            if (attrs.hasNext()) setClause += ",";
         }
-        return "update " + tableName + " set " + setClause.replace("'null'", "null")+" where id="+id;
+        return "update " + tableName + " set " + setClause.replace("'null'", "null") + " where id=" + id;
     }
 
     private static void setTypesMapping() {
