@@ -12,7 +12,7 @@ public class Relational {
 
     Hermes object;
     private HashMap<String, Relation> hasOneRelationsShip = new HashMap<String, Relation>();
-    private HashMap<String, Relation> hasManyRelationsShip = new HashMap<String, Relation>();
+    private HashMap<String, Relation> manyToManyRelationsShip = new HashMap<String, Relation>();
 
     // Constructeur
     public Relational(Hermes object) {
@@ -31,43 +31,43 @@ public class Relational {
         hasOneRelationsShip.put(attribute, rc);
     }
 
-    public void hasMany(String attribute, Relation rc) {
+    public void manyToMany(String attribute, Relation rc) {
         Jointure jointure = new Jointure(object, attribute);
         rc.setJointure(jointure);
-        hasManyRelationsShip.put(attribute, rc);
+        manyToManyRelationsShip.put(attribute, rc);
     }
 
-    public void hasMany(String attribute) {
+    public void manyToMany(String attribute) {
         Relation rc = new Relation();
         Jointure jointure = new Jointure(object, attribute);
         rc.setJointure(jointure);
-        hasManyRelationsShip.put(attribute, rc);
+        manyToManyRelationsShip.put(attribute, rc);
     }
 
-    public void saveHasManyRelations() {
-        for (String attribute : hasManyRelationsShip.keySet()) {
-            Jointure jointure = hasManyRelationsShip.get(attribute).getJointure();
+    public void saveManyToManyRelations() {
+        for (String attribute : manyToManyRelationsShip.keySet()) {
+            Jointure jointure = manyToManyRelationsShip.get(attribute).getJointure();
             Set<Hermes> fieldSet = (Set<Hermes>) getObject(attribute);
             if (fieldSet != null)
                 for (Hermes occurence : fieldSet) {
                     occurence.save();
-                    jointure.setLeftId(object.getId());
-                    jointure.setRightId(occurence.getId());
+                    jointure.setParentId(object.getId());
+                    jointure.setChildId(occurence.getId());
                     jointure.save();
                 }
         }
     }
 
-    public void updateHasManyRelations() {
-        for (String attribute : hasManyRelationsShip.keySet()) {
-            Jointure jointure = hasManyRelationsShip.get(attribute).getJointure();
+    public void updateManyToManyRelations() {
+        for (String attribute : manyToManyRelationsShip.keySet()) {
+            Jointure jointure = manyToManyRelationsShip.get(attribute).getJointure();
             Set<Hermes> fieldSet = (Set<Hermes>) getObject(attribute);
             clearKeysPairsFor(object, attribute);
             if (fieldSet != null)
                 for (Hermes occurence : fieldSet) {
                     occurence.save();
-                    jointure.setLeftId(object.getId());
-                    jointure.setRightId(occurence.getId());
+                    jointure.setParentId(object.getId());
+                    jointure.setChildId(occurence.getId());
                     jointure.save();
                 }
         }
@@ -96,7 +96,7 @@ public class Relational {
 
     public void cascadeDelete() {
         deleteHasOneRelations();
-        deleteHasManyRelations();
+        deleteManyToManyRelations();
     }
 
     public void getRelationalFields(Hermes object) {
@@ -124,11 +124,11 @@ public class Relational {
             }
     }
 
-    private void deleteHasManyRelations() {
-        for (String attribute : hasManyRelationsShip.keySet()) {
-            Jointure jointure = hasManyRelationsShip.get(attribute).getJointure();
-            jointure.delete("leftId=" + object.getId());
-            if (hasManyRelationsShip.get(attribute).isCascadeDelete()) {
+    private void deleteManyToManyRelations() {
+        for (String attribute : manyToManyRelationsShip.keySet()) {
+            Jointure jointure = manyToManyRelationsShip.get(attribute).getJointure();
+            jointure.delete("parentId=" + object.getId());
+            if (manyToManyRelationsShip.get(attribute).isCascadeDelete()) {
                 Set<Hermes> objects = (Set<Hermes>) getObject(attribute);
                 if (objects != null)
                     for (Hermes obj : objects) {
@@ -139,22 +139,22 @@ public class Relational {
     }
 
     private void clearKeysPairsFor(Hermes object, String attribute) {
-        Jointure jointure = hasManyRelationsShip.get(attribute).getJointure();
-        jointure.delete("leftId=" + object.getId());
+        Jointure jointure = manyToManyRelationsShip.get(attribute).getJointure();
+        jointure.delete("parentId=" + object.getId());
     }
 
     private void getHasManyRelationFields(Hermes object) {
-        for (String attr : hasManyRelationsShip.keySet()) {
+        for (String attr : manyToManyRelationsShip.keySet()) {
             try {
                 Set<Hermes> objects = new HashSet<Hermes>();
                 Field field = object.getClass().getDeclaredField(attr);
-                Jointure jointure = hasManyRelationsShip.get(attr).getJointure();
-                Set<Jointure> jointures = (Set<Jointure>) jointure.find("*", "leftId = " + object.getId());
+                Jointure jointure = manyToManyRelationsShip.get(attr).getJointure();
+                Set<Jointure> jointures = (Set<Jointure>) jointure.find("*", "parentId = " + object.getId());
                 ParameterizedType type = (ParameterizedType) object.getClass().getDeclaredField(attr).getGenericType();
                 Class<?> classe = (Class<?>) type.getActualTypeArguments()[0];
                 for (Jointure join : jointures) {
                     Hermes obj = (Hermes) classe.newInstance();
-                    obj.find(((Jointure) join).getRightId());
+                    obj.find(((Jointure) join).getChildId());
                     objects.add(obj);
                 }
                 field.setAccessible(true);
@@ -200,7 +200,7 @@ public class Relational {
         return hasOneRelationsShip;
     }
 
-    public HashMap<String, Relation> getHasManyRelationsShip() {
-        return hasManyRelationsShip;
+    public HashMap<String, Relation> getManyToManyRelationsShip() {
+        return manyToManyRelationsShip;
     }
 }

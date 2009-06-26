@@ -10,8 +10,8 @@ import pool.Pool;
 
 public class Jointure extends Hermes {
 
-    private int leftId;
-    private int rightId;
+    private int parentId;
+    private int childId;
 
     // Constructeurs
     public Jointure() {
@@ -41,7 +41,7 @@ public class Jointure extends Hermes {
     private void createJoinTable() {
         Connection connexion = null;
         Pool pool = Pool.getInstance();
-        String sql = "create  table if not exists " + this.getTableName() + "(" + "leftId int default null,rightId int default null); ";
+        String sql = "create  table if not exists " + this.getTableName() + "(" + "parentId int default null,childId int default null); ";
         ResultSet rs = null;
         try {
             connexion = pool.getConnexion();
@@ -61,19 +61,19 @@ public class Jointure extends Hermes {
     }
 
     // Getters & setters
-    public int getLeftId() {
-        return leftId;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setLeftId(int leftId) {
-        this.leftId = leftId;
+    public void setParentId(int leftId) {
+        this.parentId = leftId;
     }
 
-    public int getRightId() {
-        return rightId;
+    public int getChildId() {
+        return childId;
     }
 
-    public void setRightId(int rightId) {
-        this.rightId = rightId;
+    public void setChildId(int rightId) {
+        this.childId = rightId;
     }
 }

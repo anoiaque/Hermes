@@ -29,7 +29,7 @@ public class Hermes {
             HashMap<String, Object> attributes_values = ((HashMap<String, Object>) fieldsValue.clone());
             attributes_values.putAll(relations.foreignKeys());
             this.id = MySqlAdaptor.save(this.tableName, attributes_values);
-            relations.saveHasManyRelations();
+            relations.saveManyToManyRelations();
             return this.id != -1;
         }
         else return update();
@@ -42,7 +42,7 @@ public class Hermes {
         HashMap<String, Object> attributes_values = (HashMap<String, Object>) fieldsValue.clone();
         attributes_values.putAll(relations.foreignKeys());
         boolean updated = MySqlAdaptor.update(this.tableName, attributes_values, this.id);
-        relations.updateHasManyRelations();
+        relations.updateManyToManyRelations();
         return updated;
     }
 
@@ -96,13 +96,13 @@ public class Hermes {
         setFields();
     }
 
-    public void hasMany(String attribute, Relation rc) {
-        relations.hasMany(attribute, rc);
+    public void manyToMany(String attribute, Relation rc) {
+        relations.manyToMany(attribute, rc);
         setFields();
     }
 
-    public void hasMany(String attribute) {
-        relations.hasMany(attribute);
+    public void manyToMany(String attribute) {
+        relations.manyToMany(attribute);
         setFields();
     }
 
@@ -139,12 +139,12 @@ public class Hermes {
     }
 
     private boolean isBasicField(String attributeName) {
-        return !(relations.getHasOneRelationsShip().containsKey(attributeName) || relations.getHasManyRelationsShip().containsKey(attributeName));
+        return !(relations.getHasOneRelationsShip().containsKey(attributeName) || relations.getManyToManyRelationsShip().containsKey(attributeName));
     }
 
     // Getters & Setters
     public HashMap<String, Relation> getHasManyRelationsShip() {
-        return relations.getHasManyRelationsShip();
+        return relations.getManyToManyRelationsShip();
     }
 
     public void setTableName(String table_name) {

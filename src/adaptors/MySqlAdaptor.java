@@ -23,7 +23,6 @@ import core.Hermes;
 import core.Pluralizer;
 
 public class MySqlAdaptor {
-
     private static HashMap<String, String> typesMapping = null;
 
     // Public methods
@@ -37,18 +36,17 @@ public class MySqlAdaptor {
             PreparedStatement statement = connexion.prepareStatement(sqlInsert(tableName, attributes_values), Statement.RETURN_GENERATED_KEYS);
             statement.execute();
             rs = statement.getGeneratedKeys();
-            if (rs.next()) id = rs.getInt(1);
-        }
-        catch (SQLException e) {
+            if (rs.next())
+                id = rs.getInt(1);
+        } catch (SQLException e) {
             e.printStackTrace();
             return -1;
-        }
-        finally {
+        } finally {
             pool.release(connexion);
             try {
-                if (rs != null) rs.close();
-            }
-            catch (SQLException e) {
+                if (rs != null)
+                    rs.close();
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -63,17 +61,15 @@ public class MySqlAdaptor {
             connexion = pool.getConnexion();
             PreparedStatement statement = connexion.prepareStatement(sqlUpdate(tableName, attributes_values, id));
             statement.execute();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }
-        finally {
+        } finally {
             pool.release(connexion);
             try {
-                if (rs != null) rs.close();
-            }
-            catch (SQLException e) {
+                if (rs != null)
+                    rs.close();
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -90,11 +86,9 @@ public class MySqlAdaptor {
             PreparedStatement statement = connexion.prepareStatement(sql);
             statement.execute();
             deleted = true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             pool.release(connexion);
         }
         return deleted;
@@ -110,11 +104,9 @@ public class MySqlAdaptor {
             PreparedStatement statement = connexion.prepareStatement(sql);
             statement.execute();
             deleted = true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             pool.release(connexion);
         }
         return deleted;
@@ -137,16 +129,13 @@ public class MySqlAdaptor {
                 }
                 object.setId(id);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             pool.release(connexion);
             try {
                 rs.close();
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
@@ -154,56 +143,31 @@ public class MySqlAdaptor {
     }
 
     public static Set<Hermes> find(String select_clause, String where_clause, Hermes object) {
-        Set<Hermes> result = new HashSet<Hermes>();
         Connection connexion = null;
         Pool pool = Pool.getInstance();
-        HashMap<String, String> joinedTables = new HashMap<String, String>();
-        if (where_clause != null) {
-            joinedTables = joinedTables(where_clause, object);
-            where_clause = attributeNameToTableName(joinedTables, where_clause, object);
-        }
-        String from_clause = sqlFrom(joinedTables, object);
-        String sqlSelect = "select " + select_clause + " from " + from_clause;
-        String sql = (where_clause == null) ? sqlSelect : sqlSelect + " where " + where_clause;
         ResultSet rs = null;
-        Class<?> classe = object.getClass();
         try {
             connexion = pool.getConnexion();
-            PreparedStatement statement = connexion.prepareStatement(sql);
+            PreparedStatement statement = connexion.prepareStatement(sqlSelect(select_clause, where_clause, object));
             rs = statement.executeQuery();
-            while (rs.next()) {
-                Hermes obj = (Hermes) classe.newInstance();
-                for (String attribute : obj.getFieldsType().keySet()) {
-                    Field field = obj.getClass().getDeclaredField(attribute);
-                    field.setAccessible(true);
-                    field.set(obj, rs.getObject(field.getName()));
-                }
-                try {
-                    obj.setId((Integer) rs.getObject("id"));
-                }
-                catch (SQLException e) {
-                    // pas d'id dans la table
-                }
-                result.add(obj);
-            }
-        }
-        catch (Exception e) {
+            return resultSetToObjects(rs, object);
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+            return null;
+        } finally {
             try {
-                if (rs != null) rs.close();
+                if (rs != null)
+                    rs.close();
                 pool.release(connexion);
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return result;
     }
 
     public static String javaToSql(String javaType) {
-        if (typesMapping == null) setTypesMapping();
+        if (typesMapping == null)
+            setTypesMapping();
         return typesMapping.get(javaType);
     }
 
@@ -235,7 +199,8 @@ public class MySqlAdaptor {
         ArrayList<String> relationAtrributes = new ArrayList<String>();
         while (matcher.find()) {
             String attr = matcher.group().replace(".", "");
-            if (!relationAtrributes.contains(attr)) relationAtrributes.add(attr);
+            if (!relationAtrributes.contains(attr))
+                relationAtrributes.add(attr);
         }
         return tablesNamesFor(relationAtrributes, object);
     }
@@ -248,18 +213,51 @@ public class MySqlAdaptor {
                 Class<?> type = field.getType();
                 if (!type.equals(Set.class)) {
                     tablesNames.put(attr, Pluralizer.getPlurial(type.getSimpleName()).toUpperCase());
-                }
-                else {
+                } else {
                     ParameterizedType set = (ParameterizedType) object.getClass().getDeclaredField(attr).getGenericType();
                     String setType = (((Class<?>) set.getActualTypeArguments()[0]).getSimpleName().toUpperCase());
                     tablesNames.put(attr, Pluralizer.getPlurial(setType));
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return tablesNames;
+    }
+
+    private static Set<Hermes> resultSetToObjects(ResultSet rs, Hermes object) {
+        Set<Hermes> result = new HashSet<Hermes>();
+        Class<?> classe = object.getClass();
+        try {
+            while (rs.next()) {
+                Hermes obj = (Hermes) classe.newInstance();
+                for (String attribute : obj.getFieldsType().keySet()) {
+                    Field field = obj.getClass().getDeclaredField(attribute);
+                    field.setAccessible(true);
+                    field.set(obj, rs.getObject(field.getName()));
+                }
+                try {
+                    obj.setId((Integer) rs.getObject("id"));
+                } catch (SQLException e) {
+                    // pas d'id dans la table
+                }
+                result.add(obj);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private static String sqlSelect(String select_clause, String where_clause, Hermes object) {
+        HashMap<String, String> joinedTables = new HashMap<String, String>();
+        if (where_clause != null) {
+            joinedTables = joinedTables(where_clause, object);
+            where_clause = attributeNameToTableName(joinedTables, where_clause, object);
+        }
+        String from_clause = sqlFrom(joinedTables, object);
+        String sqlSelect = "select " + select_clause + " from " + from_clause;
+        return (where_clause == null) ? sqlSelect : sqlSelect + " where " + where_clause;
     }
 
     private static String sqlInsert(String tableName, HashMap<String, Object> attributes_values) {
@@ -274,7 +272,8 @@ public class MySqlAdaptor {
         while (attrs.hasNext()) {
             String attr = attrs.next();
             setClause += attr + "='" + attributes_values.get(attr) + "'";
-            if (attrs.hasNext()) setClause += ",";
+            if (attrs.hasNext())
+                setClause += ",";
         }
         return "update " + tableName + " set " + setClause.replace("'null'", "null") + " where id=" + id;
     }
