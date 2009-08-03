@@ -7,7 +7,7 @@ import sample.Person;
 import adaptors.MySqlAdaptor;
 import core.Pluralizer;
 
-public class MySqlAdaptorTests extends TestCase {
+public class MySqlAdaptorTest extends TestCase {
 
     Person person = new Person();
 

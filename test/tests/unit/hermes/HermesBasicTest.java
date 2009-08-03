@@ -8,10 +8,11 @@ import sample.Person;
 import configuration.Configuration;
 import core.Pluralizer;
 
-public class HermesBasicTests extends TestCase {
+public class HermesBasicTest extends TestCase {
 
     public static Person person;
 
+    @Override
     public void setUp() {
         person = new Person();
         person.setAge(10);
@@ -19,6 +20,7 @@ public class HermesBasicTests extends TestCase {
         person.save();
     }
 
+    @Override
     public void tearDown() {
         person.delete();
     }

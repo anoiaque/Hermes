@@ -23,6 +23,7 @@ public class Pool {
         initPool();
     }
 
+    @Override
     public void finalize() {
         for (Connection conn : pool.keySet())
             try {

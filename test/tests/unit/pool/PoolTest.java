@@ -5,7 +5,7 @@ import java.sql.Connection;
 import junit.framework.TestCase;
 import pool.Pool;
 
-public class PoolTests extends TestCase {
+public class PoolTest extends TestCase {
 
     private final int defaultPoolSize = 5;
     Pool pool = Pool.getInstance();

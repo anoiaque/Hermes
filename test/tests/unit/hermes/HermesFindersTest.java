@@ -8,7 +8,7 @@ import sample.Adress;
 import sample.Person;
 import sample.Pet;
 
-public class HermesFindersTests extends TestCase {
+public class HermesFindersTest extends TestCase {
 
     public static Person person = new Person();
     public static Person person1;

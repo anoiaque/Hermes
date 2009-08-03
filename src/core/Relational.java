@@ -101,7 +101,7 @@ public class Relational {
 
     public void getRelationalFields(Hermes object) {
         getHasOneRelationFields(object);
-        getHasManyRelationFields(object);
+        getManyToManyRelationFields(object);
     }
 
     public HashMap<String, Object> foreignKeys() {
@@ -143,7 +143,7 @@ public class Relational {
         jointure.delete("parentId=" + object.getId());
     }
 
-    private void getHasManyRelationFields(Hermes object) {
+    private void getManyToManyRelationFields(Hermes object) {
         for (String attr : manyToManyRelationsShip.keySet()) {
             try {
                 Set<Hermes> objects = new HashSet<Hermes>();

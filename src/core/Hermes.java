@@ -97,8 +97,7 @@ public class Hermes {
   }
 
   public void hasOne(String attribute) {
-    relations.hasOne(attribute);
-    setFields();
+    hasOne(attribute,new Relation());
   }
 
   public void manyToMany(String attribute, Relation rc) {

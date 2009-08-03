@@ -10,10 +10,11 @@ import sample.Adress;
 import sample.Person;
 import sample.Pet;
 
-public class HermesRelationalTests extends TestCase {
+public class HermesRelationalTest extends TestCase {
 
     public static Person person;
 
+    @Override
     public void setUp() {
         person = new Person();
         person.setAge(30);
@@ -26,12 +27,13 @@ public class HermesRelationalTests extends TestCase {
         person.save();
     }
 
+    @Override
     public void tearDown() {
         person.delete();
     }
 
     // Test on relationnals fields and basics fields hashes .
-    // Relational fields must only contain relationnal fields (has_one and has_many relations attributes)
+    // Relational fields must only contain relationnal fields (has_one and many_to_many relations attributes)
     // Basics fields must only contain String,Integer ...
     public void testFieldsHashes() {
         HashMap<String, String> fields = person.getDatabaseFields();
@@ -89,13 +91,13 @@ public class HermesRelationalTests extends TestCase {
         p.delete();
     }
 
-    // Test on the name of the jointure table in has_many relations
+    // Test on the name of the jointure table in many_to_many relations
     // name must be <parent_table_name>_<child_table_name>
     public void testHasManyJointureInit() {
         assertEquals("PERSON_PET", person.getHasManyRelationsShip().get("pets").getJointure().getTableName());
     }
 
-    // Test on retrieve data with finf(id) after saving has_many relation
+    // Test on retrieve data with finf(id) after saving many_to_many relation
     public void testRetrieveDataByIdWithHasMany() {
         person.setPets(new HashSet<Pet>());
         person.find(person.getId());
@@ -106,7 +108,7 @@ public class HermesRelationalTests extends TestCase {
         assertTrue((pet1.getName().equals("Medor") && pet2.getName().equals("Felix")) || (pet2.getName().equals("Medor") && pet1.getName().equals("Felix")));
     }
 
-    // Test on retrieve data with finf(where_clause) after saving has_many relation
+    // Test on retrieve data with finf(where_clause) after saving many_to_many relation
     public void testRetrieveDataByWhereClauseWithHasManyRelations() {
         person = (Person) person.find("*", "age=30").iterator().next();
         Iterator<Pet> iterator = person.getPets().iterator();
@@ -116,7 +118,7 @@ public class HermesRelationalTests extends TestCase {
         assertTrue((pet1.getName().equals("Medor") && pet2.getName().equals("Felix")) || (pet2.getName().equals("Medor") && pet1.getName().equals("Felix")));
     }
 
-    // Test on update in a has_many relation when the has_many field reference existed before (not null)
+    // Test on update in a many_to_many relation when the many_to_many field reference existed before (not null)
     // Must so not add or change a pair of key in the join_table , but just update the child table
     public void testUpdateHasManyWhenExistBefore() {
         assertEquals(2, (new Pet().find("*", "id>0")).size());
@@ -133,7 +135,7 @@ public class HermesRelationalTests extends TestCase {
         assertTrue((pet1.getName().equals("Idefix") && pet2.getName().equals("Felix")) || (pet2.getName().equals("Idefix") && pet1.getName().equals("Felix")));
     }
 
-    // Test on update in a has_many relation when the has_many field reference not exist before (null)
+    // Test on update in a many_to_many relation when the many_to_many field reference not exist before (null)
     // Must so add pair (s)of key in the join_table , and add the object(s) in the child table
     public void testUpdateHasManyWhenNullBefore() {
         Person p = new Person();
@@ -158,14 +160,14 @@ public class HermesRelationalTests extends TestCase {
         assertEquals(0, person.getHasManyRelationsShip().get("pets").getJointure().findAll().size());
     }
 
-    // Test on delete cascading with has_many relations .
+    // Test on delete cascading with many_to_many relations .
     // If person is deleted , his pets must also be erased with Cascase.DELETE=true
     public void testCascadeDeleteWithRelationHasMany() {
         person.delete();
         assertFalse(new Pet().find(person.getPets().iterator().next().getId()));
     }
 
-    // Test on delete cascading with has_many relations .
+    // Test on delete cascading with many_to_many relations .
     // If person is deleted , his pets must not be erased with Cascase.DELETE=false
     // pairs of keys in join table must be deleted
     public void testNoCascadeDeleteWithRelationHasMany() {
