@@ -1,70 +1,56 @@
 package core;
 
+import adaptors.Adaptor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Set;
 
-import adaptors.MySqlAdaptor;
-
 public class Hermes {
 
   private String tableName;
+  private int id = 0;
   private HashMap<String, String> fieldsType = null;
   private HashMap<String, Object> fieldsValue = null;
   private Relational relations = new Relational(this);
-  private int id = 0;
+  private Adaptor adaptor = Adaptor.get();
 
-  // Constructeur
-
+  // Constructeurs
   public Hermes() {
     setTableName(Pluralizer.getPlurial(this.getClass().getSimpleName()));
     setFields();
   }
 
   // Public methods
-  @SuppressWarnings("unchecked")
   public boolean save() {
     if (this.id == 0) {
       setFieldsValue();
       relations.saveHasOneRelations();
       HashMap<String, Object> attributes_values = ((HashMap<String, Object>) fieldsValue.clone());
       attributes_values.putAll(relations.foreignKeys());
-      this.id = MySqlAdaptor.save(this.tableName, attributes_values);
+      this.id = adaptor.save(this.tableName, attributes_values);
       relations.saveManyToManyRelations();
       return this.id != -1;
-    }
-    else {
+    } else {
       return update();
     }
   }
 
-  @SuppressWarnings("unchecked")
-  private boolean update() {
-    setFieldsValue();
-    relations.updateHasOneRelations();
-    HashMap<String, Object> attributes_values = (HashMap<String, Object>) fieldsValue.clone();
-    attributes_values.putAll(relations.foreignKeys());
-    boolean updated = MySqlAdaptor.update(this.tableName, attributes_values, this.id);
-    relations.updateManyToManyRelations();
-    return updated;
-  }
-
   public boolean delete() {
     relations.cascadeDelete();
-    boolean deleted = MySqlAdaptor.delete(this.tableName, this.id);
+    boolean deleted = adaptor.delete(this.tableName, this.id);
     this.id = 0;
     return deleted;
   }
 
   public boolean delete(String whereClause) {
     relations.cascadeDelete();
-    boolean deleted = MySqlAdaptor.delete(this.tableName, whereClause);
+    boolean deleted = adaptor.delete(this.tableName, whereClause);
     this.id = 0;
     return deleted;
   }
 
   public boolean find(int id) {
-    Hermes object = MySqlAdaptor.find(id, this);
+    Hermes object = adaptor.find(id, this);
     if (object == null) {
       return false;
     }
@@ -73,17 +59,17 @@ public class Hermes {
   }
 
   public Set<?> find(String where_clause) {
-    Set<Hermes> objects = MySqlAdaptor.find("*", where_clause, this);
+    Set<Hermes> objects = adaptor.find("*", where_clause, this);
     return (Set<Hermes>) loadRelationals(objects);
   }
 
   public Set<?> find(String select_clause, String where_clause) {
-    Set<Hermes> objects = MySqlAdaptor.find(select_clause, where_clause, this);
+    Set<Hermes> objects = adaptor.find(select_clause, where_clause, this);
     return (Set<Hermes>) loadRelationals(objects);
   }
 
   public Set<?> findAll() {
-    Set<Hermes> objects = MySqlAdaptor.find("*", null, this);
+    Set<Hermes> objects = adaptor.find("*", null, this);
     return (Set<Hermes>) loadRelationals(objects);
   }
 
@@ -97,7 +83,7 @@ public class Hermes {
   }
 
   public void hasOne(String attribute) {
-    hasOne(attribute,new Relation());
+    hasOne(attribute, new Relation());
   }
 
   public void manyToMany(String attribute, Relation rc) {
@@ -111,6 +97,16 @@ public class Hermes {
   }
 
   // Private methods
+  private boolean update() {
+    setFieldsValue();
+    relations.updateHasOneRelations();
+    HashMap<String, Object> attributes_values = (HashMap<String, Object>) fieldsValue.clone();
+    attributes_values.putAll(relations.foreignKeys());
+    boolean updated = adaptor.update(this.tableName, attributes_values, this.id);
+    relations.updateManyToManyRelations();
+    return updated;
+  }
+
   private Set<Hermes> loadRelationals(Set<Hermes> objects) {
     for (Hermes object : objects) {
       relations.getRelationalFields(object);
@@ -122,7 +118,7 @@ public class Hermes {
     fieldsType = new HashMap<String, String>();
     for (Field field : this.getClass().getDeclaredFields()) {
       if (isBasicField(field.getName())) {
-        fieldsType.put(field.getName(), MySqlAdaptor.javaToSql(field.getType().getSimpleName()));
+        fieldsType.put(field.getName(), adaptor.javaToSql(field.getType().getSimpleName()));
       }
     }
   }
@@ -134,8 +130,7 @@ public class Hermes {
         field.setAccessible(true);
         try {
           fieldsValue.put(field.getName(), field.get(this));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           e.printStackTrace();
         }
       }
@@ -152,7 +147,7 @@ public class Hermes {
   }
 
   // Getters & Setters
-  public HashMap<String, Relation> getHasManyRelationsShip() {
+  public HashMap<String, Relation> getManyToManyRelationsShip() {
     return relations.getManyToManyRelationsShip();
   }
 

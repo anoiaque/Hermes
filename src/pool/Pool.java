@@ -1,6 +1,5 @@
 package pool;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,10 +9,11 @@ import configuration.Configuration;
 import configuration.Configuration.DBMSConfig;
 
 public class Pool {
-    private static Pool                  instance   = null;
-    private DBMSConfig                   config     = null;
-    private String                       driverName = "";
-    private HashMap<Connection, Boolean> pool       = null;
+
+    private static Pool instance = null;
+    private DBMSConfig config = null;
+    private String driverName = "";
+    private HashMap<Connection, Boolean> pool = null;
 
     // constructors
     private Pool() {
@@ -25,12 +25,13 @@ public class Pool {
 
     @Override
     public void finalize() {
-        for (Connection conn : pool.keySet())
+        for (Connection conn : pool.keySet()) {
             try {
                 conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
     }
 
     // public methods
@@ -44,43 +45,48 @@ public class Pool {
     }
 
     public Connection getConnexion() {
-        for (Connection conn : pool.keySet())
+        for (Connection conn : pool.keySet()) {
             if (pool.get(conn)) {
                 pool.put(conn, false);
                 return conn;
             }
+        }
         return null;
     }
 
     public void release(Connection connection) {
-        for (Connection conn : pool.keySet())
+        for (Connection conn : pool.keySet()) {
             if (connection.equals(conn)) {
                 pool.put(connection, true);
             }
+        }
     }
 
     public int availableConnections() {
         int nbFree = 0;
         for (Boolean free : pool.values()) {
-            if (free)
+            if (free) {
                 nbFree++;
+            }
         }
         return nbFree;
     }
 
     // private methods
     private String driverNameFor(String dbmsName) {
-        if (dbmsName.equalsIgnoreCase("MySql"))
+        if (dbmsName.equalsIgnoreCase("MySql")) {
             return "com.mysql.jdbc.Driver";
-        else
+        } else {
             return "";
+        }
     }
 
     private void initPool() {
         try {
             Class.forName(driverName);
-            for (int i = 0; i < config.getPoolSize(); i++)
+            for (int i = 0; i < config.getPoolSize(); i++) {
                 pool.put(DriverManager.getConnection(config.getURL(), config.getUser(), config.getPassword()), true);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

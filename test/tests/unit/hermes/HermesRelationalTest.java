@@ -41,9 +41,9 @@ public class HermesRelationalTest extends TestCase {
         assertTrue(fields.containsKey("nom"));
         assertEquals(2, fields.size());
         assertTrue(person.getHasOneRelationsShip().containsKey("adresse"));
-        assertTrue(person.getHasManyRelationsShip().containsKey("pets"));
+        assertTrue(person.getManyToManyRelationsShip().containsKey("pets"));
         assertEquals(1, person.getHasOneRelationsShip().size());
-        assertEquals(1, person.getHasManyRelationsShip().size());
+        assertEquals(1, person.getManyToManyRelationsShip().size());
     }
 
     // Test on relation Has-One : retrieve data with find(id) after saving it.
@@ -94,7 +94,7 @@ public class HermesRelationalTest extends TestCase {
     // Test on the name of the jointure table in many_to_many relations
     // name must be <parent_table_name>_<child_table_name>
     public void testHasManyJointureInit() {
-        assertEquals("PERSON_PET", person.getHasManyRelationsShip().get("pets").getJointure().getTableName());
+        assertEquals("PERSON_PET", person.getManyToManyRelationsShip().get("pets").getJointure().getTableName());
     }
 
     // Test on retrieve data with finf(id) after saving many_to_many relation
@@ -157,7 +157,7 @@ public class HermesRelationalTest extends TestCase {
     // Test pairs of keys are deleted in join table when person is deleted
     public void testRefreshJoinTable() {
         person.delete();
-        assertEquals(0, person.getHasManyRelationsShip().get("pets").getJointure().findAll().size());
+        assertEquals(0, person.getManyToManyRelationsShip().get("pets").getJointure().findAll().size());
     }
 
     // Test on delete cascading with many_to_many relations .
@@ -171,11 +171,11 @@ public class HermesRelationalTest extends TestCase {
     // If person is deleted , his pets must not be erased with Cascase.DELETE=false
     // pairs of keys in join table must be deleted
     public void testNoCascadeDeleteWithRelationHasMany() {
-        person.getHasManyRelationsShip().get("pets").setCascadeDelete(false);
+        person.getManyToManyRelationsShip().get("pets").setCascadeDelete(false);
         person.delete();
         assertTrue(new Pet().find(person.getPets().iterator().next().getId()));
-        person.getHasManyRelationsShip().get("pets").setCascadeDelete(true);
-        assertEquals(0, person.getHasManyRelationsShip().get("pets").getJointure().findAll().size());
+        person.getManyToManyRelationsShip().get("pets").setCascadeDelete(true);
+        assertEquals(0, person.getManyToManyRelationsShip().get("pets").getJointure().findAll().size());
     }
 
     // Test if a new person has a same pet , the pet must not be duplicated in the pets table, only a new pair of keys
@@ -200,7 +200,7 @@ public class HermesRelationalTest extends TestCase {
         assertEquals(3, (new Pet()).find("*", "id>0").size());
         person.find(person.getId());
         assertEquals(3, person.getPets().size());
-        assertEquals(3, person.getHasManyRelationsShip().get("pets").getJointure().findAll().size());
+        assertEquals(3, person.getManyToManyRelationsShip().get("pets").getJointure().findAll().size());
     }
 
     // Test if an occurence is deleted in the set , the occurence in table is not deleted , but the pair keys is deleted in the join table
@@ -209,7 +209,7 @@ public class HermesRelationalTest extends TestCase {
         person.getPets().remove(pet);
         assertEquals(1, person.getPets().size());
         person.save();
-        assertEquals(1, person.getHasManyRelationsShip().get("pets").getJointure().findAll().size());
+        assertEquals(1, person.getManyToManyRelationsShip().get("pets").getJointure().findAll().size());
         pet.delete();
     }
 }
