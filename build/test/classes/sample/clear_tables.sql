@@ -1,5 +1,2 @@
-use hermes;
-delete from adress;
-delete from person;
-delete from person_pet;
-delete from pet;
+﻿use hermes;
+delete from  adress,person,pet,person_pet where id >=0;

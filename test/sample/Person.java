@@ -15,7 +15,7 @@ public class Person extends Hermes {
 
     public Person() {
         hasOne("adresse",new Relation(Cascade.DELETE));
-        manyToMany("pets",new Relation(Cascade.DELETE));
+        manyToMany("pets");
     }
 
     public int getAge() {
