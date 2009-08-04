@@ -3,6 +3,7 @@ package adaptors;
 import configuration.Configuration;
 import configuration.Configuration.DBMSConfig;
 import core.Hermes;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public abstract class Adaptor {
     return null;
   }
 
-  // Abstract methods
+  // Abstract methods TODO : Change for independency with singular Adaptor
   public abstract int save(String tableName, HashMap<String, Object> attributes_values);
 
   public abstract boolean update(String tableName, HashMap<String, Object> attributes_values, int id);
@@ -38,9 +39,9 @@ public abstract class Adaptor {
 
   public abstract boolean delete(String tableName, String whereClause);
 
-  public abstract Hermes find(int id, Hermes object);
+  public abstract ResultSet find(int id, String table);
 
-  public abstract Set<Hermes> find(String select_clause, String where_clause, Hermes object);
+  public abstract ResultSet find(String select_clause, String where_clause, Hermes object);
 
   public abstract String javaToSql(String javaType);
 }

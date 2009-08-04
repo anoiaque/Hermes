@@ -116,57 +116,38 @@ public class MySqlAdaptor extends Adaptor {
     return deleted;
   }
 
-  public Hermes find(int id, Hermes object) {
+  public ResultSet find(int id, String table) {
     Connection connexion = null;
     Pool pool = Pool.getInstance();
-    String sql = "select * from " + object.getTableName() + " where id =" + id;
-    ResultSet rs = null;
-    boolean found = false;
+    String sql = "select * from " + table + " where id =" + id;
+
     try {
       connexion = pool.getConnexion();
-      rs = connexion.prepareStatement(sql).executeQuery();
-      if (found = rs.next()) {
-        for (String attribute : object.getFieldsType().keySet()) {
-          Field field = object.getClass().getDeclaredField(attribute);
-          field.setAccessible(true);
-          field.set(object, rs.getObject(field.getName()));
-        }
-        object.setId(id);
-      }
+      return connexion.prepareStatement(sql).executeQuery();
+
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       pool.release(connexion);
-      try {
-        rs.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
+
     }
-    return found ? object : null;
+    return null;
+
   }
 
-  public Set<Hermes> find(String select_clause, String where_clause, Hermes object) {
+  public ResultSet find(String select_clause, String where_clause, Hermes object) {
     Connection connexion = null;
     Pool pool = Pool.getInstance();
-    ResultSet rs = null;
     try {
       connexion = pool.getConnexion();
       PreparedStatement statement = connexion.prepareStatement(sqlSelect(select_clause, where_clause, object));
-      rs = statement.executeQuery();
-      return resultSetToObjects(rs, object);
+      return statement.executeQuery();
+
     } catch (Exception e) {
       e.printStackTrace();
       return null;
     } finally {
-      try {
-        if (rs != null) {
-          rs.close();
-        }
-        pool.release(connexion);
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
+      pool.release(connexion);
     }
   }
 
@@ -232,29 +213,7 @@ public class MySqlAdaptor extends Adaptor {
     return tablesNames;
   }
 
-  private static Set<Hermes> resultSetToObjects(ResultSet rs, Hermes object) {
-    Set<Hermes> result = new HashSet<Hermes>();
-    Class<?> classe = object.getClass();
-    try {
-      while (rs.next()) {
-        Hermes obj = (Hermes) classe.newInstance();
-        for (String attribute : obj.getFieldsType().keySet()) {
-          Field field = obj.getClass().getDeclaredField(attribute);
-          field.setAccessible(true);
-          field.set(obj, rs.getObject(field.getName()));
-        }
-        try {
-          obj.setId((Integer) rs.getObject("id"));
-        } catch (SQLException e) {
-          // pas d'id dans la table
-        }
-        result.add(obj);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return result;
-  }
+ 
 
   private static String sqlSelect(String select_clause, String where_clause, Hermes object) {
     HashMap<String, String> joinedTables = new HashMap<String, String>();

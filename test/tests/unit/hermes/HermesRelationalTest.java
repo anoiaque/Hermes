@@ -59,7 +59,7 @@ public class HermesRelationalTest extends TestCase {
   // Test on relation Has-One : retrieve data with find(where_clause) after saving it.
   public void testRetrieveDataByWhereClause() {
     person.setAdresse(new Adress(12, "rue des hibous"));
-    person = (Person) person.find("*", "age=30").iterator().next();
+    person = (Person) person.find("age=30").iterator().next();
     assertEquals(13, person.getAdresse().getNumero());
     assertEquals("rue Tabarly", person.getAdresse().getRue());
   }
@@ -68,7 +68,7 @@ public class HermesRelationalTest extends TestCase {
   // with has_one and Cascade.DELETE = true
   public void testCascadeDeleteWithRelationHasOne() {
     person.delete();
-    assertFalse(new Adress().find(person.getAdresse().getId()));
+    assertNull(new Adress().find(person.getAdresse().getId()));
   }
 
   // Test delete cascading , if person is deleted , his adress is not erased
@@ -76,7 +76,7 @@ public class HermesRelationalTest extends TestCase {
   public void testNoCascadeDeleteWithRelationHasOne() {
     person.getHasOneRelationsShip().get("adresse").setCascadeDelete(false);
     person.delete();
-    assertTrue(new Adress().find(person.getAdresse().getId()));
+    assertNotNull(new Adress().find(person.getAdresse().getId()));
     person.getHasOneRelationsShip().get("adresse").setCascadeDelete(true);
   }
 
@@ -112,7 +112,7 @@ public class HermesRelationalTest extends TestCase {
 
   // Test on retrieve data with finf(where_clause) after saving many_to_many relation
   public void testRetrieveDataByWhereClauseWithHasManyRelations() {
-    person = (Person) person.find("*", "age=30").iterator().next();
+    person = (Person) person.find("age=30").iterator().next();
     Iterator<Pet> iterator = person.getPets().iterator();
     Pet pet1 = iterator.next();
     Pet pet2 = iterator.next();
@@ -123,15 +123,15 @@ public class HermesRelationalTest extends TestCase {
   // Test on update in a many_to_many relation when the many_to_many field reference existed before (not null)
   // Must so not add or change a pair of key in the join_table , but just update the child table
   public void testUpdateHasManyWhenExistBefore() {
-    assertEquals(2, (new Pet().find("*", "id>0")).size());
+    assertEquals(2, (new Pet().find("id>0")).size());
     for (Pet pet : person.getPets()) {
       if (pet.getType().equals("Chien")) {
         pet.setName("Idefix");
       }
     }
     person.save();
-    assertEquals(2, (new Pet().find("*", "id>0")).size());
-    person = (Person) person.find("*", "age=30").iterator().next();
+    assertEquals(2, (new Pet().find("id>0")).size());
+    person = (Person) person.find("age=30").iterator().next();
     Iterator<Pet> iterator = person.getPets().iterator();
     Pet pet1 = iterator.next();
     Pet pet2 = iterator.next();
@@ -169,7 +169,7 @@ public class HermesRelationalTest extends TestCase {
   public void testCascadeDeleteWithRelationManyToMany() {
     person.getManyToManyRelationsShip().get("pets").setCascadeDelete(true);
     person.delete();
-    assertFalse(new Pet().find(person.getPets().iterator().next().getId()));
+    assertNull(new Pet().find(person.getPets().iterator().next().getId()));
   }
 
   // Test on delete cascading with many_to_many relations .
@@ -178,7 +178,7 @@ public class HermesRelationalTest extends TestCase {
   public void testNoCascadeDeleteWithRelationManyToMany() {
     person.getManyToManyRelationsShip().get("pets").setCascadeDelete(false);
     person.delete();
-    assertTrue(new Pet().find(person.getPets().iterator().next().getId()));
+    assertNotNull(new Pet().find(person.getPets().iterator().next().getId()));
     person.getManyToManyRelationsShip().get("pets").setCascadeDelete(true);
     assertEquals(0, person.getManyToManyRelationsShip().get("pets").getJointure().findAll().size());
   }

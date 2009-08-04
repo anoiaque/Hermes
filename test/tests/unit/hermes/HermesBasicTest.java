@@ -49,37 +49,10 @@ public class HermesBasicTest extends TestCase {
     assertEquals("varchar(" + Configuration.SqlConverterConfig.varcharLength + ")", fields.get("nom"));
   }
 
-  // Test retrieve data with find(id) after save
-  public void testRetrieveDataWithFind() {
-    person.setAge(0);
-    person.setNom("");
-    person.find(person.getId());
-    assertEquals(10, person.getAge());
-    assertEquals("toto", person.getNom());
-  }
-
-  // Test retrieve data with find(where_clause) after save
-  public void testRetrieveIdWithFindWhereClause() {
-    int id = person.getId();
-    person.setId(-1);
-    person = (Person) person.find("*", "age=10").iterator().next();
-    assertEquals(id, person.getId());
-  }
-
   // Test raw is deleted in database
   public void testDelete() {
     person.delete();
-    assertFalse(person.find(person.getId()));
-  }
-
-  // Test retrieve all occurences with find(where_clause)
-  public void testGetAllWithFindWherClause() {
-    Person person2 = new Person();
-    person2.setAge(10);
-    person2.setNom("titi");
-    person2.save();
-    assertEquals(2, person.find("*", "age=10").size());
-    person2.delete();
+    assertNull(person.find(person.getId()));
   }
 
   // Test update . Ensure no new record created but the one is updated

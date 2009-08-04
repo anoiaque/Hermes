@@ -49,28 +49,20 @@ public class Hermes {
     return deleted;
   }
 
-  public boolean find(int id) {
-    Hermes object = adaptor.find(id, this);
-    if (object == null) {
-      return false;
-    }
-    relations.getRelationalFields(object);
-    return true;
+  public Hermes find(int id) {
+    return Finder.find(id, this);
   }
 
   public Set<?> find(String where_clause) {
-    Set<Hermes> objects = adaptor.find("*", where_clause, this);
-    return (Set<Hermes>) loadRelationals(objects);
+    return Finder.find(where_clause, this);
   }
 
   public Set<?> find(String select_clause, String where_clause) {
-    Set<Hermes> objects = adaptor.find(select_clause, where_clause, this);
-    return (Set<Hermes>) loadRelationals(objects);
+    return Finder.find(select_clause, where_clause, this);
   }
 
   public Set<?> findAll() {
-    Set<Hermes> objects = adaptor.find("*", null, this);
-    return (Set<Hermes>) loadRelationals(objects);
+    return Finder.find("*", null, this);
   }
 
   public Set<?> findBySql(String sqlRequest) {
@@ -107,13 +99,6 @@ public class Hermes {
     return updated;
   }
 
-  private Set<Hermes> loadRelationals(Set<Hermes> objects) {
-    for (Hermes object : objects) {
-      relations.getRelationalFields(object);
-    }
-    return objects;
-  }
-
   private void setFieldsType() {
     fieldsType = new HashMap<String, String>();
     for (Field field : this.getClass().getDeclaredFields()) {
@@ -135,6 +120,13 @@ public class Hermes {
         }
       }
     }
+  }
+
+  private Set<Hermes> loadRelationals(Set<Hermes> objects) {
+    for (Hermes object : objects) {
+      relations.getRelationalFields(object);
+    }
+    return objects;
   }
 
   private void setFields() {
@@ -181,5 +173,9 @@ public class Hermes {
 
   public HashMap<String, String> getFieldsType() {
     return fieldsType;
+  }
+
+  public Relational getRelations() {
+    return relations;
   }
 }

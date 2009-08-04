@@ -3,7 +3,6 @@ package core;
 public class Relation {
 
     public class Cascade {
-
         public static final String DELETE = "delete";
     }
 
