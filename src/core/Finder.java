@@ -7,7 +7,7 @@ import java.util.Set;
 public class Finder {
 
   public static Hermes find(int id, Class<? extends Hermes> model) {
-    return Adaptor.get().find(id,model);
+    return Adaptor.get().find(id, model);
   }
 
   public static Set<?> find(String whereClause, Class<? extends Hermes> model) {
@@ -28,8 +28,8 @@ public class Finder {
     return null;
   }
 
-  // Finder for Jointure models. The reason for this finder is that instances of this model have not
-  // the same table name.
+  // Finder for Jointure models. 
+  // The reason for this finder is that instances of this model have not the same table name.
   public static Set<?> joinFind(int parentId, Jointure join) {
     try {
       return Record.toObjects(Adaptor.get().find("*", "parentId = " + parentId, join), Jointure.class);
@@ -38,6 +38,4 @@ public class Finder {
     }
     return null;
   }
-
- 
 }

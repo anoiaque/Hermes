@@ -12,7 +12,7 @@ public class Relation {
     private boolean lazy = false;
     private boolean nullable = true;
     private Jointure jointure;
-
+    
     public Relation() {
     }
 

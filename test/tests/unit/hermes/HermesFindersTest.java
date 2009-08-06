@@ -1,22 +1,19 @@
 package tests.unit.hermes;
 
 import factory.Factory;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import sample.Adress;
 import sample.Person;
-import sample.Pet;
 import helpers.Database;
 import helpers.TestHelper;
+import sample.Personne;
 
 public class HermesFindersTest extends TestCase {
 
   public static Person marc, jean;
 
-  @Override
+  
   public void setUp() {
     Database.clear();
     marc = (Person) Factory.get("marc");
@@ -71,5 +68,14 @@ public class HermesFindersTest extends TestCase {
     Person clone1 = (Person) marc.find(marc.getId());
     Person clone2 = (Person) Person.find(marc.getId(), Person.class);
     assertEquals(clone1.getId(), clone2.getId());
+  }
+
+  // Test find when table's name has been changed in the model
+  public void testFindWhenTableNameChanged(){
+    Personne p = new Personne();
+    p.setNom("Pierre");
+    p.save();
+    p = (Personne) Personne.find(p.getId(), Personne.class);
+    assertEquals("Pierre",p.getNom());
   }
 }

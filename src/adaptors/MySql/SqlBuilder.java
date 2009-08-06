@@ -13,13 +13,18 @@ import java.util.regex.Pattern;
 
 public class SqlBuilder {
 
-  public static String insert(String tableName, HashMap<String, Object> attributes_values) {
+  public static String insert(HashMap<String, Object> attributes_values, String tableName) {
     String fields = attributes_values.keySet().toString().replace("[", "").replace("]", "");
-    String values = attributes_values.values().toString().replace("[", "'").replace("]", "'").replace(", ", "','").replace("'null'", "null");
+    String values = epure(attributes_values.values().toString());
     return "insert into  " + tableName + "(" + fields + ")" + "values (" + values + ")";
   }
+  public static String insert(HashMap<String, Object> attributes_values, Class<? extends Hermes> model) {
+    String fields = attributes_values.keySet().toString().replace("[", "").replace("]", "");
+    String values = epure(attributes_values.values().toString());
+    return "insert into  " + Hermes.tableName(model) + "(" + fields + ")" + "values (" + values + ")";
+  }
 
-  public static String update(String tableName, HashMap<String, Object> attributes_values, int id) {
+  public static String update(HashMap<String, Object> attributes_values, int id, String tableName) {
     String setClause = "";
     Iterator<String> attrs = attributes_values.keySet().iterator();
     while (attrs.hasNext()) {
@@ -29,7 +34,7 @@ public class SqlBuilder {
         setClause += ",";
       }
     }
-    return "update " + tableName + " set " + setClause.replace("'null'", "null") + " where id=" + id;
+    return "update " + tableName + " set " + setClause.replace("'null'", "null") + " where id =" + id;
   }
 
   public static String select(String select_clause, String where_clause, Hermes object) {
@@ -95,5 +100,9 @@ public class SqlBuilder {
       }
     }
     return tablesNames;
+  }
+
+  private static String epure(String fields) {
+    return fields.replace("[", "'").replace("]", "'").replace(", ", "','").replace("'null'", "null");
   }
 }

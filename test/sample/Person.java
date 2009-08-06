@@ -12,7 +12,7 @@ public class Person extends Hermes {
     private String   nom;
     private Adress   adresse;
     private Set<Pet> pets;
-
+   
     public Person() {
         hasOne("adresse",new Relation(Cascade.DELETE));
         manyToMany("pets");

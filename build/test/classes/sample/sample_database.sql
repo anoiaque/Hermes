@@ -16,3 +16,7 @@ id int primary key auto_increment,
 type varchar(20),
 name varchar(20)
 );
+create table  PERSONNEL(
+id int primary key auto_increment,
+nom varchar(250)
+);

@@ -31,7 +31,9 @@ public abstract class Adaptor {
   }
 
   // Abstract methods TODO : Change for independency with singular Adaptor
-  public abstract int save(String tableName, HashMap<String, Object> attributes_values);
+  public abstract int save(HashMap<String, Object> attributes_values, String tableName);
+
+  public abstract int save(HashMap<String, Object> attributes_values, Class<? extends Hermes> model);
 
   public abstract boolean update(String tableName, HashMap<String, Object> attributes_values, int id);
 

@@ -11,7 +11,7 @@ public class Hermes {
   private int id = 0;
   private HashMap<String, String> fieldsType = null;
   private HashMap<String, Object> fieldsValue = null;
-  private Relational relations = new Relational(this);
+private Relational relations = new Relational(this);
   private Adaptor adaptor = Adaptor.get();
 
   // Constructeurs
@@ -27,7 +27,7 @@ public class Hermes {
       relations.saveHasOneRelations();
       HashMap<String, Object> attributes_values = ((HashMap<String, Object>) fieldsValue.clone());
       attributes_values.putAll(relations.foreignKeys());
-      this.id = adaptor.save(this.tableName, attributes_values);
+      this.id = Updater.save(attributes_values, this.getClass());
       relations.saveManyToManyRelations();
       return this.id != -1;
     } else {
@@ -106,6 +106,7 @@ public class Hermes {
 
   public static String tableName(Class<? extends Hermes> model) {
     try {
+     
       return (String) model.getMethod("getTableName").invoke(model.newInstance());
     } catch (Exception e) {
       e.printStackTrace();
@@ -133,7 +134,7 @@ public class Hermes {
     }
   }
 
-  private void setFieldsValue() {
+  protected void setFieldsValue() {
     fieldsValue = new HashMap<String, Object>();
     for (Field field : this.getClass().getDeclaredFields()) {
       if (isBasicField(field.getName())) {
@@ -155,6 +156,9 @@ public class Hermes {
   private boolean isBasicField(String attributeName) {
     return !(relations.getHasOneRelationsShip().containsKey(attributeName) || relations.getManyToManyRelationsShip().containsKey(attributeName));
   }
+   protected HashMap<String, Object> getFieldsValue() {
+    return fieldsValue;
+  }
 
   // Getters & Setters
   public HashMap<String, Relation> getManyToManyRelationsShip() {
@@ -170,7 +174,7 @@ public class Hermes {
   }
 
   public String getTableName() {
-    return tableName;
+    return this.tableName;
   }
 
   public int getId() {
@@ -196,4 +200,5 @@ public class Hermes {
   public Relational getRelations() {
     return relations;
   }
+ 
 }

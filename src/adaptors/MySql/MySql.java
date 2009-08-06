@@ -1,18 +1,11 @@
 package adaptors.MySql;
 
 import adaptors.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import pool.Pool;
 
@@ -20,22 +13,48 @@ import com.mysql.jdbc.Statement;
 
 import configuration.Configuration;
 import core.Hermes;
-import core.Pluralizer;
 
 public class MySql extends Adaptor {
 
   private static HashMap<String, String> typesMapping = null;
 
-  public int save(String tableName, HashMap<String, Object> attributes_values) {
+  //used for save jointures
+  public int save(HashMap<String, Object> attributes_values, String tableName) {
     Connection connexion = null;
     Integer id = 0;
     Pool pool = Pool.getInstance();
     ResultSet rs = null;
     try {
       connexion = pool.getConnexion();
-
-
-      PreparedStatement statement = connexion.prepareStatement(SqlBuilder.insert(tableName, attributes_values), Statement.RETURN_GENERATED_KEYS);
+      PreparedStatement statement = connexion.prepareStatement(SqlBuilder.insert(attributes_values,tableName), Statement.RETURN_GENERATED_KEYS);
+      statement.execute();
+      rs = statement.getGeneratedKeys();
+      if (rs.next()) {
+        id = rs.getInt(1);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return -1;
+    } finally {
+      pool.release(connexion);
+      try {
+        if (rs != null) {
+          rs.close();
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return id;
+  }
+  public int save(HashMap<String, Object> attributes_values, Class<? extends Hermes> model) {
+    Connection connexion = null;
+    Integer id = 0;
+    Pool pool = Pool.getInstance();
+    ResultSet rs = null;
+    try {
+      connexion = pool.getConnexion();
+      PreparedStatement statement = connexion.prepareStatement(SqlBuilder.insert(attributes_values, model), Statement.RETURN_GENERATED_KEYS);
       statement.execute();
       rs = statement.getGeneratedKeys();
       if (rs.next()) {
@@ -63,7 +82,7 @@ public class MySql extends Adaptor {
     ResultSet rs = null;
     try {
       connexion = pool.getConnexion();
-      PreparedStatement statement = connexion.prepareStatement(SqlBuilder.update(tableName, attributes_values, id));
+      PreparedStatement statement = connexion.prepareStatement(SqlBuilder.update(attributes_values, id, tableName));
       statement.execute();
     } catch (SQLException e) {
       e.printStackTrace();
