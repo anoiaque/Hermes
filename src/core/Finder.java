@@ -1,18 +1,18 @@
 package core;
 
 import adaptors.Adaptor;
-import gather.Row;
+import adaptors.MySql.Record;
 import java.util.Set;
 
 public class Finder {
 
   public static Hermes find(int id, Class<? extends Hermes> model) {
-    return Row.toObject(Adaptor.get().find(id, Hermes.tableName(model)), model);
+    return Adaptor.get().find(id,model);
   }
 
   public static Set<?> find(String whereClause, Class<? extends Hermes> model) {
     try {
-      return Row.resultSetToObjects(Adaptor.get().find("*", whereClause, model.newInstance()), model);
+      return Record.toObjects(Adaptor.get().find("*", whereClause, model.newInstance()), model);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -21,7 +21,7 @@ public class Finder {
 
   public static Set<?> find(String selectClause, String whereClause, Class<? extends Hermes> model) {
     try {
-      return Row.resultSetToObjects(Adaptor.get().find(selectClause, whereClause, model.newInstance()), model);
+      return Record.toObjects(Adaptor.get().find(selectClause, whereClause, model.newInstance()), model);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -32,7 +32,7 @@ public class Finder {
   // the same table name.
   public static Set<?> joinFind(int parentId, Jointure join) {
     try {
-      return Row.resultSetToObjects(Adaptor.get().find("*", "parentId = " + parentId, join), Jointure.class);
+      return Record.toObjects(Adaptor.get().find("*", "parentId = " + parentId, join), Jointure.class);
     } catch (Exception e) {
       e.printStackTrace();
     }

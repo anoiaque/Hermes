@@ -8,8 +8,8 @@ import sample.Person;
 import configuration.Configuration;
 import core.Hermes;
 import core.Pluralizer;
-import fixturesfactory.Factory;
-import testhelpers.Database;
+import factory.Factory;
+import helpers.Database;
 
 public class HermesBasicTest extends TestCase {
 

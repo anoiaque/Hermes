@@ -1,6 +1,6 @@
 package tests.unit.hermes;
 
-import fixturesfactory.Factory;
+import factory.Factory;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -9,8 +9,8 @@ import junit.framework.TestCase;
 import sample.Adress;
 import sample.Person;
 import sample.Pet;
-import testhelpers.Database;
-import testhelpers.TestHelper;
+import helpers.Database;
+import helpers.TestHelper;
 
 public class HermesFindersTest extends TestCase {
 

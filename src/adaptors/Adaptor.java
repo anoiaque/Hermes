@@ -1,11 +1,11 @@
 package adaptors;
 
+import adaptors.MySql.MySql;
 import configuration.Configuration;
 import configuration.Configuration.DBMSConfig;
 import core.Hermes;
 import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.Set;
 
 public abstract class Adaptor {
 
@@ -24,7 +24,7 @@ public abstract class Adaptor {
   // Private Methods
   private static Adaptor adaptor(String DBMSName) {
     if (DBMSName.equalsIgnoreCase("MySql")) {
-      return new MySqlAdaptor();
+      return new MySql();
     }
 
     return null;
@@ -39,7 +39,7 @@ public abstract class Adaptor {
 
   public abstract boolean delete(String tableName, String whereClause);
 
-  public abstract ResultSet find(int id, String table);
+  public abstract Hermes find(int id, Class<? extends Hermes> model);
 
   public abstract ResultSet find(String select_clause, String where_clause, Hermes object);
 

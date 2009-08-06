@@ -1,4 +1,4 @@
-package fixturesfactory;
+package factory;
 
 import core.Hermes;
 import java.util.HashSet;

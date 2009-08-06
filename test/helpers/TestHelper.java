@@ -1,9 +1,9 @@
-package testhelpers;
+package helpers;
 
 import core.Finder;
 import core.Hermes;
 import core.Jointure;
-import fixturesfactory.Factory;
+import factory.Factory;
 import java.util.Iterator;
 import java.util.Set;
 import junit.framework.TestCase;

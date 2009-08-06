@@ -1,4 +1,4 @@
-package gather;
+package adaptors.MySql;
 
 import core.Hermes;
 import java.lang.reflect.Field;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Row {
+public class Record {
 
   // Transform a resultset into an Hermes object with its relationnal datas
   public static Hermes toObject(ResultSet rs, Class<? extends Hermes> model) {
@@ -20,13 +20,11 @@ public class Row {
         Field field = object.getClass().getDeclaredField(attribute);
         field.setAccessible(true);
         field.set(object, rs.getObject(field.getName()));
-
         try {
           object.setId((Integer) rs.getObject("id"));
         } catch (SQLException e) {
           // pas d'id dans la table
         }
-
       }
       object.getRelations().loadRelationalFields(object, rs);
       return object;
@@ -37,14 +35,14 @@ public class Row {
     }
   }
 
-  public static Set<Hermes> resultSetToObjects(ResultSet rs, Class<? extends Hermes> model) {
+  public static Set<Hermes> toObjects(ResultSet rs, Class<? extends Hermes> model) {
     Set<Hermes> result = new HashSet<Hermes>();
     Hermes obj;
     try {
       do {
         obj = toObject(rs, model);
-        if (obj!=null) result.add(obj);
-      } while (obj!=null);
+        if (obj != null) result.add(obj);
+      } while (obj != null);
     } catch (Exception e) {
       e.printStackTrace();
     }
