@@ -34,6 +34,8 @@ public class MySqlAdaptor extends Adaptor {
     ResultSet rs = null;
     try {
       connexion = pool.getConnexion();
+          
+
       PreparedStatement statement = connexion.prepareStatement(sqlInsert(tableName, attributes_values), Statement.RETURN_GENERATED_KEYS);
       statement.execute();
       rs = statement.getGeneratedKeys();
@@ -62,6 +64,8 @@ public class MySqlAdaptor extends Adaptor {
     ResultSet rs = null;
     try {
       connexion = pool.getConnexion();
+        
+
       PreparedStatement statement = connexion.prepareStatement(sqlUpdate(tableName, attributes_values, id));
       statement.execute();
     } catch (SQLException e) {
@@ -85,6 +89,8 @@ public class MySqlAdaptor extends Adaptor {
     Pool pool = Pool.getInstance();
     boolean deleted = false;
     String sql = "delete from " + tableName + " where id =" + id;
+      
+
     try {
       connexion = pool.getConnexion();
       PreparedStatement statement = connexion.prepareStatement(sql);
@@ -103,6 +109,8 @@ public class MySqlAdaptor extends Adaptor {
     Pool pool = Pool.getInstance();
     boolean deleted = false;
     String sql = "delete from " + tableName + " where " + whereClause;
+      
+
     try {
       connexion = pool.getConnexion();
       PreparedStatement statement = connexion.prepareStatement(sql);
@@ -120,10 +128,11 @@ public class MySqlAdaptor extends Adaptor {
     Connection connexion = null;
     Pool pool = Pool.getInstance();
     String sql = "select * from " + table + " where id =" + id;
-
+    
     try {
       connexion = pool.getConnexion();
-      return connexion.prepareStatement(sql).executeQuery();
+      ResultSet rs = connexion.prepareStatement(sql).executeQuery();
+      return rs;
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -134,13 +143,12 @@ public class MySqlAdaptor extends Adaptor {
     return null;
 
   }
-
-  public ResultSet find(String select_clause, String where_clause, Hermes object) {
+ public ResultSet find(String select_clause, String where_clause, Hermes model) {
     Connection connexion = null;
     Pool pool = Pool.getInstance();
     try {
       connexion = pool.getConnexion();
-      PreparedStatement statement = connexion.prepareStatement(sqlSelect(select_clause, where_clause, object));
+      PreparedStatement statement = connexion.prepareStatement(sqlSelect(select_clause, where_clause, model));
       return statement.executeQuery();
 
     } catch (Exception e) {

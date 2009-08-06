@@ -10,6 +10,7 @@ import pool.Pool;
 
 public class Jointure extends Hermes {
 
+  
     private int parentId;
     private int childId;
 
@@ -23,7 +24,7 @@ public class Jointure extends Hermes {
     }
 
     // Public methods
-    private static String createJoinTableName(Hermes object, String attribute) {
+    private String createJoinTableName(Hermes object, String attribute) {
         ParameterizedType setField;
         String parentName = object.getTableName().toUpperCase();
         String childName = "";

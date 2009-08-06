@@ -1,86 +1,75 @@
 package tests.unit.hermes;
 
+import fixturesfactory.Factory;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import junit.framework.TestCase;
 import sample.Adress;
 import sample.Person;
 import sample.Pet;
-import util.Database;
+import testhelpers.Database;
+import testhelpers.TestHelper;
 
 public class HermesFindersTest extends TestCase {
 
-  public static Person person = new Person();
-  public static Person person1;
-  public static Person person2;
+  public static Person marc, jean;
 
   @Override
   public void setUp() {
     Database.clear();
-    setPerson1();
-    setPerson2();
+    marc = (Person) Factory.get("marc");
+    jean = (Person) Factory.get("jean");
   }
 
-  @Override
-  public void tearDown() {
-    person1.delete();
-    person2.delete();
+  // Test Find by id
+  public void testFindById() {
+    marc.setAge(0);
+    marc.setNom("");
+    marc = (Person) Person.find(marc.getId(), Person.class);
+    assertEquals(30, marc.getAge());
+    assertEquals("Marc", marc.getNom());
   }
 
-  // Test find object(s) with conditions on attributes wich are has_one relation
-  public void testFindWithConditionsOnHasOneRelation() {
-    Set<Person> people = (Set<Person>) person.find("adresse.numero=13");
+  // Test Find with conditions
+  public void testFindWithConditions() {
+    int id = marc.getId();
+    marc.setId(-1);
+    marc = (Person) Person.find("age = 30", Person.class).iterator().next();
+    assertEquals(id, marc.getId());
+  }
+
+  // Test find object(s) with conditions on child's attributes
+  // For child of has_one relationship
+  public void testFindWithConditionsOnChildAttributes() {
+    Set<Person> people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
+    assertEquals(1, people.size());
+    jean.getAdresse().setNumero(13);
+    jean.save();
+    people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
+    assertEquals(2, people.size());
+    people = (Set<Person>) Person.find("adresse.rue = 'rue Kervegan'", Person.class);
     assertEquals(1, people.size());
   }
-  // Test retrieve data with find(id) after save
 
-  public void testRetrieveDataWithFindById() {
-    person1.setAge(0);
-    person1.setNom("");
-    person1 = (Person) person1.find(person1.getId());
-    assertEquals(30, person1.getAge());
-    assertEquals("Marc", person1.getNom());
-  }
-  // Test retrieve data with find(where_clause) after save
+  // Test find with many to many relations
+  public void testFindWithManyToManyRelation() {
+    Person newMarc = (Person) Person.find(marc.getId(), Person.class);
+    (new TestHelper()).assertMarcRetrieveHisPets(newMarc);
 
-  public void testRetrieveIdWithFindWhereClause() {
-    int id = person1.getId();
-    person1.setId(-1);
-    person1 = (Person) person.find("*", "age=30").iterator().next();
-    assertEquals(id, person1.getId());
-  }
-  // Test retrieve all occurences with find(where_clause)
-
-  public void testGetAllWithFindWhereClause() {
-    person2.setAge(30);
-    person2.save();
-    assertEquals(2, person.find("*", "age=30").size());
   }
 
-  // Private methods
-  private void setPerson1() {
-    person1 = new Person();
-    person1.setAge(30);
-    person1.setNom("Marc");
-    person1.setAdresse(new Adress(13, "rue Tabarly"));
-    Set<Pet> pets = new HashSet<Pet>();
-    pets.add(new Pet("Chien", "Medor"));
-    pets.add(new Pet("Chat", "Felix"));
-    person1.setPets(pets);
-    person1.save();
+  // Test find with conditions with many to many relations
+  public void testFindWithConditionsOnManyToManyRelation() {
+    Person newMarc = (Person) Person.find("age = 30", Person.class).iterator().next();
+    (new TestHelper()).assertMarcRetrieveHisPets(newMarc);
   }
 
-  private void setPerson2() {
-    person2 = new Person();
-    person2.setAge(25);
-    person2.setNom("Jean");
-    person2.setAdresse(new Adress(28, "rue Kervegan"));
-    Set<Pet> pets = new HashSet<Pet>();
-    pets.add(new Pet("Chien", "Toutou"));
-    pets.add(new Pet("Chat", "Miel"));
-    pets.add(new Pet("Hamster", "Leon"));
-    person2.setPets(pets);
-    person2.save();
+  // Test find with static method (for external use) and on an instance(used in the model class)
+  public void testStaticAndOnInstanceFindersSameResult() {
+    Person clone1 = (Person) marc.find(marc.getId());
+    Person clone2 = (Person) Person.find(marc.getId(), Person.class);
+    assertEquals(clone1.getId(), clone2.getId());
   }
 }

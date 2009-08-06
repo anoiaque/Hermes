@@ -2,6 +2,7 @@ package core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -98,9 +99,9 @@ public class Relational {
     deleteManyToManyRelations();
   }
 
-  public void getRelationalFields(Hermes object) {
-    getHasOneRelationFields(object);
-    getManyToManyRelationFields(object);
+  public void loadRelationalFields(Hermes object, ResultSet rs) {
+    loadHasOneRelationFields(object, rs);
+    loadManyToManyRelationFields(object);
   }
 
   public HashMap<String, Object> foreignKeys() {
@@ -143,18 +144,19 @@ public class Relational {
     jointure.delete("parentId=" + object.getId());
   }
 
-  private void getManyToManyRelationFields(Hermes object) {
+  private void loadManyToManyRelationFields(Hermes object) {
     for (String attr : manyToManyRelationsShip.keySet()) {
       try {
         Set<Hermes> objects = new HashSet<Hermes>();
         Field field = object.getClass().getDeclaredField(attr);
         Jointure jointure = manyToManyRelationsShip.get(attr).getJointure();
-        Set<Jointure> jointures = (Set<Jointure>) jointure.find("*", "parentId = " + object.getId());
+        Set<Jointure> jointures = (Set<Jointure>) Finder.joinFind(object.getId(),jointure);
         ParameterizedType type = (ParameterizedType) object.getClass().getDeclaredField(attr).getGenericType();
         Class<?> classe = (Class<?>) type.getActualTypeArguments()[0];
+        jointures.remove(null);
         for (Jointure join : jointures) {
           Hermes obj = (Hermes) classe.newInstance();
-          obj.find(((Jointure) join).getChildId());
+          obj = Finder.find(join.getChildId(), obj.getClass());
           objects.add(obj);
         }
         field.setAccessible(true);
@@ -165,12 +167,13 @@ public class Relational {
     }
   }
 
-  private void getHasOneRelationFields(Hermes object) {
-    for (String attr : hasOneRelationsShip.keySet()) {
+  private void loadHasOneRelationFields(Hermes object, ResultSet rs) {
+   for (String attr : hasOneRelationsShip.keySet()) {
       try {
+        object.getRelations().getHasOneRelationsShip().get(attr).setForeignKeyValue(rs.getInt(attr + "_id"));
         Field field = object.getClass().getDeclaredField(attr);
         Hermes obj = (Hermes) field.getType().newInstance();
-        obj.find(hasOneRelationsShip.get(attr).getForeignKeyValue());
+        obj = Finder.find(hasOneRelationsShip.get(attr).getForeignKeyValue(), obj.getClass());
         field.setAccessible(true);
         field.set(object, obj);
       } catch (Exception e) {

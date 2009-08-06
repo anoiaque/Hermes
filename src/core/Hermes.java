@@ -49,20 +49,36 @@ public class Hermes {
     return deleted;
   }
 
+  public static Hermes find(int id, Class<? extends Hermes> model) {
+    return Finder.find(id, model);
+  }
+
   public Hermes find(int id) {
-    return Finder.find(id, this);
+    return Finder.find(id, this.getClass());
   }
 
-  public Set<?> find(String where_clause) {
-    return Finder.find(where_clause, this);
+  public static Set<?> find(String conditions, Class<? extends Hermes> model) {
+    return Finder.find(conditions, model);
   }
 
-  public Set<?> find(String select_clause, String where_clause) {
-    return Finder.find(select_clause, where_clause, this);
+  public Set<?> find(String conditions) {
+    return Finder.find(conditions, this.getClass());
+  }
+
+  public static Set<?> find(String select, String conditions, Class<? extends Hermes> model) {
+    return Finder.find(select, conditions, model);
+  }
+
+  public Set<?> find(String select, String conditions) {
+    return Finder.find(select, conditions, this.getClass());
+  }
+
+  public static Set<?> findAll(Class<? extends Hermes> model) {
+    return Finder.find("*", null, model);
   }
 
   public Set<?> findAll() {
-    return Finder.find("*", null, this);
+    return Finder.find("*", null, this.getClass());
   }
 
   public Set<?> findBySql(String sqlRequest) {
@@ -88,7 +104,16 @@ public class Hermes {
     setFields();
   }
 
+  public static String tableName(Class<? extends Hermes> model) {
+    try {
+      return (String) model.getMethod("getTableName").invoke(model.newInstance());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
   // Private methods
+
   private boolean update() {
     setFieldsValue();
     relations.updateHasOneRelations();
@@ -120,13 +145,6 @@ public class Hermes {
         }
       }
     }
-  }
-
-  private Set<Hermes> loadRelationals(Set<Hermes> objects) {
-    for (Hermes object : objects) {
-      relations.getRelationalFields(object);
-    }
-    return objects;
   }
 
   private void setFields() {

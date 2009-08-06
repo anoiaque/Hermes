@@ -2,35 +2,42 @@ package core;
 
 import adaptors.Adaptor;
 import gather.Row;
-import java.lang.reflect.Field;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.Set;
 
 public class Finder {
 
-  public static Hermes find(int id, Hermes object) {
-    return Row.toObject(Adaptor.get().find(id, object.getTableName()), object);
+  public static Hermes find(int id, Class<? extends Hermes> model) {
+    return Row.toObject(Adaptor.get().find(id, Hermes.tableName(model)), model);
   }
 
-  public static Set<?> find(String whereClause, Hermes object) {
-    Set<Hermes> objects = Row.resultSetToObjects(Adaptor.get().find("*", whereClause, object), object);
-    return (Set<Hermes>) loadRelationals(objects, object);
-
-  }
-
-  public static Set<?> find(String selectClause, String whereClause, Hermes object) {
-    Set<Hermes> objects = Row.resultSetToObjects(Adaptor.get().find(selectClause, whereClause, object), object);
-    return (Set<Hermes>) loadRelationals(objects, object);
-  }
-
-  
-
-  private static Set<Hermes> loadRelationals(Set<Hermes> objects, Hermes obj) {
-    for (Hermes object : objects) {
-      obj.getRelations().getRelationalFields(object);
+  public static Set<?> find(String whereClause, Class<? extends Hermes> model) {
+    try {
+      return Row.resultSetToObjects(Adaptor.get().find("*", whereClause, model.newInstance()), model);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    return objects;
+    return null;
   }
+
+  public static Set<?> find(String selectClause, String whereClause, Class<? extends Hermes> model) {
+    try {
+      return Row.resultSetToObjects(Adaptor.get().find(selectClause, whereClause, model.newInstance()), model);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  // Finder for Jointure models. The reason for this finder is that instances of this model have not
+  // the same table name.
+  public static Set<?> joinFind(int parentId, Jointure join) {
+    try {
+      return Row.resultSetToObjects(Adaptor.get().find("*", "parentId = " + parentId, join), Jointure.class);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+ 
 }

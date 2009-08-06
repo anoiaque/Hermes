@@ -1,4 +1,4 @@
-package util;
+package testhelpers;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,13 +14,11 @@ public class Database {
 
     try {
       connexion = pool.getConnexion();
-
       for (String tableName : tables) {
         sql = "delete from " + tableName;
         PreparedStatement statement = connexion.prepareStatement(sql);
         statement.execute();
       }
-
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
