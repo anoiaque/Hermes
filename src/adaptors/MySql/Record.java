@@ -28,7 +28,6 @@ public class Record {
       }
       object.getRelations().loadRelationalFields(object, rs);
       return object;
-      // rs.close();
     } catch (Exception e) {
       e.printStackTrace();
       return null;

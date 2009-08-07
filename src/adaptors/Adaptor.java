@@ -21,19 +21,14 @@ public abstract class Adaptor {
     return adaptor;
   }
 
-  // Private Methods
   private static Adaptor adaptor(String DBMSName) {
     if (DBMSName.equalsIgnoreCase("MySql")) {
       return new MySql();
     }
-
     return null;
   }
 
-  // Abstract methods TODO : Change for independency with singular Adaptor
-  public abstract int save(HashMap<String, Object> attributes_values, String tableName);
-
-  public abstract int save(HashMap<String, Object> attributes_values, Class<? extends Hermes> model);
+  public abstract int save(HashMap<String, Object> attributes_values, Object model);
 
   public abstract boolean update(String tableName, HashMap<String, Object> attributes_values, int id);
 

@@ -18,62 +18,32 @@ public class MySql extends Adaptor {
 
   private static HashMap<String, String> typesMapping = null;
 
-  //used for save jointures
-  public int save(HashMap<String, Object> attributes_values, String tableName) {
+  public int save(HashMap<String, Object> attributes_values, Object model) {
     Connection connexion = null;
     Integer id = 0;
     Pool pool = Pool.getInstance();
     ResultSet rs = null;
+    PreparedStatement statement;
+    String sql = getSqlInsert(attributes_values, model);
     try {
       connexion = pool.getConnexion();
-      PreparedStatement statement = connexion.prepareStatement(SqlBuilder.insert(attributes_values,tableName), Statement.RETURN_GENERATED_KEYS);
+      statement = connexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       statement.execute();
       rs = statement.getGeneratedKeys();
-      if (rs.next()) {
-        id = rs.getInt(1);
-      }
+      if (rs.next()) id = rs.getInt(1);
     } catch (SQLException e) {
       e.printStackTrace();
       return -1;
     } finally {
       pool.release(connexion);
       try {
-        if (rs != null) {
-          rs.close();
-        }
+        if (rs != null) rs.close();
       } catch (SQLException e) {
         e.printStackTrace();
       }
+      return id;
     }
-    return id;
-  }
-  public int save(HashMap<String, Object> attributes_values, Class<? extends Hermes> model) {
-    Connection connexion = null;
-    Integer id = 0;
-    Pool pool = Pool.getInstance();
-    ResultSet rs = null;
-    try {
-      connexion = pool.getConnexion();
-      PreparedStatement statement = connexion.prepareStatement(SqlBuilder.insert(attributes_values, model), Statement.RETURN_GENERATED_KEYS);
-      statement.execute();
-      rs = statement.getGeneratedKeys();
-      if (rs.next()) {
-        id = rs.getInt(1);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return -1;
-    } finally {
-      pool.release(connexion);
-      try {
-        if (rs != null) {
-          rs.close();
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-    return id;
+
   }
 
   public boolean update(String tableName, HashMap<String, Object> attributes_values, int id) {
@@ -105,8 +75,6 @@ public class MySql extends Adaptor {
     Pool pool = Pool.getInstance();
     boolean deleted = false;
     String sql = "delete from " + tableName + " where id =" + id;
-
-
     try {
       connexion = pool.getConnexion();
       PreparedStatement statement = connexion.prepareStatement(sql);
@@ -143,21 +111,23 @@ public class MySql extends Adaptor {
   public Hermes find(int id, Class<? extends Hermes> model) {
     Connection connexion = null;
     Pool pool = Pool.getInstance();
-
+    ResultSet rs = null;
     try {
       String sql = SqlBuilder.select("*", "id = " + id, model.newInstance());
       connexion = pool.getConnexion();
-      ResultSet rs = connexion.prepareStatement(sql).executeQuery();
+      rs = connexion.prepareStatement(sql).executeQuery();
       return Record.toObject(rs, model);
-
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       pool.release(connexion);
-
+      if (rs != null) try {
+          rs.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
     }
     return null;
-
   }
 
   public ResultSet find(String select_clause, String where_clause, Hermes model) {
@@ -189,5 +159,13 @@ public class MySql extends Adaptor {
     typesMapping.put("int", "int");
     typesMapping.put("Integer", "int");
     typesMapping.put("String", "varchar(" + Configuration.SqlConverterConfig.varcharLength + ")");
+  }
+
+  private String getSqlInsert(HashMap<String, Object> attributes_values, Object model) {
+    if (model.getClass().equals(String.class))
+      return SqlBuilder.insert(attributes_values, (String) model);
+    else if (model.getClass().equals(Class.class))
+      return SqlBuilder.insert(attributes_values, (Class<? extends Hermes>) model);
+    else return "";
   }
 }

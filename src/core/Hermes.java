@@ -1,7 +1,5 @@
 package core;
 
-import adaptors.Adaptor;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -11,42 +9,25 @@ public class Hermes {
   private int id = 0;
   private HashMap<String, String> fieldsType = null;
   private HashMap<String, Object> fieldsValue = null;
-private Relational relations = new Relational(this);
-  private Adaptor adaptor = Adaptor.get();
+  private Relational relations = new Relational(this);
 
   // Constructeurs
   public Hermes() {
     setTableName(Pluralizer.getPlurial(this.getClass().getSimpleName()));
-    setFields();
+    Fields.setFields(this);
   }
 
   // Public methods
   public boolean save() {
-    if (this.id == 0) {
-      setFieldsValue();
-      relations.saveHasOneRelations();
-      HashMap<String, Object> attributes_values = ((HashMap<String, Object>) fieldsValue.clone());
-      attributes_values.putAll(relations.foreignKeys());
-      this.id = Updater.save(attributes_values, this.getClass());
-      relations.saveManyToManyRelations();
-      return this.id != -1;
-    } else {
-      return update();
-    }
+    return Updater.save(this);
   }
 
   public boolean delete() {
-    relations.cascadeDelete();
-    boolean deleted = adaptor.delete(this.tableName, this.id);
-    this.id = 0;
-    return deleted;
+    return Updater.delete(this);
   }
 
-  public boolean delete(String whereClause) {
-    relations.cascadeDelete();
-    boolean deleted = adaptor.delete(this.tableName, whereClause);
-    this.id = 0;
-    return deleted;
+  public boolean delete(String conditions) {
+    return Updater.delete(conditions, this);
   }
 
   public static Hermes find(int id, Class<? extends Hermes> model) {
@@ -87,7 +68,7 @@ private Relational relations = new Relational(this);
 
   public void hasOne(String attribute, Relation rc) {
     relations.hasOne(attribute, rc);
-    setFields();
+    Fields.setFields(this);
   }
 
   public void hasOne(String attribute) {
@@ -96,71 +77,14 @@ private Relational relations = new Relational(this);
 
   public void manyToMany(String attribute, Relation rc) {
     relations.manyToMany(attribute, rc);
-    setFields();
+    Fields.setFields(this);
   }
 
   public void manyToMany(String attribute) {
-    relations.manyToMany(attribute);
-    setFields();
+    manyToMany(attribute, new Relation());
   }
 
-  public static String tableName(Class<? extends Hermes> model) {
-    try {
-     
-      return (String) model.getMethod("getTableName").invoke(model.newInstance());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-  // Private methods
-
-  private boolean update() {
-    setFieldsValue();
-    relations.updateHasOneRelations();
-    HashMap<String, Object> attributes_values = (HashMap<String, Object>) fieldsValue.clone();
-    attributes_values.putAll(relations.foreignKeys());
-    boolean updated = adaptor.update(this.tableName, attributes_values, this.id);
-    relations.updateManyToManyRelations();
-    return updated;
-  }
-
-  private void setFieldsType() {
-    fieldsType = new HashMap<String, String>();
-    for (Field field : this.getClass().getDeclaredFields()) {
-      if (isBasicField(field.getName())) {
-        fieldsType.put(field.getName(), adaptor.javaToSql(field.getType().getSimpleName()));
-      }
-    }
-  }
-
-  protected void setFieldsValue() {
-    fieldsValue = new HashMap<String, Object>();
-    for (Field field : this.getClass().getDeclaredFields()) {
-      if (isBasicField(field.getName())) {
-        field.setAccessible(true);
-        try {
-          fieldsValue.put(field.getName(), field.get(this));
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    }
-  }
-
-  private void setFields() {
-    setFieldsType();
-    setFieldsValue();
-  }
-
-  private boolean isBasicField(String attributeName) {
-    return !(relations.getHasOneRelationsShip().containsKey(attributeName) || relations.getManyToManyRelationsShip().containsKey(attributeName));
-  }
-   protected HashMap<String, Object> getFieldsValue() {
-    return fieldsValue;
-  }
-
-  // Getters & Setters
+// Getters & Setters
   public HashMap<String, Relation> getManyToManyRelationsShip() {
     return relations.getManyToManyRelationsShip();
   }
@@ -189,10 +113,6 @@ private Relational relations = new Relational(this);
     return relations.getHasOneRelationsShip();
   }
 
-  public void setFieldsType(HashMap<String, String> fieldsType) {
-    this.fieldsType = fieldsType;
-  }
-
   public HashMap<String, String> getFieldsType() {
     return fieldsType;
   }
@@ -200,5 +120,20 @@ private Relational relations = new Relational(this);
   public Relational getRelations() {
     return relations;
   }
- 
+
+  public HashMap<String, Object> getFieldsValue() {
+    return fieldsValue;
+  }
+
+  public void setFieldsType(HashMap<String, String> fieldsType) {
+    this.fieldsType = fieldsType;
+  }
+
+  public void setFieldsValue(HashMap<String, Object> fieldsValue) {
+    this.fieldsValue = fieldsValue;
+  }
+
+  public void setRelations(Relational relations) {
+    this.relations = relations;
+  }
 }

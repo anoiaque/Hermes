@@ -2,6 +2,7 @@ package adaptors.MySql;
 
 import core.Hermes;
 import core.Pluralizer;
+import core.Table;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -18,10 +19,11 @@ public class SqlBuilder {
     String values = epure(attributes_values.values().toString());
     return "insert into  " + tableName + "(" + fields + ")" + "values (" + values + ")";
   }
+
   public static String insert(HashMap<String, Object> attributes_values, Class<? extends Hermes> model) {
     String fields = attributes_values.keySet().toString().replace("[", "").replace("]", "");
     String values = epure(attributes_values.values().toString());
-    return "insert into  " + Hermes.tableName(model) + "(" + fields + ")" + "values (" + values + ")";
+    return "insert into  " + Table.nameFor(model) + "(" + fields + ")" + "values (" + values + ")";
   }
 
   public static String update(HashMap<String, Object> attributes_values, int id, String tableName) {
@@ -90,12 +92,14 @@ public class SqlBuilder {
         Class<?> type = field.getType();
         if (!type.equals(Set.class)) {
           tablesNames.put(attr, Pluralizer.getPlurial(type.getSimpleName()).toUpperCase());
-        } else {
+        }
+        else {
           ParameterizedType set = (ParameterizedType) object.getClass().getDeclaredField(attr).getGenericType();
           String setType = (((Class<?>) set.getActualTypeArguments()[0]).getSimpleName().toUpperCase());
           tablesNames.put(attr, Pluralizer.getPlurial(setType));
         }
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         e.printStackTrace();
       }
     }

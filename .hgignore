@@ -3,5 +3,7 @@ syntax : regexp
 ^build
 ^build.xml
 ^nbproject
+^coverage
+
 
 
