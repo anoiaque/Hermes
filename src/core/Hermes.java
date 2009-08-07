@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class Hermes {
 
-  private String tableName;
   private int id = 0;
+  private String tableName;
   private HashMap<String, String> fieldsType = null;
   private HashMap<String, Object> fieldsValue = null;
   private Relational relations = new Relational(this);

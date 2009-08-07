@@ -31,78 +31,86 @@ public class MySql extends Adaptor {
       statement.execute();
       rs = statement.getGeneratedKeys();
       if (rs.next()) id = rs.getInt(1);
-    } catch (SQLException e) {
+    }
+    catch (SQLException e) {
       e.printStackTrace();
       return -1;
-    } finally {
+    }
+    finally {
       pool.release(connexion);
       try {
         if (rs != null) rs.close();
-      } catch (SQLException e) {
+      }
+      catch (SQLException e) {
         e.printStackTrace();
       }
       return id;
     }
-
   }
 
-  public boolean update(String tableName, HashMap<String, Object> attributes_values, int id) {
+  public boolean update(HashMap<String, Object> attributes_values, int id, Object model) {
     Connection connexion = null;
     Pool pool = Pool.getInstance();
     ResultSet rs = null;
+    String sql = getSqlUpdate(attributes_values, model, id);
     try {
       connexion = pool.getConnexion();
-      PreparedStatement statement = connexion.prepareStatement(SqlBuilder.update(attributes_values, id, tableName));
+      PreparedStatement statement = connexion.prepareStatement(sql);
       statement.execute();
-    } catch (SQLException e) {
+    }
+    catch (SQLException e) {
       e.printStackTrace();
       return false;
-    } finally {
+    }
+    finally {
       pool.release(connexion);
       try {
         if (rs != null) {
           rs.close();
         }
-      } catch (SQLException e) {
+      }
+      catch (SQLException e) {
         e.printStackTrace();
       }
     }
     return true;
   }
 
-  public boolean delete(String tableName, int id) {
+  public boolean delete(int id, Object model) {
     Connection connexion = null;
     Pool pool = Pool.getInstance();
     boolean deleted = false;
-    String sql = "delete from " + tableName + " where id =" + id;
+    String sql = getSqlDelete(model, id);
     try {
       connexion = pool.getConnexion();
       PreparedStatement statement = connexion.prepareStatement(sql);
       statement.execute();
       deleted = true;
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       e.printStackTrace();
-    } finally {
+    }
+    finally {
       pool.release(connexion);
     }
     return deleted;
   }
 
-  public boolean delete(String tableName, String whereClause) {
+  public boolean delete(Object model, String conditions) {
     Connection connexion = null;
     Pool pool = Pool.getInstance();
     boolean deleted = false;
-    String sql = "delete from " + tableName + " where " + whereClause;
-
-
+    String sql = getSqlDelete(model, conditions);
     try {
       connexion = pool.getConnexion();
       PreparedStatement statement = connexion.prepareStatement(sql);
       statement.execute();
       deleted = true;
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       e.printStackTrace();
-    } finally {
+    }
+    finally {
       pool.release(connexion);
     }
     return deleted;
@@ -117,13 +125,16 @@ public class MySql extends Adaptor {
       connexion = pool.getConnexion();
       rs = connexion.prepareStatement(sql).executeQuery();
       return Record.toObject(rs, model);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       e.printStackTrace();
-    } finally {
+    }
+    finally {
       pool.release(connexion);
       if (rs != null) try {
           rs.close();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
           e.printStackTrace();
         }
     }
@@ -138,10 +149,12 @@ public class MySql extends Adaptor {
       PreparedStatement statement = connexion.prepareStatement(SqlBuilder.select(select_clause, where_clause, model));
       return statement.executeQuery();
 
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       e.printStackTrace();
       return null;
-    } finally {
+    }
+    finally {
       pool.release(connexion);
     }
   }
@@ -167,5 +180,31 @@ public class MySql extends Adaptor {
     else if (model.getClass().equals(Class.class))
       return SqlBuilder.insert(attributes_values, (Class<? extends Hermes>) model);
     else return "";
+  }
+
+  private String getSqlUpdate(HashMap<String, Object> attributes_values, Object model, int id) {
+    if (model.getClass().equals(String.class))
+      return SqlBuilder.update(attributes_values, id, (String) model);
+    else if (model.getClass().equals(Class.class))
+      return SqlBuilder.update(attributes_values, id, (Class<? extends Hermes>) model);
+    else return "";
+
+  }
+
+  private String getSqlDelete(Object model, int id) {
+    if (model.getClass().equals(String.class))
+      return SqlBuilder.delete(id, (String) model);
+    else if (model.getClass().equals(Class.class))
+      return SqlBuilder.delete(id, (Class<? extends Hermes>) model);
+    else return "";
+
+  }
+  private String getSqlDelete(Object model, String conditions) {
+    if (model.getClass().equals(String.class))
+      return SqlBuilder.delete((String) model,conditions);
+    else if (model.getClass().equals(Class.class))
+      return SqlBuilder.delete((Class<? extends Hermes>) model,conditions);
+    else return "";
+
   }
 }

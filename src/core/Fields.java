@@ -26,7 +26,7 @@ public class Fields {
     }
   }
 
-  public static void setFieldsType(Hermes object) {
+  private static void setFieldsType(Hermes object) {
     object.setFieldsType(new HashMap<String, String>());
     for (Field field : object.getClass().getDeclaredFields()) {
       if (isBasicField(field.getName(), object))

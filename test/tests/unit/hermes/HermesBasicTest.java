@@ -8,6 +8,7 @@ import sample.Person;
 import configuration.Configuration;
 import core.Hermes;
 import core.Pluralizer;
+import core.Table;
 import factory.Factory;
 import helpers.Database;
 import sample.Personne;
@@ -25,13 +26,13 @@ public class HermesBasicTest extends TestCase {
   // Test the default name of table , function of the class name pluralized
   public void testDefaultTableName() {
     assertEquals(Pluralizer.getPlurial("Person"), marc.getTableName());
-    assertEquals(Pluralizer.getPlurial("Person"), Hermes.tableName(Person.class));
+    assertEquals(Pluralizer.getPlurial("Person"), Table.nameFor(Person.class));
   }
   // Test the  name of table when redefined in the model
   public void xtestRedefinedTableName() {
     Personne p = new Personne();
     assertEquals("personnel", p.getTableName());
-    assertEquals("personnel", Hermes.tableName(Personne.class));
+    assertEquals("personnel", Table.nameFor(Personne.class));
   }
 
   // Test id obtain by get_generated_keys from database

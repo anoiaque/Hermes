@@ -14,7 +14,7 @@ public class Updater {
     relations.saveHasOneRelations();
     attributes_values = ((HashMap<String, Object>) object.getFieldsValue().clone());
     attributes_values.putAll(relations.foreignKeys());
-    object.setId(Adaptor.get().save(attributes_values, (Object) object.getClass()));
+    object.setId(Adaptor.get().save(attributes_values,object.getClass()));
     relations.saveManyToManyRelations();
     return object.getId() != -1;
 
@@ -23,7 +23,7 @@ public class Updater {
   public static boolean delete(Hermes object) {
     Relational relations = object.getRelations();
     relations.cascadeDelete();
-    boolean deleted = Adaptor.get().delete(object.getTableName(), object.getId());
+    boolean deleted = Adaptor.get().delete(object.getId(),object.getClass());
     object.setId(0);
     return deleted;
   }
@@ -31,7 +31,7 @@ public class Updater {
   public static boolean delete(String conditions, Hermes object) {
     Relational relations = object.getRelations();
     relations.cascadeDelete();
-    boolean deleted = Adaptor.get().delete(object.getTableName(), conditions);
+    boolean deleted = Adaptor.get().delete(object.getClass(), conditions);
     object.setId(0);
     return deleted;
   }
@@ -43,7 +43,7 @@ public class Updater {
     relations.updateHasOneRelations();
     attributes_values = (HashMap<String, Object>) object.getFieldsValue().clone();
     attributes_values.putAll(relations.foreignKeys());
-    boolean updated = Adaptor.get().update(object.getTableName(), attributes_values, object.getId());
+    boolean updated = Adaptor.get().update(attributes_values, object.getId(), (Object) object.getClass());
     relations.updateManyToManyRelations();
     return updated;
   }

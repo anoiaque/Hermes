@@ -30,11 +30,11 @@ public abstract class Adaptor {
 
   public abstract int save(HashMap<String, Object> attributes_values, Object model);
 
-  public abstract boolean update(String tableName, HashMap<String, Object> attributes_values, int id);
+  public abstract boolean update(HashMap<String, Object> attributes_values, int id, Object model);
 
-  public abstract boolean delete(String tableName, int id);
+  public abstract boolean delete(int id, Object model);
 
-  public abstract boolean delete(String tableName, String whereClause);
+  public abstract boolean delete(Object model, String conditions);
 
   public abstract Hermes find(int id, Class<? extends Hermes> model);
 

@@ -39,6 +39,35 @@ public class SqlBuilder {
     return "update " + tableName + " set " + setClause.replace("'null'", "null") + " where id =" + id;
   }
 
+  public static String update(HashMap<String, Object> attributes_values, int id, Class<? extends Hermes> model) {
+    String setClause = "";
+    Iterator<String> attrs = attributes_values.keySet().iterator();
+    while (attrs.hasNext()) {
+      String attr = attrs.next();
+      setClause += attr + "='" + attributes_values.get(attr) + "'";
+      if (attrs.hasNext()) {
+        setClause += ",";
+      }
+    }
+    return "update " + Table.nameFor(model) + " set " + setClause.replace("'null'", "null") + " where id =" + id;
+  }
+
+  public static String delete(int id, String tableName) {
+    return "delete from " + tableName + " where id =" + id;
+  }
+
+  public static String delete(int id, Class<? extends Hermes> model) {
+    return "delete from " + Table.nameFor(model) + " where id =" + id;
+  }
+
+  public static String delete(String tableName, String conditions) {
+    return "delete from " + tableName + " where " + conditions;
+  }
+
+  public static String delete(Class<? extends Hermes> model, String conditions) {
+    return "delete from " + Table.nameFor(model) + " where " + conditions;
+  }
+
   public static String select(String select_clause, String where_clause, Hermes object) {
     HashMap<String, String> joinedTables = new HashMap<String, String>();
     if (where_clause != null) {

@@ -33,6 +33,16 @@ public class Jointure extends Hermes {
     return true;
   }
 
+  @Override
+  public boolean delete() {
+    return Adaptor.get().delete(this.getId(), getTableName());
+  }
+
+  @Override
+  public boolean delete(String conditions) {
+    return Adaptor.get().delete(getTableName(), conditions);
+  }
+
   private String createJoinTableName(Hermes object, String attribute) {
     ParameterizedType setField;
     String parentName = object.getTableName().toUpperCase();
