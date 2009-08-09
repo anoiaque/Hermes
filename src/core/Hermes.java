@@ -27,7 +27,7 @@ public class Hermes {
   }
 
   public boolean delete(String conditions) {
-    return Updater.delete(conditions, this);
+    return Updater.delete(this,conditions);
   }
 
   public static Hermes find(int id, Class<? extends Hermes> model) {

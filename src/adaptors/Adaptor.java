@@ -5,7 +5,6 @@ import configuration.Configuration;
 import configuration.Configuration.DBMSConfig;
 import core.Hermes;
 import java.sql.ResultSet;
-import java.util.HashMap;
 
 public abstract class Adaptor {
 
@@ -28,13 +27,13 @@ public abstract class Adaptor {
     return null;
   }
 
-  public abstract int save(HashMap<String, Object> attributes_values, Object model);
+  public abstract boolean save(Hermes object);
 
-  public abstract boolean update(HashMap<String, Object> attributes_values, int id, Object model);
+  public abstract boolean update(Hermes object);
 
-  public abstract boolean delete(int id, Object model);
+  public abstract boolean delete(Hermes object);
 
-  public abstract boolean delete(Object model, String conditions);
+  public abstract boolean delete(Hermes object, String conditions);
 
   public abstract Hermes find(int id, Class<? extends Hermes> model);
 

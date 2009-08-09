@@ -1,7 +1,7 @@
 package core;
 
 import adaptors.Adaptor;
-import adaptors.MySql.Record;
+import adaptors.MySql.ObjectBuilder;
 import java.util.Set;
 
 public class Finder {
@@ -12,7 +12,7 @@ public class Finder {
 
   public static Set<?> find(String whereClause, Class<? extends Hermes> model) {
     try {
-      return Record.toObjects(Adaptor.get().find("*", whereClause, model.newInstance()), model);
+      return ObjectBuilder.toObjects(Adaptor.get().find("*", whereClause, model.newInstance()), model);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -21,7 +21,7 @@ public class Finder {
 
   public static Set<?> find(String selectClause, String whereClause, Class<? extends Hermes> model) {
     try {
-      return Record.toObjects(Adaptor.get().find(selectClause, whereClause, model.newInstance()), model);
+      return ObjectBuilder.toObjects(Adaptor.get().find(selectClause, whereClause, model.newInstance()), model);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -32,7 +32,7 @@ public class Finder {
   // The reason for this finder is that instances of this model have not the same table name.
   public static Set<?> joinFind(int parentId, Jointure join) {
     try {
-      return Record.toObjects(Adaptor.get().find("*", "parentId = " + parentId, join), Jointure.class);
+      return ObjectBuilder.toObjects(Adaptor.get().find("*", "parentId = " + parentId, join), Jointure.class);
     } catch (Exception e) {
       e.printStackTrace();
     }

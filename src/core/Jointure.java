@@ -29,18 +29,17 @@ public class Jointure extends Hermes {
   public boolean save() {
     Fields.setFieldsValue(this);
     HashMap<String, Object> attributes_values = ((HashMap<String, Object>) getFieldsValue().clone());
-    Adaptor.get().save(attributes_values, getTableName());
-    return true;
+    return  Adaptor.get().save(this);
   }
 
   @Override
   public boolean delete() {
-    return Adaptor.get().delete(this.getId(), getTableName());
+    return Adaptor.get().delete(this);
   }
 
   @Override
   public boolean delete(String conditions) {
-    return Adaptor.get().delete(getTableName(), conditions);
+    return Adaptor.get().delete(this, conditions);
   }
 
   private String createJoinTableName(Hermes object, String attribute) {
@@ -50,8 +49,7 @@ public class Jointure extends Hermes {
     try {
       setField = (ParameterizedType) object.getClass().getDeclaredField(attribute).getGenericType();
       childName = (((Class<?>) setField.getActualTypeArguments()[0]).getSimpleName()).toUpperCase();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
       return null;
     }
@@ -68,17 +66,15 @@ public class Jointure extends Hermes {
       connexion = pool.getConnexion();
       PreparedStatement statement = connexion.prepareStatement(sql);
       statement.execute();
-    }
-    catch (SQLException e) {
+    } catch (SQLException e) {
       e.printStackTrace();
-    }
-    finally {
+    } finally {
       try {
-        if (rs != null)
+        if (rs != null) {
           rs.close();
+        }
         pool.release(connexion);
-      }
-      catch (SQLException e) {
+      } catch (SQLException e) {
         e.printStackTrace();
       }
     }

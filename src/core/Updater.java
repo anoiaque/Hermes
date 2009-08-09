@@ -1,50 +1,41 @@
 package core;
 
 import adaptors.Adaptor;
-import java.util.HashMap;
 
 public class Updater {
 
   public static boolean save(Hermes object) {
     if (object.getId() != 0) return update(object);
 
-    Relational relations = object.getRelations();
-    HashMap<String, Object> attributes_values;
     Fields.setFieldsValue(object);
-    relations.saveHasOneRelations();
-    attributes_values = ((HashMap<String, Object>) object.getFieldsValue().clone());
-    attributes_values.putAll(relations.foreignKeys());
-    object.setId(Adaptor.get().save(attributes_values,object.getClass()));
-    relations.saveManyToManyRelations();
-    return object.getId() != -1;
+    object.getRelations().saveHasOneRelations();
+    boolean saved = Adaptor.get().save(object);
+    object.getRelations().saveManyToManyRelations();
 
+    return saved;
+  }
+
+  public static boolean update(Hermes object) {
+    Fields.setFieldsValue(object);
+
+    object.getRelations().updateHasOneRelations();
+    boolean updated = Adaptor.get().update(object);
+    object.getRelations().updateManyToManyRelations();
+
+    return updated;
   }
 
   public static boolean delete(Hermes object) {
-    Relational relations = object.getRelations();
-    relations.cascadeDelete();
-    boolean deleted = Adaptor.get().delete(object.getId(),object.getClass());
-    object.setId(0);
+    object.getRelations().cascadeDelete();
+    boolean deleted = Adaptor.get().delete(object);
+    if (deleted) object.setId(0);
     return deleted;
   }
 
-  public static boolean delete(String conditions, Hermes object) {
-    Relational relations = object.getRelations();
-    relations.cascadeDelete();
-    boolean deleted = Adaptor.get().delete(object.getClass(), conditions);
-    object.setId(0);
+  public static boolean delete(Hermes object, String conditions) {
+    object.getRelations().cascadeDelete();
+    boolean deleted = Adaptor.get().delete(object, conditions);
+    if (deleted) object.setId(0);
     return deleted;
-  }
-
-  private static boolean update(Hermes object) {
-    HashMap<String, Object> attributes_values;
-    Relational relations = object.getRelations();
-    Fields.setFieldsValue(object);
-    relations.updateHasOneRelations();
-    attributes_values = (HashMap<String, Object>) object.getFieldsValue().clone();
-    attributes_values.putAll(relations.foreignKeys());
-    boolean updated = Adaptor.get().update(attributes_values, object.getId(), (Object) object.getClass());
-    relations.updateManyToManyRelations();
-    return updated;
   }
 }

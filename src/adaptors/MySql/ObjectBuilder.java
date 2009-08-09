@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Record {
+public class ObjectBuilder {
 
   // Transform a resultset into an Hermes object with its relationnal datas
   public static Hermes toObject(ResultSet rs, Class<? extends Hermes> model) {
