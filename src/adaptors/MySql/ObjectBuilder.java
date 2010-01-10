@@ -1,11 +1,12 @@
 package adaptors.MySql;
 
+import core.Attribute;
 import core.Hermes;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ObjectBuilder {
@@ -15,9 +16,10 @@ public class ObjectBuilder {
     try {
       if (rs == null || !rs.next()) return null;
       Hermes object = model.newInstance();
-      Set<String> fields = ((HashMap<String, String>) model.getMethod("getFieldsType").invoke(model.newInstance())).keySet();
-      for (String attribute : fields) {
-        Field field = object.getClass().getDeclaredField(attribute);
+      object.loadAttributes();
+      List<Attribute> attributes = (List<Attribute>) object.getAttributes();
+      for (Attribute attribute : attributes) {
+        Field field = object.getClass().getDeclaredField(attribute.getName());
         field.setAccessible(true);
         field.set(object, rs.getObject(field.getName()));
         try {
@@ -26,7 +28,7 @@ public class ObjectBuilder {
           // pas d'id dans la table
         }
       }
-      object.getRelations().loadRelationalFields(object, rs);
+      object.getAssociations().loadRelationalFields(object, rs);
       return object;
     } catch (Exception e) {
       e.printStackTrace();

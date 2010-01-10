@@ -24,17 +24,17 @@ public class HermesRelationalTest extends TestCase {
   }
 
   // Test on relationnals fields and basics fields hashes .
-  // Relational fields must only contain relationnal fields (has_one and many_to_many relations attributes)
-  // Basics fields must only contain String,Integer ...
+  // Relational fields must only contain relationnal fields (associations  attributes)
+ 
   public void testFieldsHashes() {
-    HashMap<String, String> fields = marc.getDatabaseFields();
-    assertTrue(fields.containsKey("age"));
-    assertTrue(fields.containsKey("nom"));
-    assertEquals(2, fields.size());
-    assertTrue(marc.getHasOneRelationsShip().containsKey("adresse"));
+   
+    assertTrue(marc.getHasOneAssociations().containsKey("adresse"));
     assertTrue(marc.getManyToManyRelationsShip().containsKey("pets"));
-    assertEquals(1, marc.getHasOneRelationsShip().size());
+    assertTrue(marc.getHasManyRelationsShip().containsKey("cars"));
+
+    assertEquals(1, marc.getHasOneAssociations().size());
     assertEquals(1, marc.getManyToManyRelationsShip().size());
+    assertEquals(1, marc.getHasManyRelationsShip().size());
   }
 
   // Test on the name of the jointure table in many_to_many relations
@@ -53,7 +53,7 @@ public class HermesRelationalTest extends TestCase {
   // Test delete cascading , if person is deleted , his adress is not erased
   // with has_one and Cascade.DELETE = false
   public void testNoCascadeDeleteWithRelationHasOne() {
-    marc.getHasOneRelationsShip().get("adresse").setCascadeDelete(false);
+    marc.getHasOneAssociations().get("adresse").setCascadeDelete(false);
     marc.delete();
     assertNotNull(Adress.find(marc.getAdresse().getId(), Adress.class));
   }

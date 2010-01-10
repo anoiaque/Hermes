@@ -20,3 +20,9 @@ create table  PERSONNEL(
 id int primary key auto_increment,
 nom varchar(250)
 );
+create table CARS(
+id int primary key auto_increment,
+brand varchar(50),
+category int,
+person_id int
+);

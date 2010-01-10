@@ -15,69 +15,33 @@ public class Jointure extends Hermes {
   private int parentId;
   private int childId;
 
+  // Constructors
   public Jointure() {
   }
 
-  // Constructeurs
   public Jointure(Hermes object, String attribute) {
-    setTableName(createJoinTableName(object, attribute));
-    createJoinTable();
+    createJoinTable(object, attribute);
   }
 
-  // Public methods
-  @Override
-  public boolean save() {
-    Fields.setFieldsValue(this);
-    HashMap<String, Object> attributes_values = ((HashMap<String, Object>) getFieldsValue().clone());
-    return  Adaptor.get().save(this);
+  //Private Methods
+  private void createJoinTable(Hermes model, String attribute) {
+    setTableName(joinTableNameFor(model, attribute));
+    String sql = "create  table if not exists " + this.getTableName() + "(" + "parentId int default null,childId int default null); ";
+    Adaptor.get().execute(sql, this);
   }
 
-  @Override
-  public boolean delete() {
-    return Adaptor.get().delete(this);
-  }
-
-  @Override
-  public boolean delete(String conditions) {
-    return Adaptor.get().delete(this, conditions);
-  }
-
-  private String createJoinTableName(Hermes object, String attribute) {
-    ParameterizedType setField;
-    String parentName = object.getTableName().toUpperCase();
+  private String joinTableNameFor(Hermes model, String attribute) {
+    ParameterizedType setAttribute;
+    String parentName = model.getTableName().toUpperCase();
     String childName = "";
     try {
-      setField = (ParameterizedType) object.getClass().getDeclaredField(attribute).getGenericType();
-      childName = (((Class<?>) setField.getActualTypeArguments()[0]).getSimpleName()).toUpperCase();
+      setAttribute = (ParameterizedType) model.getClass().getDeclaredField(attribute).getGenericType();
+      childName = (((Class<?>) setAttribute.getActualTypeArguments()[0]).getSimpleName()).toUpperCase();
     } catch (Exception e) {
       e.printStackTrace();
       return null;
     }
     return parentName + "_" + childName;
-  }
-
-  // Private methods
-  private void createJoinTable() {
-    Connection connexion = null;
-    Pool pool = Pool.getInstance();
-    String sql = "create  table if not exists " + this.getTableName() + "(" + "parentId int default null,childId int default null); ";
-    ResultSet rs = null;
-    try {
-      connexion = pool.getConnexion();
-      PreparedStatement statement = connexion.prepareStatement(sql);
-      statement.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        if (rs != null) {
-          rs.close();
-        }
-        pool.release(connexion);
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
   }
 
   // Getters & setters

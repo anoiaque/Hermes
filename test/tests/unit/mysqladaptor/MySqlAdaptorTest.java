@@ -5,7 +5,7 @@ import java.util.HashMap;
 import junit.framework.TestCase;
 import sample.Person;
 import adaptors.MySql.SqlBuilder;
-import core.Pluralizer;
+import core.Inflector;
 
 public class MySqlAdaptorTest extends TestCase {
 
@@ -17,6 +17,6 @@ public class MySqlAdaptorTest extends TestCase {
         HashMap<String, String> tablesNames = SqlBuilder.joinedTables(where_clause, person);
         assertEquals(2, tablesNames.size());
         assertTrue(tablesNames.containsKey("adresse"));
-        assertTrue(tablesNames.get("adresse").equals(Pluralizer.getPlurial("adress").toUpperCase()));
+        assertTrue(tablesNames.get("adresse").equals(Inflector.pluralize("adress").toUpperCase()));
     }
 }

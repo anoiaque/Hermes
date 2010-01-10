@@ -3,54 +3,58 @@ package sample;
 import java.util.Set;
 
 import core.Hermes;
-import core.Relation;
-import core.Relation.Cascade;
 
 public class Person extends Hermes {
 
-    private int      age;
-    private String   nom;
-    private Adress   adresse;
-    private Set<Pet> pets;
-   
-    public Person() {
-        hasOne("adresse",new Relation(Cascade.DELETE));
-        manyToMany("pets");
-    }
-    //TODO : Remove
-    public Person get(){
-      return (Person) find(1);
-    }
+  private int age;
+  private String nom;
+  private Adress adresse;
+  private Set<Pet> pets;
+  private Set<Car> cars;
 
-    public int getAge() {
-        return age;
-    }
+  public Person() {
+    hasOne("adresse", "dependent:destroy");
+    manyToMany("pets");
+    hasMany("cars");
+  }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+  public Set<Car> getCars() {
+    return cars;
+  }
 
-    public String getNom() {
-        return nom;
-    }
+  public void setCars(Set<Car> cars) {
+    this.cars = cars;
+  }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+  public int getAge() {
+    return age;
+  }
 
-    public void setAdresse(Adress adresse) {
-        this.adresse = adresse;
-    }
+  public void setAge(int age) {
+    this.age = age;
+  }
 
-    public Adress getAdresse() {
-        return adresse;
-    }
+  public String getNom() {
+    return nom;
+  }
 
-    public Set<Pet> getPets() {
-        return pets;
-    }
+  public void setNom(String nom) {
+    this.nom = nom;
+  }
 
-    public void setPets(Set<Pet> pets) {
-        this.pets = pets;
-    }
+  public void setAdresse(Adress adresse) {
+    this.adresse = adresse;
+  }
+
+  public Adress getAdresse() {
+    return adresse;
+  }
+
+  public Set<Pet> getPets() {
+    return pets;
+  }
+
+  public void setPets(Set<Pet> pets) {
+    this.pets = pets;
+  }
 }

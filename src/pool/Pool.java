@@ -18,7 +18,7 @@ public class Pool {
   // constructors
   private Pool() {
     config = Configuration.DBMSConfig.get();
-    this.driverName = driverNameFor(config.getDBMSName());
+    this.driverName = driverNameFor(config.getAdapter());
     pool = new HashMap<Connection, Boolean>();
     initPool();
   }

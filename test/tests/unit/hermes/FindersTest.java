@@ -9,7 +9,7 @@ import helpers.Database;
 import helpers.TestHelper;
 import sample.Personne;
 
-public class HermesFindersTest extends TestCase {
+public class FindersTest extends TestCase {
 
   public static Person marc, jean;
 

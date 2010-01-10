@@ -1,18 +1,20 @@
 package tests.unit.hermes;
 
-import java.util.HashMap;
 
 import junit.framework.TestCase;
 import sample.Adress;
 import sample.Person;
 import configuration.Configuration;
-import core.Pluralizer;
+import core.Attribute;
+import core.Inflector;
 import core.Table;
 import factory.Factory;
 import helpers.Database;
+import java.lang.reflect.Field;
+import java.util.List;
 import sample.Personne;
 
-public class HermesBasicTest extends TestCase {
+public class BasicTest extends TestCase {
 
     public static Person marc;
 
@@ -24,8 +26,8 @@ public class HermesBasicTest extends TestCase {
 
     // Test the default name of table , function of the class name pluralized
     public void testDefaultTableName() {
-        assertEquals(Pluralizer.getPlurial("Person"), marc.getTableName());
-        assertEquals(Pluralizer.getPlurial("Person"), Table.nameFor(Person.class));
+        assertEquals(Inflector.pluralize("Person"), marc.getTableName());
+        assertEquals(Inflector.pluralize("Person"), Table.nameFor(Person.class));
     }
 
     // Test the  name of table when redefined in the model
@@ -44,11 +46,13 @@ public class HermesBasicTest extends TestCase {
 
     // Test basics fields , type and name are right
     public void testBasicsFields() {
-        HashMap<String, String> fields = marc.getDatabaseFields();
-        assertTrue(fields.containsKey("age"));
-        assertEquals("int", fields.get("age"));
-        assertTrue(fields.containsKey("nom"));
-        assertEquals("varchar(" + Configuration.SqlConverterConfig.varcharLength + ")", fields.get("nom"));
+     
+        List<Attribute> attributes = marc.getAttributes();
+
+        assertTrue(containsAttribute(attributes,"age","int",30));
+        String type = "varchar(" + Configuration.SqlConverterConfig.varcharLength + ")";
+        assertTrue(containsAttribute(attributes,"nom",type,"Marc"));
+       
     }
 
     // Test raw is deleted in database
@@ -69,5 +73,14 @@ public class HermesBasicTest extends TestCase {
         assertEquals("titi", marc.getNom());
         assertEquals(25, marc.getAdresse().getNumero());
         assertEquals("rue de Brest", marc.getAdresse().getRue());
+    }
+
+    private boolean containsAttribute(List<Attribute> list,String name, String type,Object value){
+      for (Attribute attr : list){
+        if (attr.getName().equals(name) && 
+            attr.getSqlType().equals(type) &&
+            attr.getValue().equals(value)) return true;
+      }
+      return false;
     }
 }

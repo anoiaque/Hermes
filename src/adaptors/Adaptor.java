@@ -14,14 +14,14 @@ public abstract class Adaptor {
     if (adaptor == null) {
       synchronized (Adaptor.class) {
         DBMSConfig config = Configuration.DBMSConfig.get();
-        adaptor = adaptor(config.getDBMSName());
+        adaptor = adaptor(config.getAdapter());
       }
     }
     return adaptor;
   }
 
-  private static Adaptor adaptor(String DBMSName) {
-    if (DBMSName.equalsIgnoreCase("MySql")) {
+  private static Adaptor adaptor(String adapter) {
+    if (adapter.equalsIgnoreCase("MySql")) {
       return new MySql();
     }
     return null;
@@ -34,6 +34,8 @@ public abstract class Adaptor {
   public abstract boolean delete(Hermes object);
 
   public abstract boolean delete(Hermes object, String conditions);
+
+  public abstract boolean execute(String sql, Hermes object);
 
   public abstract Hermes find(int id, Class<? extends Hermes> model);
 

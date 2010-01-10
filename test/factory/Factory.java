@@ -1,9 +1,10 @@
 package factory;
 
-import core.Hermes;
+import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 import sample.Adress;
+import sample.Car;
 import sample.Person;
 import sample.Pet;
 
@@ -13,7 +14,16 @@ public class Factory {
     if (feature.equals("marc")) return marc();
     if (feature.equals("jean")) return jean();
     if (feature.equals("pets")) return pets();
+    if (feature.equals("cars")) return cars();
+
     return null;
+  }
+
+  private static Set<Car> cars() {
+    Set<Car> cars = new HashSet<Car>();
+    cars.add(new Car("Ferrari"));
+    cars.add(new Car("BMW"));
+    return cars;
   }
 
   private static Set<Pet> pets() {
@@ -29,6 +39,7 @@ public class Factory {
     person.setNom("Marc");
     person.setAdresse(new Adress(13, "rue Tabarly"));
     person.setPets(pets());
+    
     person.save();
     return person;
   }

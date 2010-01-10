@@ -7,7 +7,7 @@ public class Relation {
     }
 
     private String foreignKeyName;
-    private Integer foreignKeyValue=-1;
+    private Integer foreignKeyValue = -1;
     private boolean cascadeDelete = false;
     private boolean lazy = false;
     private boolean nullable = true;

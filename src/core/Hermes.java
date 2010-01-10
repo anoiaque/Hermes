@@ -1,20 +1,20 @@
 package core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class Hermes {
 
   private int id = 0;
   private String tableName;
-  private HashMap<String, String> fieldsType = null;
-  private HashMap<String, Object> fieldsValue = null;
-  private Relational relations = new Relational(this);
+  private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+  private Associations associations = new Associations(this);
 
   // Constructeurs
   public Hermes() {
-    setTableName(Pluralizer.getPlurial(this.getClass().getSimpleName()));
-    Fields.setFields(this);
+    tableName = (Inflector.pluralize(this.getClass().getSimpleName()));
   }
 
   // Public methods
@@ -27,7 +27,7 @@ public class Hermes {
   }
 
   public boolean delete(String conditions) {
-    return Updater.delete(this,conditions);
+    return Updater.delete(this, conditions);
   }
 
   public static Hermes find(int id, Class<? extends Hermes> model) {
@@ -66,35 +66,54 @@ public class Hermes {
     return null;
   }
 
-  public void hasOne(String attribute, Relation rc) {
-    relations.hasOne(attribute, rc);
-    Fields.setFields(this);
+  public boolean isNewRecord() {
+    return (id == 0);
+  }
+
+  public void hasMany(String attribute, Relation rc) {
+    associations.hasMany(attribute, rc);
+  }
+
+  public void hasMany(String attribute) {
+    hasMany(attribute, new Relation());
+  }
+
+  public void hasOne(String attribute, String dependency) {
+    associations.hasOne(attribute, dependency);
   }
 
   public void hasOne(String attribute) {
-    hasOne(attribute, new Relation());
+    hasOne(attribute);
   }
 
   public void manyToMany(String attribute, Relation rc) {
-    relations.manyToMany(attribute, rc);
-    Fields.setFields(this);
+    associations.manyToMany(attribute, rc);
   }
 
   public void manyToMany(String attribute) {
     manyToMany(attribute, new Relation());
   }
 
+   public void loadAttributes() {
+    this.attributes = (ArrayList<Attribute>) Attribute.setAttributesFor(this);
+
+  }
+
 // Getters & Setters
   public HashMap<String, Relation> getManyToManyRelationsShip() {
-    return relations.getManyToManyRelationsShip();
+    return associations.getManyToManyRelationsShip();
+  }
+
+  public HashMap<String, HasOne> getHasOneAssociations() {
+    return associations.getHasOneAssociations();
+  }
+
+  public HashMap<String, Relation> getHasManyRelationsShip() {
+    return associations.getHasManyRelationsShip();
   }
 
   public void setTableName(String table_name) {
     this.tableName = table_name;
-  }
-
-  public HashMap<String, String> getDatabaseFields() {
-    return getFieldsType();
   }
 
   public String getTableName() {
@@ -109,31 +128,18 @@ public class Hermes {
     this.id = id;
   }
 
-  public HashMap<String, Relation> getHasOneRelationsShip() {
-    return relations.getHasOneRelationsShip();
+  public Associations getAssociations() {
+    return associations;
   }
 
-  public HashMap<String, String> getFieldsType() {
-    return fieldsType;
+  public void setAssociations(Associations relations) {
+    this.associations = relations;
   }
 
-  public Relational getRelations() {
-    return relations;
+  public List<Attribute> getAttributes() {
+    return attributes;
   }
 
-  public HashMap<String, Object> getFieldsValue() {
-    return fieldsValue;
-  }
-
-  public void setFieldsType(HashMap<String, String> fieldsType) {
-    this.fieldsType = fieldsType;
-  }
-
-  public void setFieldsValue(HashMap<String, Object> fieldsValue) {
-    this.fieldsValue = fieldsValue;
-  }
-
-  public void setRelations(Relational relations) {
-    this.relations = relations;
-  }
+  
+ 
 }

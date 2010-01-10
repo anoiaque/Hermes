@@ -74,7 +74,7 @@ public class MySql extends Adaptor {
     return Mapping.javaToSql(javaType);
   }
 
-  private boolean execute(String sql, Hermes object) {
+  public boolean execute(String sql, Hermes object) {
     Connection connexion = null;
     Pool pool = Pool.getInstance();
     ResultSet rs = null;
