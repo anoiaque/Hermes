@@ -34,6 +34,7 @@ public class ObjectBuilder {
       e.printStackTrace();
       return null;
     }
+   
   }
 
   public static Set<Hermes> toObjects(ResultSet rs, Class<? extends Hermes> model) {

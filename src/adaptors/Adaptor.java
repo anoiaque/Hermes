@@ -37,8 +37,6 @@ public abstract class Adaptor {
 
   public abstract boolean execute(String sql, Hermes object);
 
-  public abstract Hermes find(int id, Class<? extends Hermes> model);
-
   public abstract ResultSet find(String select_clause, String where_clause, Hermes object);
 
   public abstract String javaToSql(String javaType);

@@ -30,30 +30,6 @@ public class MySql extends Adaptor {
     return execute(SqlBuilder.getSqlDeleteFor(object, conditions), object);
   }
 
-  public Hermes find(int id, Class<? extends Hermes> model) {
-    Connection connexion = null;
-    Pool pool = Pool.getInstance();
-    ResultSet rs = null;
-    try {
-      String sql = SqlBuilder.select("*", "id = " + id, model.newInstance());
-      connexion = pool.getConnexion();
-      rs = connexion.prepareStatement(sql).executeQuery();
-      return ObjectBuilder.toObject(rs, model);
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      pool.release(connexion);
-      if (rs != null) {
-        try {
-          rs.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-      }
-    }
-    return null;
-  }
-
   public ResultSet find(String select_clause, String where_clause, Hermes model) {
     Connection connexion = null;
     Pool pool = Pool.getInstance();

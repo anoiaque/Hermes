@@ -2,40 +2,30 @@ package core;
 
 import adaptors.Adaptor;
 import adaptors.MySql.ObjectBuilder;
+import java.sql.ResultSet;
 import java.util.Set;
 
 public class Finder {
 
-  public static Hermes find(int id, Class<? extends Hermes> model) {
-    return Adaptor.get().find(id, model);
-  }
+    private static Adaptor adaptor = Adaptor.get();
 
-  public static Set<?> find(String whereClause, Class<? extends Hermes> model) {
-    try {
-      return ObjectBuilder.toObjects(Adaptor.get().find("*", whereClause, model.newInstance()), model);
-    } catch (Exception e) {
-      e.printStackTrace();
+    public static Hermes find(int id, Class<? extends Hermes> model) throws Exception {
+        ResultSet rs = adaptor.find("*", "id = " + id, model.newInstance());
+        return ObjectBuilder.toObject(rs, model);
     }
-    return null;
-  }
 
-  public static Set<?> find(String selectClause, String whereClause, Class<? extends Hermes> model) {
-    try {
-      return ObjectBuilder.toObjects(Adaptor.get().find(selectClause, whereClause, model.newInstance()), model);
-    } catch (Exception e) {
-      e.printStackTrace();
+    public static Set<?> find(String whereClause, Class<? extends Hermes> model) throws Exception {
+        return find("*", whereClause, model);
     }
-    return null;
-  }
 
-  // Finder for Jointure models. 
-  // The reason for this finder is that instances of this model have not the same table name.
-  public static Set<?> joinFind(int parentId, Jointure join) {
-    try {
-      return ObjectBuilder.toObjects(Adaptor.get().find("*", "parentId = " + parentId, join), Jointure.class);
-    } catch (Exception e) {
-      e.printStackTrace();
+    public static Set<?> find(String selectClause, String whereClause, Class<? extends Hermes> model) throws Exception {
+        ResultSet rs = adaptor.find(selectClause, whereClause, model.newInstance());
+        return ObjectBuilder.toObjects(rs, model);
     }
-    return null;
-  }
+
+    // Finder for Jointure models.
+    // The reason for this finder is that instances of this model have not the same table name.
+    public static Set<?> joinFind(int parentId, Jointure join) {
+        return ObjectBuilder.toObjects(adaptor.find("*", "parentId = " + parentId, join), Jointure.class);
+    }
 }

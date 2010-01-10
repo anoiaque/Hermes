@@ -138,8 +138,6 @@ public class Hermes {
 
   public List<Attribute> getAttributes() {
     return attributes;
-  }
-
-  
+  } 
  
 }
