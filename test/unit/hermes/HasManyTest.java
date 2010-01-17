@@ -1,4 +1,4 @@
-package tests.unit.hermes;
+package unit.hermes;
 
 import factory.Factory;
 import helpers.Database;
@@ -18,12 +18,13 @@ public class HasManyTest extends TestCase {
 
   }
 
-  public void xtestHasManyAssociationContent() {
+  public void testHasManyAssociationContent() {
     assertTrue(marc.getHasManyRelationsShip().containsKey("cars"));
     assertEquals(1, marc.getHasManyRelationsShip().size());
   }
 
-  public void testSave() {
+
+public void testSave() {
     Set<Car> cars = (Set<Car>) Factory.get("cars");
     marc.setCars(cars);
     marc.save();

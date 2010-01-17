@@ -1,4 +1,4 @@
-package tests.unit.pool;
+package unit.pool;
 
 import java.sql.Connection;
 
@@ -18,7 +18,7 @@ public class PoolTest extends TestCase {
 
     // Test release connection . Available connections increment if one connection is released.
     public void testReleaseConnection() {
-        assertEquals(5, pool.availableConnections());
+        assertEquals(defaultPoolSize, pool.availableConnections());
         Connection conn = pool.getConnexion();
         assertEquals(defaultPoolSize - 1, pool.availableConnections());
         pool.release(conn);

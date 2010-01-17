@@ -17,7 +17,7 @@ public class Attribute {
     this.value = value;
   }
 
-  public static ArrayList<Attribute> setAttributesFor(Hermes model) {
+  public static ArrayList<Attribute> load(Hermes model) {
     ArrayList<Attribute> list = new ArrayList<Attribute>();
     try {
       for (Field field : model.getClass().getDeclaredFields()) {
@@ -40,7 +40,7 @@ public class Attribute {
   public static boolean isBasic(String name, Hermes object) {
     Associations relations = object.getAssociations();
     return !(relations.getHasOneAssociations().containsKey(name)
-            || relations.getManyToManyRelationsShip().containsKey(name)
+            || relations.getManyToManyAsociations().containsKey(name)
             || relations.getHasManyRelationsShip().containsKey(name));
   }
 

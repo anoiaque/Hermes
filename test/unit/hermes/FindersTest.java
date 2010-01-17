@@ -1,4 +1,4 @@
-package tests.unit.hermes;
+package unit.hermes;
 
 import factory.Factory;
 import java.util.Set;

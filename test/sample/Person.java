@@ -8,7 +8,7 @@ public class Person extends Hermes {
 
   private int age;
   private String nom;
-  private Adress adresse;
+  private Address adresse;
   private Set<Pet> pets;
   private Set<Car> cars;
 
@@ -42,11 +42,11 @@ public class Person extends Hermes {
     this.nom = nom;
   }
 
-  public void setAdresse(Adress adresse) {
+  public void setAdresse(Address adresse) {
     this.adresse = adresse;
   }
 
-  public Adress getAdresse() {
+  public Address getAdresse() {
     return adresse;
   }
 

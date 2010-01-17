@@ -55,6 +55,7 @@ public class Pool {
   }
 
   public void release(Connection connection) {
+	  
     for (Connection conn : pool.keySet()) {
       if (connection.equals(conn)) {
         pool.put(connection, true);

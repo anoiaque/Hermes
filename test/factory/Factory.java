@@ -1,9 +1,9 @@
 package factory;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
-import sample.Adress;
+
+import sample.Address;
 import sample.Car;
 import sample.Person;
 import sample.Pet;
@@ -37,7 +37,7 @@ public class Factory {
     Person person = new Person();
     person.setAge(30);
     person.setNom("Marc");
-    person.setAdresse(new Adress(13, "rue Tabarly"));
+    person.setAdresse(new Address(13, "rue Tabarly"));
     person.setPets(pets());
     
     person.save();
@@ -48,7 +48,7 @@ public class Factory {
     Person person = new Person();
     person.setAge(25);
     person.setNom("Jean");
-    person.setAdresse(new Adress(28, "rue Kervegan"));
+    person.setAdresse(new Address(28, "rue Kervegan"));
     Set<Pet> pets = pets();
     pets.add(new Pet("Hamster", "Leon"));
     person.setPets(pets);

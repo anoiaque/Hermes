@@ -95,13 +95,13 @@ public class Hermes {
   }
 
    public void loadAttributes() {
-    this.attributes = (ArrayList<Attribute>) Attribute.setAttributesFor(this);
+    this.attributes = (ArrayList<Attribute>) Attribute.load(this);
 
   }
 
 // Getters & Setters
-  public HashMap<String, Relation> getManyToManyRelationsShip() {
-    return associations.getManyToManyRelationsShip();
+  public HashMap<String, Relation> getManyToManyAssociations() {
+    return associations.getManyToManyAsociations();
   }
 
   public HashMap<String, HasOne> getHasOneAssociations() {

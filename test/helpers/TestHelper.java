@@ -13,7 +13,7 @@ import sample.Pet;
 public class TestHelper extends TestCase {
 
   public static int jointureSizeFor(Hermes object, String attribute) {
-    Jointure jointure = object.getManyToManyRelationsShip().get(attribute).getJointure();
+    Jointure jointure = object.getManyToManyAssociations().get(attribute).getJointure();
     return Finder.joinFind(object.getId(), jointure).size();
   }
 
