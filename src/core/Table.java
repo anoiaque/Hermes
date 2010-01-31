@@ -7,13 +7,12 @@ import java.util.Set;
 public class Table {
 
 	public static String nameFor(Class<? extends Hermes> model) {
-		String tableName = "";
 		try {
-			tableName = (String) model.getMethod("getTableName").invoke(model.newInstance());
+			return (String) model.newInstance().getTableName();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return tableName;
 	}
 
 	public static String nameFor(String attribute, Hermes object) {
@@ -31,7 +30,6 @@ public class Table {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 }

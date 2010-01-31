@@ -9,25 +9,25 @@ import sample.Person;
 
 public class HasManyTest extends TestCase {
 
-  public static Person marc;
+	public static Person	marc;
 
-  @Override
-  public void setUp() {
-    Database.clear();
-    marc = (Person) Factory.get("marc");
+	@Override
+	public void setUp() {
+		Database.clear();
+		marc = (Person) Factory.get("marc");
 
-  }
+	}
 
-  public void testHasManyAssociationContent() {
-    assertTrue(marc.getHasManyRelationsShip().containsKey("cars"));
-    assertEquals(1, marc.getHasManyRelationsShip().size());
-  }
+	public void testHasManyAssociationContent() {
+		assertTrue(marc.getHasManyAssociations().containsKey("cars"));
+		assertEquals(1, marc.getHasManyAssociations().size());
+	}
 
-
-public void testSave() {
-    Set<Car> cars = (Set<Car>) Factory.get("cars");
-    marc.setCars(cars);
-    marc.save();
-
-  }
+	public void testSave() {
+		Set<Car> cars = (Set<Car>) Factory.get("cars");
+		marc.setCars(cars);
+		marc.save();
+		marc = (Person) marc.reload();
+		assertEquals(2, marc.getCars());
+	}
 }

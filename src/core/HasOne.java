@@ -2,12 +2,10 @@ package core;
 
 public class HasOne {
 
-	private Hermes parent;
-	private Hermes child;
-	private String attributeName;
-	private String fkName;
-	private Integer fkValue = null;
-	private boolean cascadeDelete = false;
+	private String	attributeName;
+	private String	fkName;
+	private Integer	fkValue			= null;
+	private boolean	cascadeDelete	= false;
 
 	// Constuctors
 	public HasOne(String attribute, String dependency) {
@@ -25,28 +23,12 @@ public class HasOne {
 		this.attributeName = attributeName;
 	}
 
-	public Hermes getChild() {
-		return child;
-	}
-
-	public void setChild(Hermes child) {
-		this.child = child;
-	}
-
 	public String getFkName() {
 		return fkName;
 	}
 
 	public void setFkName(String fkName) {
 		this.fkName = fkName;
-	}
-
-	public Hermes getParent() {
-		return parent;
-	}
-
-	public void setParent(Hermes parent) {
-		this.parent = parent;
 	}
 
 	public boolean isCascadeDelete() {

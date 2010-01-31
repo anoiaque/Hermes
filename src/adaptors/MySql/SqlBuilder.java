@@ -15,6 +15,7 @@ public class SqlBuilder {
 		HashMap<String, Object> attributes_values = getAttributesValuesAndForeignKeys(object);
 		String fields = attributes_values.keySet().toString().replace("[", "").replace("]", "");
 		String values = epure(attributes_values.values().toString());
+		
 		return "insert into  " + object.getTableName() + "(" + fields + ")" + "values (" + values
 				+ ")";
 	}

@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 public class UpdaterTest extends TestCase {
 
-	public static Person marc;
+	public static Person	marc;
 
 	public void setUp() {
 		Database.clear();
@@ -21,17 +21,25 @@ public class UpdaterTest extends TestCase {
 	}
 
 	public void testUpdate() {
-		assertEquals(1, Person.findAll(Person.class).size());
+		updateMarc();
+		assertMarcIsUpdated();
+	}
+
+	// Private
+
+	private void updateMarc() {
 		marc.setNom("titi");
 		marc.setAdresse(new Address(25, "rue de Brest"));
 		marc.save();
-		assertEquals(1, Person.findAll(Person.class).size());
-		
-		marc = (Person) Person.find(marc.getId(), Person.class);
+	}
+
+	private void assertMarcIsUpdated() {
+		marc = (Person) marc.reload();
 		assertEquals(30, marc.getAge());
 		assertEquals("titi", marc.getNom());
 		assertEquals(25, marc.getAdresse().getNumero());
 		assertEquals("rue de Brest", marc.getAdresse().getRue());
+		assertEquals(1, Person.findAll(Person.class).size());
 	}
 
 }

@@ -48,6 +48,13 @@ public class BasicTest extends TestCase {
 		assertTrue(containsAttribute(attributes, "age", "int", 30));
 		assertTrue(containsAttribute(attributes, "nom", nameType, "Marc"));
 	}
+	
+	public void testReloading(){
+		marc.setAge(100);
+		marc.save();
+		marc = (Person) marc.reload();
+		assertEquals(100, marc.getAge());
+	}
 
 	// private
 	private boolean containsAttribute(List<Attribute> list, String name, String type, Object value) {

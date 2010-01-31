@@ -14,67 +14,69 @@ import core.Hermes;
 
 public class MySql extends Adaptor {
 
-  public boolean save(Hermes object) {
-    return execute(SqlBuilder.getSqlInsertFor(object), object);
-  }
+	public boolean save(Hermes object) {
+		return execute(SqlBuilder.getSqlInsertFor(object), object);
+	}
 
-  public boolean update(Hermes object) {
-    return execute(SqlBuilder.getSqlUpdateFor(object), object);
-  }
+	public boolean update(Hermes object) {
+		return execute(SqlBuilder.getSqlUpdateFor(object), object);
+	}
 
-  public boolean delete(Hermes object) {
-    return execute(SqlBuilder.getSqlDeleteFor(object), object);
-  }
+	public boolean delete(Hermes object) {
+		return execute(SqlBuilder.getSqlDeleteFor(object), object);
+	}
 
-  public boolean delete(Hermes object, String conditions) {
-    return execute(SqlBuilder.getSqlDeleteFor(object, conditions), object);
-  }
+	public boolean delete(Hermes object, String conditions) {
+		return execute(SqlBuilder.getSqlDeleteFor(object, conditions), object);
+	}
 
-  public ResultSet find(String select_clause, String where_clause, Hermes model) {
-    Connection connexion = null;
-    Pool pool = Pool.getInstance();
-    try {
-      connexion = pool.getConnexion();
-      PreparedStatement statement = connexion.prepareStatement(SqlBuilder.select(select_clause, where_clause, model));
-      return statement.executeQuery();
+	public ResultSet find(String select_clause, String where_clause, Hermes model) {
+		Connection connexion = null;
+		Pool pool = Pool.getInstance();
+		String sql = SqlBuilder.select(select_clause, where_clause, model);
+		try {
+			connexion = pool.getConnexion();
+			PreparedStatement statement = connexion.prepareStatement(sql);
+			return statement.executeQuery();
 
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    } finally {
-      pool.release(connexion);
-    }
-  }
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			pool.release(connexion);
+		}
+	}
 
-  public String javaToSql(String javaType) {
-    return Mapping.javaToSql(javaType);
-  }
+	public String javaToSql(String javaType) {
+		return Mapping.javaToSql(javaType);
+	}
 
-  public boolean execute(String sql, Hermes object) {
-    Connection connexion = null;
-    Pool pool = Pool.getInstance();
-    ResultSet rs = null;
-    PreparedStatement statement;
-    try {
-      connexion = pool.getConnexion();
-      statement = connexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-      statement.execute();
-      rs = statement.getGeneratedKeys();
-      if (rs.next()) object.setId(rs.getInt(1));
+	public boolean execute(String sql, Hermes object) {
+		Connection connexion = null;
+		Pool pool = Pool.getInstance();
+		ResultSet rs = null;
+		PreparedStatement statement;
+		try {
+			connexion = pool.getConnexion();
+			statement = connexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			statement.execute();
+			rs = statement.getGeneratedKeys();
+			if (rs.next())
+				object.setId(rs.getInt(1));
 
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return false;
-    } finally {
-      pool.release(connexion);
-      try {
-        if (rs != null) rs.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
-    }
-    return true;
-  }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			pool.release(connexion);
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
 
-  
 }

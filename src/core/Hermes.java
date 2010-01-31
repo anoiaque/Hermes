@@ -7,137 +7,141 @@ import java.util.Set;
 
 public class Hermes {
 
-  private int id = 0;
-  private String tableName;
-  private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
-  private Associations associations = new Associations(this);
+	private int						id				= 0;
+	private String					tableName;
+	private ArrayList<Attribute>	attributes		= new ArrayList<Attribute>();
+	private Associations			associations	= new Associations(this);
 
-  // Constructeurs
-  public Hermes() {
-    tableName = (Inflector.pluralize(this.getClass().getSimpleName()));
-  }
+	// Constructeurs
+	public Hermes() {
+		tableName = (Inflector.pluralize(this.getClass().getSimpleName()));
+	}
 
-  // Public methods
-  public boolean save() {
-    return Updater.save(this);
-  }
+	// Public methods
+	public boolean save() {
+		return Updater.save(this);
+	}
 
-  public boolean delete() {
-    return Updater.delete(this);
-  }
+	public boolean delete() {
+		return Updater.delete(this);
+	}
 
-  public boolean delete(String conditions) {
-    return Updater.delete(this, conditions);
-  }
+	public boolean delete(String conditions) {
+		return Updater.delete(this, conditions);
+	}
 
-  public static Hermes find(int id, Class<? extends Hermes> model) {
-    return Finder.find(id, model);
-  }
+	public static Hermes find(int id, Class<? extends Hermes> model) {
+		return Finder.find(id, model);
+	}
 
-  public Hermes find(int id) {
-    return Finder.find(id, this.getClass());
-  }
+	public Hermes find(int id) {
+		return Finder.find(id, this.getClass());
+	}
 
-  public static Set<?> find(String conditions, Class<? extends Hermes> model) {
-    return Finder.find(conditions, model);
-  }
+	public static Set<?> find(String conditions, Class<? extends Hermes> model) {
+		return Finder.find(conditions, model);
+	}
 
-  public Set<?> find(String conditions) {
-    return Finder.find(conditions, this.getClass());
-  }
+	public Set<?> find(String conditions) {
+		return Finder.find(conditions, this.getClass());
+	}
 
-  public static Set<?> find(String select, String conditions, Class<? extends Hermes> model) {
-    return Finder.find(select, conditions, model);
-  }
+	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model) {
+		return Finder.find(select, conditions, model);
+	}
 
-  public Set<?> find(String select, String conditions) {
-    return Finder.find(select, conditions, this.getClass());
-  }
+	public Set<?> find(String select, String conditions) {
+		return Finder.find(select, conditions, this.getClass());
+	}
 
-  public static Set<?> findAll(Class<? extends Hermes> model) {
-    return Finder.find("*", null, model);
-  }
+	public static Set<?> findAll(Class<? extends Hermes> model) {
+		return Finder.find("*", null, model);
+	}
 
-  public Set<?> findAll() {
-    return Finder.find("*", null, this.getClass());
-  }
+	public Set<?> findAll() {
+		return Finder.find("*", null, this.getClass());
+	}
 
-  public Set<?> findBySql(String sqlRequest) {
-    return null;
-  }
+	public Set<?> findBySql(String sqlRequest) {
+		return null;
+	}
 
-  public boolean isNewRecord() {
-    return (id == 0);
-  }
+	public boolean isNewRecord() {
+		return (id == 0);
+	}
 
-  public void hasMany(String attribute, Relation rc) {
-    associations.hasMany(attribute, rc);
-  }
+	public Hermes reload() {
+		return find(this.id);
+	}
 
-  public void hasMany(String attribute) {
-    hasMany(attribute, new Relation());
-  }
+	public void hasMany(String attribute, String dependency) {
+		associations.hasMany(attribute, dependency);
+	}
 
-  public void hasOne(String attribute, String dependency) {
-    associations.hasOne(attribute, dependency);
-  }
+	public void hasMany(String attribute) {
+		hasMany(attribute, "");
+	}
 
-  public void hasOne(String attribute) {
-    hasOne(attribute);
-  }
+	public void hasOne(String attribute, String dependency) {
+		associations.hasOne(attribute, dependency);
+	}
 
-  public void manyToMany(String attribute, Relation rc) {
-    associations.manyToMany(attribute, rc);
-  }
+	public void hasOne(String attribute) {
+		hasOne(attribute, "");
+	}
 
-  public void manyToMany(String attribute) {
-    manyToMany(attribute, new Relation());
-  }
+	public void manyToMany(String attribute, String dependency) {
+		associations.manyToMany(attribute, dependency);
+	}
 
-   public void loadAttributes() {
-    this.attributes = (ArrayList<Attribute>) Attribute.load(this);
+	public void manyToMany(String attribute) {
+		manyToMany(attribute, "");
+	}
 
-  }
+	public void loadAttributes() {
+		this.attributes = (ArrayList<Attribute>) Attribute.load(this);
 
-// Getters & Setters
-  public HashMap<String, Relation> getManyToManyAssociations() {
-    return associations.getManyToManyAsociations();
-  }
+	}
 
-  public HashMap<String, HasOne> getHasOneAssociations() {
-    return associations.getHasOneAssociations();
-  }
+	// Getters & Setters
+	public HashMap<String, ManyToMany> getManyToManyAssociations() {
+		return associations.getManyToManyAsociations();
+	}
 
-  public HashMap<String, Relation> getHasManyRelationsShip() {
-    return associations.getHasManyRelationsShip();
-  }
+	public HashMap<String, HasOne> getHasOneAssociations() {
+		return associations.getHasOneAssociations();
+	}
 
-  public void setTableName(String table_name) {
-    this.tableName = table_name;
-  }
+	public HashMap<String, HasMany> getHasManyAssociations() {
+		return associations.getHasManyAssociations();
+	}
 
-  public String getTableName() {
-    return this.tableName;
-  }
+	public void setTableName(String table_name) {
+		this.tableName = table_name;
+	}
 
-  public int getId() {
-    return id;
-  }
+	public String getTableName() {
+		return this.tableName;
+	}
 
-  public void setId(int id) {
-    this.id = id;
-  }
+	public int getId() {
+		return id;
+	}
 
-  public Associations getAssociations() {
-    return associations;
-  }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-  public void setAssociations(Associations relations) {
-    this.associations = relations;
-  }
+	public Associations getAssociations() {
+		return associations;
+	}
 
-  public List<Attribute> getAttributes() {
-    return attributes;
-  } 
- 
+	public void setAssociations(Associations relations) {
+		this.associations = relations;
+	}
+
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+
 }

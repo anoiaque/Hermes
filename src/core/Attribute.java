@@ -41,7 +41,7 @@ public class Attribute {
     Associations relations = object.getAssociations();
     return !(relations.getHasOneAssociations().containsKey(name)
             || relations.getManyToManyAsociations().containsKey(name)
-            || relations.getHasManyRelationsShip().containsKey(name));
+            || relations.getHasManyAssociations().containsKey(name));
   }
 
   // Getters & Setters

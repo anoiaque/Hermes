@@ -24,11 +24,11 @@ public class HermesRelationalTest extends TestCase {
 	public void testAssociationsBuilding() {
 		assertTrue(marc.getHasOneAssociations().containsKey("adresse"));
 		assertTrue(marc.getManyToManyAssociations().containsKey("pets"));
-		assertTrue(marc.getHasManyRelationsShip().containsKey("cars"));
+		assertTrue(marc.getHasManyAssociations().containsKey("cars"));
 
 		assertEquals(1, marc.getHasOneAssociations().size());
 		assertEquals(1, marc.getManyToManyAssociations().size());
-		assertEquals(1, marc.getHasManyRelationsShip().size());
+		assertEquals(1, marc.getHasManyAssociations().size());
 	}
 
 
