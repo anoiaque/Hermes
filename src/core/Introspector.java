@@ -6,6 +6,16 @@ import java.util.Set;
 
 public class Introspector {
 
+	public static Field fieldFor(Hermes klass, Attribute attribute) {
+		try {
+			return klass.getClass().getDeclaredField(attribute.getName());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public static Field[] fieldsOf(Hermes klass) {
 		return klass.getClass().getDeclaredFields();
 	}

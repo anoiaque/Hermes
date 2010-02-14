@@ -3,6 +3,8 @@ package unit.hermes;
 import factory.Factory;
 import java.util.Set;
 
+import core.Hermes;
+
 import junit.framework.TestCase;
 import sample.Person;
 import helpers.Database;
@@ -26,7 +28,7 @@ public class FindersTest extends TestCase {
 	public void testFindById() {
 		marc.setAge(0);
 		marc.setNom("");
-		marc = (Person) Person.find(marc.getId(), Person.class);
+		marc = (Person) Hermes.find(marc.getId(), Person.class);
 		assertEquals(30, marc.getAge());
 		assertEquals("Marc", marc.getNom());
 	}

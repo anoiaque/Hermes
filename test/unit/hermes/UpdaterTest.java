@@ -2,9 +2,8 @@ package unit.hermes;
 
 import factory.Factory;
 import helpers.Database;
-import sample.Address;
-import sample.Person;
 import junit.framework.TestCase;
+import sample.Person;
 
 public class UpdaterTest extends TestCase {
 

@@ -11,35 +11,32 @@ public class Finder {
 	private static Adaptor	adaptor	= Adaptor.get();
 
 	public static Hermes find(int id, Class<? extends Hermes> model) {
-		try {
-			ResultSet rs = adaptor.find("*", "id = " + id, model.newInstance());
-			return ObjectBuilder.toObject(rs, model);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		return findFirst("*", "id = " + id, model);
 	}
 
-	public static Set<?> find(String whereClause, Class<? extends Hermes> model) {
-		return find("*", whereClause, model);
+	public static Hermes findFirst(String select, String conditions, Class<? extends Hermes> model) {
+		Iterator<?> set = find(conditions, model).iterator();
+		if (!set.hasNext()) return null;
+		return (Hermes) set.next();
 	}
 
-	public static Set<?> find(String selectClause, String whereClause, Class<? extends Hermes> model) {
+	public static Hermes findFirst(String conditions, Class<? extends Hermes> model) {
+		return findFirst("*", conditions, model);
+	}
+
+	public static Set<?> find(String conditions, Class<? extends Hermes> model) {
+		return find("*", conditions, model);
+	}
+
+	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model) {
 		try {
-			ResultSet rs = adaptor.find(selectClause, whereClause, model.newInstance());
+			ResultSet rs = adaptor.find(select, conditions, model.newInstance());
 			return ObjectBuilder.toObjects(rs, model);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	public static Hermes findFirst(String conditions, Class<? extends Hermes> model) {
-		Iterator<?> set = find(conditions, model).iterator();
-		if (set.hasNext()) return (Hermes) set.next();
-		return null;
 	}
 
 	// Finder for Jointure models.

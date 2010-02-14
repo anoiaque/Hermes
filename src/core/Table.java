@@ -7,7 +7,7 @@ public class Table {
 		return Inflector.pluralize(name).toUpperCase();
 	}
 
-	public static String joinTableNameFor(Hermes model, String attribute) {
+	public static String joinTableNameFor(String attribute, Hermes model) {
 		String parentName = model.getTableName();
 		String childName = nameFor(attribute, model);
 		return parentName + "_" + childName;

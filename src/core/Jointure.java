@@ -12,8 +12,18 @@ public class Jointure extends Hermes {
 	public Jointure() {}
 
 	public Jointure(Hermes model, String attribute) {
-		this.tableName = Table.joinTableNameFor(model, attribute);
+		this.tableName = Table.joinTableNameFor(attribute, model);
 		Adaptor.get().execute(SqlBuilder.build("jointure", tableName), this);
+	}
+
+	public boolean save(int parentId, int childId) {
+		this.parentId = parentId;
+		this.childId = childId;
+		return save();
+	}
+
+	public void clear(Hermes parent) {
+		delete("parentId=" + parent.getId());
 	}
 
 	// Getters & setters
