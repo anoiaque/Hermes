@@ -15,34 +15,35 @@ import core.Hermes;
 public class MySql extends Adaptor {
 
 	public boolean save(Hermes object) {
-		return execute(SqlBuilder.getSqlInsertFor(object), object);
+		return execute(SqlBuilder.build("insert", null, object), object);
 	}
 
 	public boolean update(Hermes object) {
-		return execute(SqlBuilder.getSqlUpdateFor(object), object);
+		return execute(SqlBuilder.build("update", null, object), object);
 	}
 
 	public boolean delete(Hermes object) {
-		return execute(SqlBuilder.getSqlDeleteFor(object), object);
+		return execute(SqlBuilder.build("delete", null, object), object);
 	}
 
 	public boolean delete(Hermes object, String conditions) {
-		return execute(SqlBuilder.getSqlDeleteFor(object, conditions), object);
+		return execute(SqlBuilder.build("delete", conditions, object), object);
 	}
 
-	public ResultSet find(String select_clause, String where_clause, Hermes model) {
+	public ResultSet find(String select, String conditions, Hermes model) {
 		Connection connexion = null;
 		Pool pool = Pool.getInstance();
-		String sql = SqlBuilder.select(select_clause, where_clause, model);
+		String sql = SqlBuilder.build("select", select, conditions, model);
 		try {
 			connexion = pool.getConnexion();
 			PreparedStatement statement = connexion.prepareStatement(sql);
 			return statement.executeQuery();
-
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		} finally {
+		}
+		finally {
 			pool.release(connexion);
 		}
 	}
@@ -61,22 +62,21 @@ public class MySql extends Adaptor {
 			statement = connexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			statement.execute();
 			rs = statement.getGeneratedKeys();
-			if (rs.next())
-				object.setId(rs.getInt(1));
-
-		} catch (SQLException e) {
+			if (rs.next()) object.setId(rs.getInt(1));
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 			return false;
-		} finally {
+		}
+		finally {
 			pool.release(connexion);
 			try {
-				if (rs != null)
-					rs.close();
-			} catch (SQLException e) {
+				if (rs != null) rs.close();
+			}
+			catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return true;
 	}
-
 }

@@ -17,6 +17,6 @@ public class JointureTest extends TestCase {
     public void testJointureTableName() {
 	Jointure jointure = marc.getManyToManyAssociations().get("pets").getJointure();
 
-	assertEquals("PERSON_PET", jointure.getTableName());
+	assertEquals("PEOPLE_PETS", jointure.getTableName());
     }
 }

@@ -12,7 +12,7 @@ public class Finder {
     public static Hermes find(int id, Class<? extends Hermes> model) {
         try {
             ResultSet rs = adaptor.find("*", "id = " + id, model.newInstance());
-            return ObjectBuilder.toObject(rs, model);
+			return ObjectBuilder.toObject(rs, model);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -7,14 +7,14 @@ import java.util.Set;
 
 public class Hermes {
 
-	private int						id				= 0;
-	private String					tableName;
+	private int										id						= 0;
+	protected String							tableName;
 	private ArrayList<Attribute>	attributes		= new ArrayList<Attribute>();
-	private Associations			associations	= new Associations(this);
+	private Associations					associations	= new Associations(this);
 
 	// Constructeurs
 	public Hermes() {
-		tableName = (Inflector.pluralize(this.getClass().getSimpleName()));
+		tableName = Inflector.pluralize(Introspector.className(this)).toUpperCase();
 	}
 
 	// Public methods
@@ -97,10 +97,13 @@ public class Hermes {
 	public void manyToMany(String attribute) {
 		manyToMany(attribute, "");
 	}
+	
+	public void belongsTo(Hermes object){
+		associations.belongsTo(object);
+	}
 
 	public void loadAttributes() {
 		this.attributes = (ArrayList<Attribute>) Attribute.load(this);
-
 	}
 
 	// Getters & Setters
@@ -143,5 +146,4 @@ public class Hermes {
 	public List<Attribute> getAttributes() {
 		return attributes;
 	}
-
 }

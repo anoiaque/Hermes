@@ -7,6 +7,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import sample.Address;
+import sample.Car;
 import sample.Person;
 import sample.Personne;
 import sample.Pet;
@@ -24,10 +25,12 @@ public class BasicTest extends TestCase {
 	}
 
 	public void testDefaultTableName() {
-		assertEquals("people", marc.getTableName());
-		assertEquals("people", Table.nameFor(Person.class));
-		assertEquals("addresses", Table.nameFor(Address.class));
-		assertEquals("pets", Table.nameFor(Pet.class));
+		assertEquals("PEOPLE", marc.getTableName());
+		assertEquals("PEOPLE", Table.nameFor(Person.class));
+		assertEquals("ADDRESSES", Table.nameFor(Address.class));
+		assertEquals("PETS", Table.nameFor(Pet.class));
+		assertEquals("CARS", Table.nameFor(Car.class));
+		
 	}
 
 	public void testRedefinedTableName() {

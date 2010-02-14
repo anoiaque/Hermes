@@ -7,61 +7,65 @@ import java.util.ArrayList;
 
 public class Attribute {
 
-  private String name;
-  private String sqlType;
-  private Object value;
+	private String	name;
+	private String	sqlType;
+	private Object	value;
 
-  public Attribute(String name, String type, Object value) {
-    this.name = name;
-    this.sqlType = type;
-    this.value = value;
-  }
+	public Attribute(String name, String type, Object value) {
+		this.name = name;
+		this.sqlType = type;
+		this.value = value;
+	}
 
-  public static ArrayList<Attribute> load(Hermes model) {
-    ArrayList<Attribute> list = new ArrayList<Attribute>();
-    try {
-      for (Field field : model.getClass().getDeclaredFields()) {
-        if (isBasic(field.getName(), model)) {
-          field.setAccessible(true);
-          String name = field.getName();
-          String sqlType = Adaptor.get().javaToSql(field.getType().getSimpleName());
-          Object value = field.get(model);
-          list.add(new Attribute(name, sqlType, value));
-        }
-      }
+	public static ArrayList<Attribute> load(Hermes model) {
+		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+		for (Field field : Introspector.fieldsOf(model))
+			if (basic(field, model)) attributes.add(attributize(field, model));
+		return attributes;
+	}
 
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-   
-    return list;
-  }
+	// Getters & Setters
+	public String getName() {
+		return name;
+	}
 
-  public static boolean isBasic(String name, Hermes object) {
-    Associations relations = object.getAssociations();
-    return !(relations.getHasOneAssociations().containsKey(name)
-            || relations.getManyToManyAsociations().containsKey(name)
-            || relations.getHasManyAssociations().containsKey(name));
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  // Getters & Setters
-  public String getName() {
-    return name;
-  }
+	public Object getValue() {
+		return value;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setValue(Object value) {
+		this.value = value;
+	}
 
-  public Object getValue() {
-    return value;
-  }
+	public String getSqlType() {
+		return sqlType;
+	}
 
-  public void setValue(Object value) {
-    this.value = value;
-  }
+	// Private methods
+	private static Attribute attributize(Field field, Hermes model) {
+		try {
+			field.setAccessible(true);
+			String name = field.getName();
+			String sqlType = Adaptor.get().javaToSql(field.getType().getSimpleName());
+			Object value = field.get(model);
+			return new Attribute(name, sqlType, value);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-  public String getSqlType() {
-    return sqlType;
-  }
+	private static boolean basic(Field field, Hermes object) {
+		Associations relations = object.getAssociations();
+		String attribute = field.getName();
+		if (relations.getHasOneAssociations().containsKey(attribute)) return false;
+		if (relations.getManyToManyAsociations().containsKey(attribute)) return false;
+		if (relations.getHasManyAssociations().containsKey(attribute)) return false;
+		return true;
+	}
 }
