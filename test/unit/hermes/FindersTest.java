@@ -11,71 +11,71 @@ import sample.Personne;
 
 public class FindersTest extends TestCase {
 
-  public static Person marc, jean;
+	public static Person	marc, jean;
 
-  
-  public void setUp() {
-    Database.clear();
-    marc = (Person) Factory.get("marc");
-    jean = (Person) Factory.get("jean");
-  }
+	public void setUp() {
+		marc = (Person) Factory.get("marc");
+		jean = (Person) Factory.get("jean");
+	}
 
-  // Test Find by id
-  public void testFindById() {
-    marc.setAge(0);
-    marc.setNom("");
-    marc = (Person) Person.find(marc.getId(), Person.class);
-    assertEquals(30, marc.getAge());
-    assertEquals("Marc", marc.getNom());
-  }
+	public void tearDown() {
+		Database.clear();
+	}
 
-  // Test Find with conditions
-  public void testFindWithConditions() {
-    int id = marc.getId();
-    marc.setId(-1);
-    marc = (Person) Person.find("age = 30", Person.class).iterator().next();
-    assertEquals(id, marc.getId());
-  }
+	// Test Find by id
+	public void testFindById() {
+		marc.setAge(0);
+		marc.setNom("");
+		marc = (Person) Person.find(marc.getId(), Person.class);
+		assertEquals(30, marc.getAge());
+		assertEquals("Marc", marc.getNom());
+	}
 
-  // Test find object(s) with conditions on child's attributes
-  // For child of has_one relationship
-  public void testFindWithConditionsOnChildAttributes() {
-    Set<Person> people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
-    assertEquals(1, people.size());
-    jean.getAdresse().setNumero(13);
-    jean.save();
-    people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
-    assertEquals(2, people.size());
-    people = (Set<Person>) Person.find("adresse.rue = 'rue Kervegan'", Person.class);
-    assertEquals(1, people.size());
-  }
+	// Test Find with conditions
+	public void testFindWithConditions() {
+		int id = marc.getId();
+		marc.setId(-1);
+		marc = (Person) Person.find("age = 30", Person.class).iterator().next();
+		assertEquals(id, marc.getId());
+	}
 
-  // Test find with many to many relations
-  public void testFindWithManyToManyRelation() {
-    Person newMarc = (Person) Person.find(marc.getId(), Person.class);
-    (new TestHelper()).assertMarcRetrieveHisPets(newMarc);
+	public void testFindWithConditionsOnChildAttributes() {
+		Set<Person> people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
+		assertEquals(1, people.size());
+		jean.getAdresse().setNumero(13);
+		jean.save();
+		people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
+		assertEquals(2, people.size());
+		people = (Set<Person>) Person.find("adresse.rue = 'rue Kervegan'", Person.class);
+		assertEquals(1, people.size());
+	}
 
-  }
+	// Test find with many to many relations
+	public void testFindWithManyToManyRelation() {
+		Person newMarc = (Person) Person.find(marc.getId(), Person.class);
+		(new TestHelper()).assertMarcRetrieveHisPets(newMarc);
+	}
 
-  // Test find with conditions with many to many relations
-  public void testFindWithConditionsOnManyToManyRelation() {
-    Person newMarc = (Person) Person.find("age = 30", Person.class).iterator().next();
-    (new TestHelper()).assertMarcRetrieveHisPets(newMarc);
-  }
+	// Test find with conditions with many to many relations
+	public void testFindWithConditionsOnManyToManyRelation() {
+		Person newMarc = (Person) Person.find("age = 30", Person.class).iterator().next();
+		(new TestHelper()).assertMarcRetrieveHisPets(newMarc);
+	}
 
-  // Test find with static method (for external use) and on an instance(used in the model class)
-  public void testStaticAndOnInstanceFindersSameResult() {
-    Person clone1 = (Person) marc.find(marc.getId());
-    Person clone2 = (Person) Person.find(marc.getId(), Person.class);
-    assertEquals(clone1.getId(), clone2.getId());
-  }
+	// Test find with static method (for external use) and on an instance(used in
+	// the model class)
+	public void testStaticAndOnInstanceFindersSameResult() {
+		Person clone1 = (Person) marc.find(marc.getId());
+		Person clone2 = (Person) Person.find(marc.getId(), Person.class);
+		assertEquals(clone1.getId(), clone2.getId());
+	}
 
-  // Test find when table's name has been changed in the model
-  public void testFindWhenTableNameChanged(){
-    Personne p = new Personne();
-    p.setNom("Pierre");
-    p.save();
-    p = (Personne) Personne.find(p.getId(), Personne.class);
-    assertEquals("Pierre",p.getNom());
-  }
+	// Test find when table's name has been changed in the model
+	public void testFindWhenTableNameChanged() {
+		Personne p = new Personne();
+		p.setNom("Pierre");
+		p.save();
+		p = (Personne) Personne.find(p.getId(), Personne.class);
+		assertEquals("Pierre", p.getNom());
+	}
 }

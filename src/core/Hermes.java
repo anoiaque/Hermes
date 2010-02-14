@@ -62,6 +62,10 @@ public class Hermes {
 		return Finder.find("*", null, this.getClass());
 	}
 
+	public Hermes findFirst(String conditions) {
+		return Finder.findFirst(conditions, this.getClass());
+	}
+
 	public Set<?> findBySql(String sqlRequest) {
 		return null;
 	}
@@ -97,8 +101,8 @@ public class Hermes {
 	public void manyToMany(String attribute) {
 		manyToMany(attribute, "");
 	}
-	
-	public void belongsTo(Hermes object){
+
+	public void belongsTo(Hermes object) {
 		associations.belongsTo(object);
 	}
 

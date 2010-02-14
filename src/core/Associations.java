@@ -53,8 +53,8 @@ public class Associations {
 		for (String attribute : hasOneAssociations.keySet()) {
 			Hermes object = (Hermes) Introspector.getObject(attribute, parent);
 			if (object == null) continue;
+			object.belongsTo(parent);
 			object.save();
-			hasOneAssociations.get(attribute).setFkValue(object.getId());
 		}
 	}
 
@@ -167,11 +167,10 @@ public class Associations {
 	private void loasHasOneAssociations(Hermes object, ResultSet rs) {
 		for (String attr : hasOneAssociations.keySet()) {
 			try {
-				object.getAssociations().getHasOneAssociations().get(attr).setFkValue(
-						rs.getInt(attr + "_id"));
+				String fk = Inflector.foreignKeyName(Introspector.className(object));
 				Field field = object.getClass().getDeclaredField(attr);
 				Hermes obj = (Hermes) field.getType().newInstance();
-				obj = Finder.find(hasOneAssociations.get(attr).getFkValue(), obj.getClass());
+				obj = (Hermes) Finder.findFirst(fk + "=" + object.getId(), obj.getClass());
 				field.setAccessible(true);
 				field.set(object, obj);
 			}

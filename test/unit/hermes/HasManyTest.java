@@ -18,12 +18,16 @@ public class HasManyTest extends TestCase {
 		marc = (Person) Factory.get("marc");
 	}
 
+	public void tearDown() {
+		Database.clear();
+	}
+
 	public void testHasManyAssociationContent() {
 		assertTrue(marc.getHasManyAssociations().containsKey("cars"));
 		assertEquals(1, marc.getHasManyAssociations().size());
 	}
 
-	public void testSave() {
+	public void testSaveAndLoad() {
 		Set<Car> cars = (Set<Car>) Factory.get("cars");
 		marc.setCars(cars);
 		marc.save();

@@ -1,5 +1,6 @@
 package all;
 
+import helpers.Database;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import unit.hermes.BasicTest;
@@ -15,6 +16,7 @@ import unit.pool.PoolTest;
 public class AllTest extends TestSuite {
 
 	public static Test suite() {
+		Database.clear();
 		TestSuite suite = new TestSuite("all");
 		suite.addTest(new TestSuite(FindersTest.class));
 		suite.addTest(new TestSuite(BasicTest.class));

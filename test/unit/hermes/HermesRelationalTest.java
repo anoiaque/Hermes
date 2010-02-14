@@ -14,23 +14,25 @@ import sample.Pet;
 
 public class HermesRelationalTest extends TestCase {
 
-	public static Person marc;
+	public static Person	marc;
 
 	public void setUp() {
 		Database.clear();
 		marc = (Person) Factory.get("marc");
 	}
 
+	public void tearDown() {
+		Database.clear();
+	}
+
 	public void testAssociationsBuilding() {
 		assertTrue(marc.getHasOneAssociations().containsKey("adresse"));
 		assertTrue(marc.getManyToManyAssociations().containsKey("pets"));
 		assertTrue(marc.getHasManyAssociations().containsKey("cars"));
-
 		assertEquals(1, marc.getHasOneAssociations().size());
 		assertEquals(1, marc.getManyToManyAssociations().size());
 		assertEquals(1, marc.getHasManyAssociations().size());
 	}
-
 
 	// Test on update in a many_to_many relation when the many_to_many field
 	// reference existed before (not null)
@@ -53,7 +55,6 @@ public class HermesRelationalTest extends TestCase {
 		Person p = new Person();
 		p.save();
 		assertEquals(2, Pet.findAll(Pet.class).size());
-
 		p.setPets((Set<Pet>) Factory.get("pets"));
 		p.save();
 		assertEquals(4, Pet.findAll(Pet.class).size());
@@ -90,8 +91,7 @@ public class HermesRelationalTest extends TestCase {
 	public void testCascadeDeleteWithRelationManyToMany() {
 		marc.getManyToManyAssociations().get("pets").setCascadeDelete(true);
 		marc.delete();
-		assertNull(Pet
-				.find(marc.getPets().iterator().next().getId(), Pet.class));
+		assertNull(Pet.find(marc.getPets().iterator().next().getId(), Pet.class));
 	}
 
 	// Test on delete cascading with many_to_many relations .
@@ -131,6 +131,5 @@ public class HermesRelationalTest extends TestCase {
 		marc.save();
 		marc = (Person) Person.find(marc.getId(), Person.class);
 		assertEquals(1, TestHelper.jointureSizeFor(marc, "pets"));
-
 	}
 }

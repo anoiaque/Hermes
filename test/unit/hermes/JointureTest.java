@@ -7,16 +7,20 @@ import sample.Person;
 import junit.framework.TestCase;
 
 public class JointureTest extends TestCase {
-    public static Person marc;
 
-    public void setUp() {
-	Database.clear();
-	marc = (Person) Factory.get("marc");
-    }
+	public static Person	marc;
 
-    public void testJointureTableName() {
-	Jointure jointure = marc.getManyToManyAssociations().get("pets").getJointure();
+	public void setUp() {
+		Database.clear();
+		marc = (Person) Factory.get("marc");
+	}
 
-	assertEquals("PEOPLE_PETS", jointure.getTableName());
-    }
+	public void tearDown() {
+		Database.clear();
+	}
+
+	public void testJointureTableName() {
+		Jointure jointure = marc.getManyToManyAssociations().get("pets").getJointure();
+		assertEquals("PEOPLE_PETS", jointure.getTableName());
+	}
 }

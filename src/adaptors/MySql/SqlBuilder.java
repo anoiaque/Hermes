@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import core.Associations;
 import core.Attribute;
 import core.BelongsTo;
-import core.HasOne;
 import core.Hermes;
 import core.Table;
 
@@ -58,7 +57,6 @@ public class SqlBuilder {
 				setClause += ",";
 			}
 		}
-
 		return "update " + object.getTableName() + " set " + setClause.replace("'null'", "null")
 				+ " where id =" + object.getId();
 	}
@@ -111,8 +109,9 @@ public class SqlBuilder {
 		for (String attribute : joinedTables.keySet()) {
 			pattern = Pattern.compile(attribute + ".");
 			sqlWhere = pattern.matcher(sqlWhere).replaceAll(joinedTables.get(attribute) + ".");
-			sqlWhere += " and " + object.getHasOneAssociations().get(attribute).getFkName() + "="
-					+ joinedTables.get(attribute) + ".id";
+			sqlWhere += " and " + joinedTables.get(attribute) + "."
+					+ object.getClass().getSimpleName().toLowerCase() + "_id" + "="
+					+ Table.nameFor(object.getClass()) + ".id";
 		}
 		return sqlWhere;
 	}
@@ -134,11 +133,6 @@ public class SqlBuilder {
 	private static HashMap<String, Object> foreignKeys(Hermes object) {
 		Associations associations = object.getAssociations();
 		HashMap<String, Object> fkHash = new HashMap<String, Object>();
-		Iterator<String> attributes = associations.getHasOneAssociations().keySet().iterator();
-		while (attributes.hasNext()) {
-			HasOne rel = associations.getHasOneAssociations().get(attributes.next());
-			fkHash.put(rel.getFkName(), rel.getFkValue());
-		}
 		ArrayList<BelongsTo> battributes = (ArrayList<BelongsTo>) associations
 				.getBelongsToAssociations();
 		for (BelongsTo battribute : battributes) {

@@ -7,8 +7,9 @@ public class Updater {
 	public static boolean save(Hermes object) {
 		if (!object.isNewRecord()) return update(object);
 		object.loadAttributes();
-		object.getAssociations().saveHasOneAssociations();
+		
 		boolean saved = Adaptor.get().save(object);
+		object.getAssociations().saveHasOneAssociations();
 		object.getAssociations().saveHasManyAssociations();
 		object.getAssociations().saveManyToManyAssociations();
 		return saved;
@@ -16,8 +17,9 @@ public class Updater {
 
 	public static boolean update(Hermes object) {
 		object.loadAttributes();
-		object.getAssociations().saveHasOneAssociations();
+	
 		boolean updated = Adaptor.get().update(object);
+		object.getAssociations().saveHasOneAssociations();
 		object.getAssociations().saveHasManyAssociations();
 		object.getAssociations().saveManyToManyAssociations();
 		return updated;

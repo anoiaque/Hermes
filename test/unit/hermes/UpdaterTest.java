@@ -15,31 +15,20 @@ public class UpdaterTest extends TestCase {
 		marc = (Person) Factory.get("marc");
 	}
 
+	public void tearDown() {
+		Database.clear();
+	}
+
 	public void testDelete() {
 		marc.delete();
 		assertNull(Person.find(marc.getId(), Person.class));
 	}
 
 	public void testUpdate() {
-		updateMarc();
-		assertMarcIsUpdated();
-	}
-
-	// Private
-
-	private void updateMarc() {
 		marc.setNom("titi");
-		marc.setAdresse(new Address(25, "rue de Brest"));
 		marc.save();
-	}
-
-	private void assertMarcIsUpdated() {
+		marc.setNom("tata");
 		marc = (Person) marc.reload();
-		assertEquals(30, marc.getAge());
 		assertEquals("titi", marc.getNom());
-		assertEquals(25, marc.getAdresse().getNumero());
-		assertEquals("rue de Brest", marc.getAdresse().getRue());
-		assertEquals(1, Person.findAll(Person.class).size());
 	}
-
 }

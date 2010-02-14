@@ -17,11 +17,14 @@ import core.Table;
 
 public class BasicTest extends TestCase {
 
-	public static Person marc;
+	public static Person	marc;
 
 	public void setUp() {
-		Database.clear();
 		marc = (Person) Factory.get("marc");
+	}
+
+	public void tearDown() {
+		Database.clear();
 	}
 
 	public void testDefaultTableName() {
@@ -30,7 +33,6 @@ public class BasicTest extends TestCase {
 		assertEquals("ADDRESSES", Table.nameFor(Address.class));
 		assertEquals("PETS", Table.nameFor(Pet.class));
 		assertEquals("CARS", Table.nameFor(Car.class));
-		
 	}
 
 	public void testRedefinedTableName() {
@@ -47,12 +49,11 @@ public class BasicTest extends TestCase {
 		Integer varcharLength = Configuration.SqlConverterConfig.varcharLength;
 		String nameType = "varchar(" + varcharLength + ")";
 		List<Attribute> attributes = marc.getAttributes();
-
 		assertTrue(containsAttribute(attributes, "age", "int", 30));
 		assertTrue(containsAttribute(attributes, "nom", nameType, "Marc"));
 	}
-	
-	public void testReloading(){
+
+	public void testReloading() {
 		marc.setAge(100);
 		marc.save();
 		marc = (Person) marc.reload();
@@ -65,9 +66,7 @@ public class BasicTest extends TestCase {
 			String aname = attr.getName();
 			String atype = attr.getSqlType();
 			Object avalue = attr.getValue();
-			
-			if (aname.equals(name) && atype.equals(type) && avalue.equals(value))
-				return true;
+			if (aname.equals(name) && atype.equals(type) && avalue.equals(value)) return true;
 		}
 		return false;
 	}
