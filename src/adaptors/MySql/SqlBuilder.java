@@ -61,16 +61,16 @@ public class SqlBuilder {
 	}
 
 	private static String select(String select, String conditions, Hermes object) {
-		String from = fromClause(conditions, object);
-		conditions = Analyser.joinedConditions(conditions, object);
-		sql = "select " + select + " from " + from;
-		return (conditions == null) ? sql : sql + " where " + conditions;
+		String sql = "select " + select + " from " + fromClause(conditions, object);;
+		if (conditions == null) return sql;
+		return sql + " where " + Analyser.joinedConditions(conditions, object);
 	}
 
 	private static String fromClause(String conditions, Hermes object) {
 		String from = object.getTableName();
 		if (conditions == null) return from;
-		for (String table : Analyser.tables(conditions, object).values())
+
+		for (String table : Analyser.joinedTables(conditions, object).values())
 			from += "," + table;
 		return from;
 	}
