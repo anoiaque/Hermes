@@ -1,18 +1,16 @@
 package adaptors.MySql;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
-import core.Associations;
 import core.Attribute;
 import core.BelongsTo;
 import core.Hermes;
-import core.Table;
 
 public class SqlBuilder {
+
+	static String	sql	= "";
 
 	public static String build(String request, String conditions, Hermes object) {
 		if (request.equals("insert")) return insert(object);
@@ -28,37 +26,30 @@ public class SqlBuilder {
 	}
 
 	public static String build(String request, String name) {
-		if (request.equals("jointure")) return create_join_table(name);
+		if (request.equals("jointure")) return createJoinTable(name);
 		return "";
 	}
 
 	// Private methods
-	private static String create_join_table(String name) {
-		String sql = "create  table if not exists " + name;
+	private static String createJoinTable(String name) {
+		sql = "create  table if not exists " + name;
 		sql += "(parentId int default null,childId int default null);";
 		return sql;
 	}
 
 	private static String insert(Hermes object) {
-		HashMap<String, Object> attributes_values = getAttributesValuesAndForeignKeys(object);
-		String fields = attributes_values.keySet().toString().replace("[", "").replace("]", "");
-		String values = epure(attributes_values.values().toString());
-		return "insert into  " + object.getTableName() + "(" + fields + ")" + "values (" + values + ")";
+		HashMap<String, Object> columnsValues = columnsValues(object);
+		String columns = epureColumns(columnsValues.keySet().toString());
+		String values = epureValues(columnsValues.values().toString());
+		sql = "insert into  " + object.getTableName() + "(" + columns + ")" + "values (" + values + ")";
+		return sql;
 	}
 
 	private static String update(Hermes object) {
-		HashMap<String, Object> attributes_values = getAttributesValuesAndForeignKeys(object);
-		String setClause = "";
-		Iterator<String> attrs = attributes_values.keySet().iterator();
-		while (attrs.hasNext()) {
-			String attr = attrs.next();
-			setClause += attr + "='" + attributes_values.get(attr) + "'";
-			if (attrs.hasNext()) {
-				setClause += ",";
-			}
-		}
-		return "update " + object.getTableName() + " set " + setClause.replace("'null'", "null")
-				+ " where id =" + object.getId();
+		sql = "update " + object.getTableName() + " set ";
+		sql += setClause(columnsValues(object)).replace("'null'", "null");
+		sql += " where id =" + object.getId();
+		return sql;
 	}
 
 	private static String delete(Hermes object) {
@@ -69,75 +60,66 @@ public class SqlBuilder {
 		return "delete from " + object.getTableName() + " where " + conditions;
 	}
 
-	private static String select(String select_clause, String where_clause, Hermes object) {
-		HashMap<String, String> joinedTables = new HashMap<String, String>();
-		if (where_clause != null) {
-			joinedTables = joinedTables(where_clause, object);
-			where_clause = attributeNameToTableName(joinedTables, where_clause, object);
-		}
-		String from_clause = sqlFrom(joinedTables, object);
-		String sqlSelect = "select " + select_clause + " from " + from_clause;
-		return (where_clause == null) ? sqlSelect : sqlSelect + " where " + where_clause;
+	private static String select(String select, String conditions, Hermes object) {
+		String from = sqlFrom(conditions, object);
+		conditions = Analyser.joinedConditions(conditions, object);
+		sql = "select " + select + " from " + from;
+		return (conditions == null) ? sql : sql + " where " + conditions;
 	}
 
-	private static String sqlFrom(HashMap<String, String> joinedTables, Hermes object) {
+	private static String sqlFrom(String conditions, Hermes object) {
+		HashMap<String, String> joinedTables = new HashMap<String, String>();
+		if (conditions != null) joinedTables = Analyser.tables(conditions, object);
 		String sqlFrom = object.getTableName();
+
 		for (String table : joinedTables.values()) {
 			sqlFrom += "," + table;
 		}
 		return sqlFrom;
 	}
 
-	public static HashMap<String, String> joinedTables(String where_clause, Hermes object) {
-		HashMap<String, String> joinedTables = new HashMap<String, String>();
-		Pattern pattern;
-		pattern = Pattern.compile("'(.)*?'");
-		String cleaned = pattern.matcher(where_clause).replaceAll("");
-		pattern = Pattern.compile("([\\w]*\\.)");
-		Matcher matcher = pattern.matcher(cleaned);
-		while (matcher.find()) {
-			String attr = matcher.group().replace(".", "");
-			if (!joinedTables.containsKey(attr)) joinedTables.put(attr, Table.nameFor(attr, object));
+	private static String setClause(HashMap<String, Object> columns) {
+		Iterator<String> attributes = columns.keySet().iterator();
+		String setClause = "";
+		String attribute;
+
+		while (attributes.hasNext()) {
+			attribute = attributes.next();
+			setClause += attribute + "='" + columns.get(attribute) + "'";
+			if (attributes.hasNext()) setClause += ",";
 		}
-		return joinedTables;
+		return setClause;
 	}
 
-	private static String attributeNameToTableName(HashMap<String, String> joinedTables,
-			String where_clause, Hermes object) {
-		String sqlWhere = where_clause;
-		Pattern pattern;
-		for (String attribute : joinedTables.keySet()) {
-			pattern = Pattern.compile(attribute + ".");
-			sqlWhere = pattern.matcher(sqlWhere).replaceAll(joinedTables.get(attribute) + ".");
-			sqlWhere += " and " + joinedTables.get(attribute) + "."
-					+ object.getClass().getSimpleName().toLowerCase() + "_id" + "="
-					+ Table.nameFor(object.getClass()) + ".id";
-		}
-		return sqlWhere;
+	private static HashMap<String, Object> columnsValues(Hermes object) {
+		HashMap<String, Object> columnsValues = new HashMap<String, Object>();
+		columnsValues.putAll(attributesValues(object));
+		columnsValues.putAll(foreignKeysValues(object));
+		return columnsValues;
 	}
 
-	private static String epure(String fields) {
-		return fields.replace("[", "'").replace("]", "'").replace(", ", "','")
-				.replace("'null'", "null");
+	private static HashMap<String, Object> attributesValues(Hermes object) {
+		HashMap<String, Object> attributes = new HashMap<String, Object>();
+		for (Attribute attribute : object.getAttributes())
+			attributes.put(attribute.getName(), attribute.getValue());
+		return attributes;
 	}
 
-	private static HashMap<String, Object> getAttributesValuesAndForeignKeys(Hermes object) {
-		HashMap<String, Object> attributesValues = new HashMap<String, Object>();
-		for (Attribute attribute : object.getAttributes()) {
-			attributesValues.put(attribute.getName(), attribute.getValue());
-		}
-		attributesValues.putAll(foreignKeys(object));
-		return attributesValues;
+	private static HashMap<String, Object> foreignKeysValues(Hermes object) {
+		List<BelongsTo> belongsTo = object.getAssociations().getBelongsToAssociations();
+		HashMap<String, Object> foreignKeys = new HashMap<String, Object>();
+
+		for (BelongsTo battribute : belongsTo)
+			foreignKeys.put(battribute.getFkName(), battribute.getFkValue());
+		return foreignKeys;
 	}
 
-	private static HashMap<String, Object> foreignKeys(Hermes object) {
-		Associations associations = object.getAssociations();
-		HashMap<String, Object> fkHash = new HashMap<String, Object>();
-		ArrayList<BelongsTo> battributes = (ArrayList<BelongsTo>) associations
-				.getBelongsToAssociations();
-		for (BelongsTo battribute : battributes) {
-			fkHash.put(battribute.getFkName(), battribute.getFkValue());
-		}
-		return fkHash;
+	private static String epureColumns(String columns) {
+		return columns.replace("[", "").replace("]", "");
+	}
+
+	private static String epureValues(String fields) {
+		String values = fields.replace("[", "'").replace("]", "'");
+		return values.replace(", ", "','").replace("'null'", "null");
 	}
 }
