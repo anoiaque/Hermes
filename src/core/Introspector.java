@@ -6,6 +6,26 @@ import java.util.Set;
 
 public class Introspector {
 
+	public static void setField(Hermes object, Hermes fieldValue, Field field) {
+		try {
+			field.setAccessible(true);
+			field.set(object, fieldValue);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void setField(Hermes object, Set<?> fieldValue, Field field) {
+		try {
+			field.setAccessible(true);
+			field.set(object, fieldValue);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static Field fieldFor(Hermes klass, Attribute attribute) {
 		try {
 			return klass.getClass().getDeclaredField(attribute.getName());
@@ -14,6 +34,21 @@ public class Introspector {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static Field fieldFor(Hermes klass, String attribute) {
+		try {
+			return klass.getClass().getDeclaredField(attribute);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Class<Hermes> hermesType(Hermes klass, String attribute) {
+		Field field = fieldFor(klass, attribute);
+		return (Class<Hermes>) field.getType();
 	}
 
 	public static Field[] fieldsOf(Hermes klass) {

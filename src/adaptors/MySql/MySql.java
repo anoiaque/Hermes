@@ -5,12 +5,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 import pool.Pool;
 
 import com.mysql.jdbc.Statement;
 
 import core.Hermes;
+import core.Jointure;
 
 public class MySql extends Adaptor {
 
@@ -30,7 +32,24 @@ public class MySql extends Adaptor {
 		return execute(SqlBuilder.build("delete", conditions, object), object);
 	}
 
-	public ResultSet find(String select, String conditions, Hermes model) {
+	public Set<Hermes> find(String select, String conditions, Class<? extends Hermes> model) {
+		try {
+			ResultSet rs = finder(select, conditions, model.newInstance());
+			Set<?> objects = ObjectBuilder.toObjects(rs, model);
+			return (Set<Hermes>) objects;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public Set<Hermes> find(String select, String conditions, Jointure join) {
+		ResultSet rs = finder(select, conditions, join);
+		return ObjectBuilder.toObjects(rs, Jointure.class);
+	}
+
+	public ResultSet finder(String select, String conditions, Hermes model) {
 		Connection connexion = null;
 		Pool pool = Pool.getInstance();
 		String sql = SqlBuilder.build("select", select, conditions, model);

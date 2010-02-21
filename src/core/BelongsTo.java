@@ -1,5 +1,7 @@
 package core;
 
+import java.util.Set;
+
 public class BelongsTo {
 
 	Hermes					parent;
@@ -10,6 +12,11 @@ public class BelongsTo {
 		parent = object;
 		fkName = Inflector.foreignKeyName(Introspector.className(object));
 		fkValue = object.getId();
+	}
+
+	public static void belongsTo(Set<Hermes> set, Hermes object) {
+		for (Object child : set)
+			((Hermes) child).belongsTo(object);
 	}
 
 	// Getters & Setters
