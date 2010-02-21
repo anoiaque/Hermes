@@ -61,21 +61,18 @@ public class SqlBuilder {
 	}
 
 	private static String select(String select, String conditions, Hermes object) {
-		String from = sqlFrom(conditions, object);
+		String from = fromClause(conditions, object);
 		conditions = Analyser.joinedConditions(conditions, object);
 		sql = "select " + select + " from " + from;
 		return (conditions == null) ? sql : sql + " where " + conditions;
 	}
 
-	private static String sqlFrom(String conditions, Hermes object) {
-		HashMap<String, String> joinedTables = new HashMap<String, String>();
-		if (conditions != null) joinedTables = Analyser.tables(conditions, object);
-		String sqlFrom = object.getTableName();
-
-		for (String table : joinedTables.values()) {
-			sqlFrom += "," + table;
-		}
-		return sqlFrom;
+	private static String fromClause(String conditions, Hermes object) {
+		String from = object.getTableName();
+		if (conditions == null) return from;
+		for (String table : Analyser.tables(conditions, object).values())
+			from += "," + table;
+		return from;
 	}
 
 	private static String setClause(HashMap<String, Object> columns) {
