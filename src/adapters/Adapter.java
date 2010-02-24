@@ -14,11 +14,10 @@ public abstract class Adapter {
 	private static Adapter	adaptor	= null;
 
 	public static Adapter get() {
-		if (adaptor == null) {
-			synchronized (Adapter.class) {
-				DBMSConfig config = Configuration.DBMSConfig.get();
-				adaptor = adaptor(config.getAdapter());
-			}
+		if (adaptor != null) return adaptor;
+		synchronized (Adapter.class) {
+			DBMSConfig config = Configuration.DBMSConfig.get();
+			adaptor = adaptor(config.getAdapter());
 		}
 		return adaptor;
 	}

@@ -10,14 +10,14 @@ public class Updater {
 		if (!object.isNewRecord()) return update(object);
 		object.loadAttributes();
 		boolean saved = adapter.save(object);
-		object.getAssociations().save();
+		saved = saved && object.getAssociations().save();
 		return saved;
 	}
 
 	public static boolean update(Hermes object) {
 		object.loadAttributes();
 		boolean updated = adapter.update(object);
-		object.getAssociations().save();
+		updated = updated && object.getAssociations().save();
 		return updated;
 	}
 

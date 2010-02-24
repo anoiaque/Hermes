@@ -33,10 +33,8 @@ public class Associations {
 		belongsToAssociations.add(new BelongsTo(object));
 	}
 
-	public void save() {
-		saveHasManyAssociations();
-		saveHasOneAssociations();
-		saveManyToManyAssociations();
+	public boolean save() {
+		return saveHasManyAssociations() && saveHasOneAssociations() && saveManyToManyAssociations();
 	}
 
 	public void cascadeDelete() {
@@ -45,7 +43,7 @@ public class Associations {
 	}
 
 	// Private methods
-	private void saveHasManyAssociations() {
+	private boolean saveHasManyAssociations() {
 		Set<Hermes> set;
 
 		for (String attribute : hasManyAssociations.keySet()) {
@@ -53,23 +51,25 @@ public class Associations {
 			if (set == null) continue;
 			for (Hermes occurence : set) {
 				occurence.belongsTo(parent);
-				occurence.save();
+				if (!occurence.save()) return false;
 			}
 		}
+		return true;
 	}
 
-	private void saveHasOneAssociations() {
+	private boolean saveHasOneAssociations() {
 		Hermes object;
 
 		for (String attribute : hasOneAssociations.keySet()) {
 			object = (Hermes) Introspector.getObject(attribute, parent);
 			if (object == null) continue;
 			object.belongsTo(parent);
-			object.save();
+			if (!object.save()) return false;
 		}
+		return true;
 	}
 
-	private void saveManyToManyAssociations() {
+	private boolean saveManyToManyAssociations() {
 		Set<Hermes> set;
 		Jointure jointure;
 
@@ -79,10 +79,11 @@ public class Associations {
 			jointure = manyToManyAssociations.get(attribute).getJointure();
 			jointure.clear(parent);
 			for (Hermes occurence : set) {
-				occurence.save();
-				jointure.save(parent.getId(), occurence.getId());
+				if (!occurence.save()) return false;
+				if (!jointure.save(parent.getId(), occurence.getId())) return false;
 			}
 		}
+		return true;
 	}
 
 	private void deleteHasOneRelations() {
