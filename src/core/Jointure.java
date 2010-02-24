@@ -3,8 +3,8 @@ package core;
 import java.util.HashSet;
 import java.util.Set;
 
-import adaptors.Adaptor;
-import adaptors.MySql.SqlBuilder;
+import adapters.Adapter;
+import adapters.MySql.SqlBuilder;
 
 public class Jointure extends Hermes {
 
@@ -16,7 +16,7 @@ public class Jointure extends Hermes {
 
 	public Jointure(Hermes model, String attribute) {
 		this.tableName = Table.joinTableNameFor(attribute, model);
-		Adaptor.get().execute(SqlBuilder.build("jointure", tableName), this);
+		Adapter.get().execute(SqlBuilder.build("jointure", tableName), this);
 	}
 
 	public boolean save(int parentId, int childId) {

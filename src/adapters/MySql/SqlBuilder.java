@@ -1,4 +1,4 @@
-package adaptors.MySql;
+package adapters.MySql;
 
 import java.util.HashMap;
 import java.util.Iterator;

@@ -1,6 +1,7 @@
-package adaptors.MySql;
+package adapters.MySql;
 
-import adaptors.*;
+import adapters.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import com.mysql.jdbc.Statement;
 import core.Hermes;
 import core.Jointure;
 
-public class MySql extends Adaptor {
+public class MySql extends Adapter {
 
 	public boolean save(Hermes object) {
 		return execute(SqlBuilder.build("insert", null, object), object);

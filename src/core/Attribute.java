@@ -1,6 +1,7 @@
 package core;
 
-import adaptors.Adaptor;
+import adapters.Adapter;
+
 import java.lang.reflect.Field;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class Attribute {
 		try {
 			field.setAccessible(true);
 			String name = field.getName();
-			String sqlType = Adaptor.get().javaToSql(field.getType().getSimpleName());
+			String sqlType = Adapter.get().javaToSql(field.getType().getSimpleName());
 			Object value = field.get(model);
 			return new Attribute(name, sqlType, value);
 		}

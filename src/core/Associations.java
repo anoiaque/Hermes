@@ -46,8 +46,10 @@ public class Associations {
 
 	// Private methods
 	private void saveHasManyAssociations() {
+		Set<Hermes> set;
+
 		for (String attribute : hasManyAssociations.keySet()) {
-			Set<Hermes> set = (Set<Hermes>) Introspector.getObject(attribute, parent);
+			set = (Set<Hermes>) Introspector.getObject(attribute, parent);
 			if (set == null) continue;
 			for (Hermes occurence : set) {
 				occurence.belongsTo(parent);
@@ -57,8 +59,10 @@ public class Associations {
 	}
 
 	private void saveHasOneAssociations() {
+		Hermes object;
+
 		for (String attribute : hasOneAssociations.keySet()) {
-			Hermes object = (Hermes) Introspector.getObject(attribute, parent);
+			object = (Hermes) Introspector.getObject(attribute, parent);
 			if (object == null) continue;
 			object.belongsTo(parent);
 			object.save();
@@ -66,10 +70,13 @@ public class Associations {
 	}
 
 	private void saveManyToManyAssociations() {
+		Set<Hermes> set;
+		Jointure jointure;
+
 		for (String attribute : manyToManyAssociations.keySet()) {
-			Set<Hermes> set = (Set<Hermes>) Introspector.getObject(attribute, parent);
+			set = (Set<Hermes>) Introspector.getObject(attribute, parent);
 			if (set == null) continue;
-			Jointure jointure = manyToManyAssociations.get(attribute).getJointure();
+			jointure = manyToManyAssociations.get(attribute).getJointure();
 			jointure.clear(parent);
 			for (Hermes occurence : set) {
 				occurence.save();
@@ -79,28 +86,27 @@ public class Associations {
 	}
 
 	private void deleteHasOneRelations() {
+		Hermes obj;
+
 		for (String attribute : hasOneAssociations.keySet()) {
-			if (hasOneAssociations.get(attribute).isCascadeDelete()) {
-				Hermes obj = (Hermes) Introspector.getObject(attribute, parent);
-				if (obj != null) {
-					obj.delete();
-				}
-			}
+			if (!hasOneAssociations.get(attribute).isCascadeDelete()) continue;
+			obj = (Hermes) Introspector.getObject(attribute, parent);
+			if (obj != null) obj.delete();
 		}
 	}
 
 	private void deleteManyToManyRelations() {
+		Jointure jointure;
+		Set<Hermes> objects;
+
 		for (String attribute : manyToManyAssociations.keySet()) {
-			Jointure jointure = manyToManyAssociations.get(attribute).getJointure();
+			jointure = manyToManyAssociations.get(attribute).getJointure();
 			jointure.delete("parentId=" + parent.getId());
-			if (manyToManyAssociations.get(attribute).isCascadeDelete()) {
-				Set<Hermes> objects = (Set<Hermes>) Introspector.getObject(attribute, parent);
-				if (objects != null) {
-					for (Hermes obj : objects) {
-						obj.delete();
-					}
-				}
-			}
+			if (!manyToManyAssociations.get(attribute).isCascadeDelete()) continue;
+			objects = (Set<Hermes>) Introspector.getObject(attribute, parent);
+			if (objects == null) continue;
+			for (Hermes obj : objects)
+				obj.delete();
 		}
 	}
 
@@ -121,7 +127,4 @@ public class Associations {
 		return belongsToAssociations;
 	}
 
-	public void setHasManyAssociations(HashMap<String, HasMany> hasManyAssociations) {
-		this.hasManyAssociations = hasManyAssociations;
-	}
 }

@@ -1,6 +1,6 @@
 package helpers;
 
-import adaptors.Adaptor;
+import adapters.Adapter;
 
 public class Database {
 
@@ -9,7 +9,7 @@ public class Database {
 
 		for (String tableName : tables) {
 			String sql = "delete from " + tableName;
-			Adaptor.get().execute(sql, null);
+			Adapter.get().execute(sql, null);
 		}
 	}
 }

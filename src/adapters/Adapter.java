@@ -1,6 +1,6 @@
-package adaptors;
+package adapters;
 
-import adaptors.MySql.MySql;
+import adapters.MySql.MySql;
 import configuration.Configuration;
 import configuration.Configuration.DBMSConfig;
 import core.Hermes;
@@ -9,13 +9,13 @@ import core.Jointure;
 import java.sql.ResultSet;
 import java.util.Set;
 
-public abstract class Adaptor {
+public abstract class Adapter {
 
-	private static Adaptor	adaptor	= null;
+	private static Adapter	adaptor	= null;
 
-	public static Adaptor get() {
+	public static Adapter get() {
 		if (adaptor == null) {
-			synchronized (Adaptor.class) {
+			synchronized (Adapter.class) {
 				DBMSConfig config = Configuration.DBMSConfig.get();
 				adaptor = adaptor(config.getAdapter());
 			}
@@ -23,7 +23,7 @@ public abstract class Adaptor {
 		return adaptor;
 	}
 
-	private static Adaptor adaptor(String adapter) {
+	private static Adapter adaptor(String adapter) {
 		if (adapter.equalsIgnoreCase("MySql")) { return new MySql(); }
 		return null;
 	}

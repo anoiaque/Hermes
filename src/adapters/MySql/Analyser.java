@@ -1,4 +1,4 @@
-package adaptors.MySql;
+package adapters.MySql;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -9,18 +9,15 @@ import core.Table;
 
 public class Analyser {
 
-	public static String joinedConditions(String conditions, Hermes object) {
-		if (conditions == null) return null;
-		return Analyser.conditions(conditions, object);
-	}
-
 	public static HashMap<String, String> joinedTables(String conditions, Hermes object) {
+		if (conditions == null) return null;
 		HashMap<String, String> tables = new HashMap<String, String>();
 		String attribute;
 		Pattern pattern = Pattern.compile("'(.)*?'");;
 		conditions = pattern.matcher(conditions).replaceAll("");
 		pattern = Pattern.compile("([\\w]*\\.)");
 		Matcher matcher = pattern.matcher(conditions);
+
 		while (matcher.find()) {
 			attribute = matcher.group().replace(".", "");
 			if (tables.containsKey(attribute)) continue;
@@ -29,7 +26,8 @@ public class Analyser {
 		return tables;
 	}
 
-	public static String conditions(String conditions, Hermes object) {
+	public static String joinedConditions(String conditions, Hermes object) {
+		if (conditions == null) return null;
 		HashMap<String, String> tables = joinedTables(conditions, object);
 		Pattern pattern;
 

@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import junit.framework.TestCase;
 import sample.Person;
-import adaptors.MySql.Analyser;
+import adapters.MySql.Analyser;
 import core.Inflector;
 
 public class SqlBuilderTest extends TestCase {

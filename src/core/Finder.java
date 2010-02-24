@@ -3,11 +3,11 @@ package core;
 import java.util.Iterator;
 import java.util.Set;
 
-import adaptors.Adaptor;
+import adapters.Adapter;
 
 public class Finder {
 
-	private static Adaptor	adaptor	= Adaptor.get();
+	private static Adapter	adaptor	= Adapter.get();
 
 	public static Hermes findFirst(String conditions, Class<? extends Hermes> model) {
 		return findFirst("*", conditions, model);

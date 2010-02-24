@@ -1,4 +1,4 @@
-package adaptors.MySql;
+package adapters.MySql;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
