@@ -12,12 +12,11 @@ import junit.framework.TestCase;
 import sample.Person;
 import sample.Pet;
 
-public class HermesRelationalTest extends TestCase {
+public class AssociationsTest extends TestCase {
 
 	public static Person	marc;
 
 	public void setUp() {
-		Database.clear();
 		marc = (Person) Factory.get("marc");
 	}
 

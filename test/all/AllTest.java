@@ -7,7 +7,7 @@ import unit.hermes.BasicTest;
 import unit.hermes.FindersTest;
 import unit.hermes.HasManyTest;
 import unit.hermes.HasOneTest;
-import unit.hermes.HermesRelationalTest;
+import unit.hermes.AssociationsTest;
 import unit.hermes.JointureTest;
 import unit.hermes.UpdaterTest;
 import unit.mysqladaptor.SqlBuilderTest;
@@ -20,7 +20,7 @@ public class AllTest extends TestSuite {
 		TestSuite suite = new TestSuite("all");
 		suite.addTest(new TestSuite(FindersTest.class));
 		suite.addTest(new TestSuite(BasicTest.class));
-		suite.addTest(new TestSuite(HermesRelationalTest.class));
+		suite.addTest(new TestSuite(AssociationsTest.class));
 		suite.addTest(new TestSuite(SqlBuilderTest.class));
 		suite.addTest(new TestSuite(HasManyTest.class));
 		suite.addTest(new TestSuite(HasOneTest.class));

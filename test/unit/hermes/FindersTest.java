@@ -1,15 +1,16 @@
 package unit.hermes;
 
-import factory.Factory;
-import java.util.Set;
+import helpers.Database;
 
-import core.Hermes;
+import java.util.Iterator;
+import java.util.Set;
 
 import junit.framework.TestCase;
 import sample.Person;
-import helpers.Database;
-import helpers.TestHelper;
 import sample.Personne;
+import sample.Pet;
+import core.Hermes;
+import factory.Factory;
 
 public class FindersTest extends TestCase {
 
@@ -24,7 +25,6 @@ public class FindersTest extends TestCase {
 		Database.clear();
 	}
 
-	// Test Find by id
 	public void testFindById() {
 		marc.setAge(0);
 		marc.setNom("");
@@ -33,7 +33,6 @@ public class FindersTest extends TestCase {
 		assertEquals("Marc", marc.getNom());
 	}
 
-	// Test Find with conditions
 	public void testFindWithConditions() {
 		int id = marc.getId();
 		marc.setId(-1);
@@ -41,7 +40,7 @@ public class FindersTest extends TestCase {
 		assertEquals(id, marc.getId());
 	}
 
-	public void testFindWithConditionsOnChildAttributes() {
+	public void testFindWithConditionsOnHasOneAssociation() {
 		Set<Person> people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
 		assertEquals(1, people.size());
 		jean.getAdresse().setNumero(13);
@@ -52,16 +51,17 @@ public class FindersTest extends TestCase {
 		assertEquals(1, people.size());
 	}
 
-	// Test find with many to many relations
-	public void testFindWithManyToManyRelation() {
-		Person newMarc = (Person) Person.find(marc.getId(), Person.class);
-		(new TestHelper()).assertMarcRetrieveHisPets(newMarc);
+	public void testFindWithMultipleLevelConditions() {
+		Set<Person> people;
+		people = (Set<Person>) Person.find("adresse.numero = 13 and age = 30", Person.class);
+		assertEquals(1, people.size());
 	}
 
-	// Test find with conditions with many to many relations
-	public void testFindWithConditionsOnManyToManyRelation() {
-		Person newMarc = (Person) Person.find("age = 30", Person.class).iterator().next();
-		(new TestHelper()).assertMarcRetrieveHisPets(newMarc);
+	public void testFindRetrieveManyToManyAssociations() {
+		Person newMarc = (Person) Person.find(marc.getId(), Person.class);
+		assertMarcRetrieveHisPets(newMarc);
+		newMarc = (Person) Person.find("age = 30", Person.class).iterator().next();
+		assertMarcRetrieveHisPets(newMarc);
 	}
 
 	// Test find with static method (for external use) and on an instance(used in
@@ -72,12 +72,28 @@ public class FindersTest extends TestCase {
 		assertEquals(clone1.getId(), clone2.getId());
 	}
 
-	// Test find when table's name has been changed in the model
-	public void testFindWhenTableNameChanged() {
+	public void testFindWhithTableNameChangedInModel() {
 		Personne p = new Personne();
 		p.setNom("Pierre");
 		p.save();
 		p = (Personne) Personne.find(p.getId(), Personne.class);
 		assertEquals("Pierre", p.getNom());
+	}
+
+	// Private methods
+	private void assertMarcRetrieveHisPets(Person newMarc) {
+		Person marc = (Person) Factory.get("marc");
+		assertEquals(2, newMarc.getPets().size());
+
+		Iterator<Pet> pets = marc.getPets().iterator();
+		assertTrue(containPet(newMarc.getPets(), pets.next()));
+		assertTrue(containPet(newMarc.getPets(), pets.next()));
+	}
+
+	private boolean containPet(Set<Pet> pets, Pet pet) {
+		for (Pet p : pets) {
+			if (p.getType().equals(pet.getType()) && p.getName().equals(pet.getName())) return true;
+		}
+		return false;
 	}
 }

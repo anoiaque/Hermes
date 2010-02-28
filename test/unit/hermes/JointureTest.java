@@ -11,7 +11,6 @@ public class JointureTest extends TestCase {
 	public static Person	marc;
 
 	public void setUp() {
-		Database.clear();
 		marc = (Person) Factory.get("marc");
 	}
 
