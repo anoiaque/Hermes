@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import sample.Car;
 import sample.Person;
 import sample.Personne;
 import sample.Pet;
@@ -78,6 +79,19 @@ public class FindersTest extends TestCase {
 		p.save();
 		p = (Personne) Personne.find(p.getId(), Personne.class);
 		assertEquals("Pierre", p.getNom());
+	}
+
+	public void testFindWithConditionsOnHasManyAssociation() {
+		Set<Person> people;
+		marc.setCars((Set<Car>) Factory.get("cars"));
+		marc.save();
+		people = (Set<Person>) Person.find("cars.brand = 'BMW'", Person.class);
+		assertEquals(1, people.size());
+	
+	}
+
+	public void testFindWithConditionsOnManyToManyAssociation() {
+	
 	}
 
 	// Private methods

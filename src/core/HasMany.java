@@ -6,7 +6,7 @@ public class HasMany {
 
 	private String	attributeName;
 	private String	fkName;
-	private Integer	fkValue				= null;
+	private int			fkValue				= 0;
 	private boolean	cascadeDelete	= false;
 
 	public HasMany(String attribute, String dependency) {
@@ -17,7 +17,7 @@ public class HasMany {
 
 	public boolean save(Hermes parent) {
 		Set<Hermes> objects = (Set<Hermes>) Introspector.getObject(attributeName, parent);
-		
+
 		if (objects == null) return true;
 		for (Hermes occurence : objects) {
 			occurence.belongsTo(parent);
@@ -52,7 +52,7 @@ public class HasMany {
 		this.fkName = fkName;
 	}
 
-	public Integer getFkValue() {
+	public int getFkValue() {
 		return fkValue;
 	}
 

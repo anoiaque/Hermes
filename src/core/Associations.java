@@ -7,29 +7,29 @@ import java.util.List;
 public class Associations {
 
 	Hermes															parent;
-	private HashMap<String, HasOne>			hasOneAssociations			= new HashMap<String, HasOne>();
-	private HashMap<String, ManyToMany>	manyToManyAssociations	= new HashMap<String, ManyToMany>();
-	private HashMap<String, HasMany>		hasManyAssociations			= new HashMap<String, HasMany>();
-	private List<BelongsTo>							belongsToAssociations		= new ArrayList<BelongsTo>();
+	private HashMap<String, HasOne>			hasOne			= new HashMap<String, HasOne>();
+	private HashMap<String, ManyToMany>	manyToMany	= new HashMap<String, ManyToMany>();
+	private HashMap<String, HasMany>		hasMany			= new HashMap<String, HasMany>();
+	private List<BelongsTo>							belongsTo		= new ArrayList<BelongsTo>();
 
 	public Associations(Hermes object) {
 		this.parent = object;
 	}
 
 	public void hasOne(String attribute, String dependency) {
-		hasOneAssociations.put(attribute, new HasOne(attribute, dependency));
+		hasOne.put(attribute, new HasOne(attribute, dependency));
 	}
 
 	public void hasMany(String attribute, String dependency) {
-		hasManyAssociations.put(attribute, new HasMany(attribute, dependency));
+		hasMany.put(attribute, new HasMany(attribute, dependency));
 	}
 
 	public void manyToMany(String attribute, String dependency) {
-		manyToManyAssociations.put(attribute, new ManyToMany(attribute, dependency, parent));
+		manyToMany.put(attribute, new ManyToMany(attribute, dependency, parent));
 	}
 
 	public void belongsTo(Hermes object) {
-		belongsToAssociations.add(new BelongsTo(object));
+		belongsTo.add(new BelongsTo(object));
 	}
 
 	public boolean save() {
@@ -44,53 +44,53 @@ public class Associations {
 
 	// Private methods
 	private boolean saveHasMany() {
-		for (HasMany relation : hasManyAssociations.values())
+		for (HasMany relation : hasMany.values())
 			if (!relation.save(parent)) return false;
 		return true;
 	}
 
 	private boolean saveHasOne() {
-		for (HasOne relation : hasOneAssociations.values())
+		for (HasOne relation : hasOne.values())
 			if (!relation.save(parent)) return false;
 		return true;
 	}
 
 	private boolean saveManyToMany() {
-		for (ManyToMany relation : manyToManyAssociations.values())
+		for (ManyToMany relation : manyToMany.values())
 			if (!relation.save(parent)) return false;
 		return true;
 	}
 
 	private void deleteHasOne() {
-		for (HasOne relation : hasOneAssociations.values())
+		for (HasOne relation : hasOne.values())
 			relation.delete(parent);
 	}
 
 	private void deleteHasMany() {
-		for (HasMany relation : hasManyAssociations.values())
+		for (HasMany relation : hasMany.values())
 			relation.delete(parent);
 	}
 
 	private void deleteManyToMany() {
-		for (ManyToMany relation : manyToManyAssociations.values())
+		for (ManyToMany relation : manyToMany.values())
 			relation.delete(parent);
 	}
 
 	// Getters & Setters
 	public HashMap<String, HasOne> getHasOneAssociations() {
-		return hasOneAssociations;
+		return hasOne;
 	}
 
 	public HashMap<String, ManyToMany> getManyToManyAsociations() {
-		return manyToManyAssociations;
+		return manyToMany;
 	}
 
 	public HashMap<String, HasMany> getHasManyAssociations() {
-		return hasManyAssociations;
+		return hasMany;
 	}
 
 	public List<BelongsTo> getBelongsToAssociations() {
-		return belongsToAssociations;
+		return belongsTo;
 	}
 
 }
