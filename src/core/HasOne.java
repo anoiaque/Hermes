@@ -5,10 +5,15 @@ public class HasOne {
 	private String	attributeName;
 	private boolean	cascadeDelete	= false;
 
-	// Constuctors
 	public HasOne(String attribute, String dependency) {
 		attributeName = attribute;
 		cascadeDelete = dependency.equals("dependent:destroy");
+	}
+
+	public void delete(Hermes parent) {
+		if (!cascadeDelete) return;
+		Hermes object = (Hermes) Introspector.getObject(attributeName, parent);
+		if (object != null) object.delete();
 	}
 
 	// Getters & Setters

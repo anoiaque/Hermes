@@ -14,30 +14,43 @@ public class Loader {
 	}
 
 	private static void loadHasOneAssociations(Hermes object) {
+		String foreignKey;
+		Class<Hermes> klass;
+		Field field;
+		Hermes value;
+
 		for (String attribute : object.getHasOneAssociations().keySet()) {
-			String foreignKey = Inflector.foreignKeyName(Introspector.className(object));
-			Class<Hermes> klass = Introspector.hermesType(object, attribute);
-			Field field = Introspector.fieldFor(object, attribute);
-			Hermes value = (Hermes) Finder.findFirst(foreignKey + "=" + object.getId(), klass);
+			foreignKey = Inflector.foreignKeyName(Introspector.className(object));
+			klass = Introspector.hermesType(object, attribute);
+			field = Introspector.fieldFor(object, attribute);
+			value = (Hermes) Finder.findFirst(foreignKey + "=" + object.getId(), klass);
 			Introspector.setField(object, value, field);
 		}
 	}
 
 	private static void loadHasManyAssociations(Hermes object) {
+		String foreignKey;
+		Class<Hermes> klass;
+		Set<Hermes> set;
+		Field field;
+
 		for (String attribute : object.getHasManyAssociations().keySet()) {
-			String fk = Inflector.foreignKeyName(Introspector.className(object));
-			Class<Hermes> klass = Introspector.collectionTypeClass(object, attribute);
-			Set<Hermes> set = (Set<Hermes>) Finder.find(fk + "=" + object.getId(), klass);
+			foreignKey = Inflector.foreignKeyName(Introspector.className(object));
+			klass = Introspector.collectionTypeClass(object, attribute);
+			set = (Set<Hermes>) Finder.find(foreignKey + "=" + object.getId(), klass);
 			BelongsTo.belongsTo(set, object);
-			Field field = Introspector.fieldFor(object, attribute);
+			field = Introspector.fieldFor(object, attribute);
 			Introspector.setField(object, set, field);
 		}
 	}
 
 	private static void loadManyToManyAssociations(Hermes object) {
+		Field field;
+		Set<Hermes> objects;
+		
 		for (String attribute : object.getManyToManyAssociations().keySet()) {
-			Field field = Introspector.fieldFor(object, attribute);
-			Set<Hermes> objects = Jointure.objectsFor(attribute, object);
+			field = Introspector.fieldFor(object, attribute);
+			objects = Jointure.objectsFor(attribute, object);
 			Introspector.setField(object, objects, field);
 		}
 	}

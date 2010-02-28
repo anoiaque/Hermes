@@ -1,17 +1,26 @@
 package core;
 
+import java.util.Set;
+
 public class HasMany {
 
 	private String	attributeName;
 	private String	fkName;
-	private Integer	fkValue			= null;
+	private Integer	fkValue				= null;
 	private boolean	cascadeDelete	= false;
 
-	// Constuctors
 	public HasMany(String attribute, String dependency) {
 		attributeName = attribute;
 		fkName = Inflector.foreignKeyName(attribute);
 		cascadeDelete = dependency.equals("dependent:destroy");
+	}
+
+	public void delete(Hermes parent) {
+		if (!cascadeDelete) return;
+		Set<Hermes> objects = (Set<Hermes>) Introspector.getObject(attributeName, parent);
+		if (objects == null) return;
+		for (Hermes object : objects)
+			if (object != null) object.delete();
 	}
 
 	// Getters & Setters

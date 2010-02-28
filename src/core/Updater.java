@@ -22,14 +22,14 @@ public class Updater {
 	}
 
 	public static boolean delete(Hermes object) {
-		object.getAssociations().cascadeDelete();
+		object.getAssociations().delete();
 		boolean deleted = adapter.delete(object);
 		if (deleted) object.setId(0);
 		return deleted;
 	}
 
 	public static boolean delete(Hermes object, String conditions) {
-		object.getAssociations().cascadeDelete();
+		object.getAssociations().delete();
 		boolean deleted = adapter.delete(object, conditions);
 		if (deleted) object.setId(0);
 		return deleted;

@@ -11,7 +11,6 @@ public class HasOneTest extends TestCase {
 	public static Person	marc;
 
 	public void setUp() {
-		Database.clear();
 		marc = (Person) Factory.get("marc");
 	}
 
@@ -19,16 +18,26 @@ public class HasOneTest extends TestCase {
 		Database.clear();
 	}
 
-	public void testSaveAndLoad() {
-		marc.reload();
+	public void testSave() {
+		marc.getAdresse().setRue("");
+		marc = (Person) marc.reload();
 		assertEquals("rue Tabarly", marc.getAdresse().getRue());
+	}
+
+	public void testUpdateAndLoad() {
 		marc.getAdresse().setRue("rue de Brest");
 		marc.save();
-		marc.reload();
+		marc = (Person) marc.reload();
 		assertEquals("rue de Brest", marc.getAdresse().getRue());
 	}
 
-	public void testUpdate() {
+	public void testDelete() {
+		marc.getAdresse().delete();
+		marc = (Person) marc.reload();
+		assertEquals(null, marc.getAdresse());
+	}
+
+	public void testUpdateWithNewObject() {
 		marc.getAdresse().delete();
 		marc.setAdresse(new Address(25, "rue de Brest"));
 		marc.save();
@@ -37,12 +46,12 @@ public class HasOneTest extends TestCase {
 		assertEquals("rue de Brest", marc.getAdresse().getRue());
 	}
 
-	public void testCascadeDeleteWithRelationHasOne() {
+	public void testCascadeDelete() {
 		marc.delete();
 		assertNull(Address.find(marc.getAdresse().getId(), Address.class));
 	}
 
-	public void testNoCascadeDeleteWithRelationHasOne() {
+	public void testNoCascadeDelete() {
 		marc.getHasOneAssociations().get("adresse").setCascadeDelete(false);
 		marc.delete();
 		assertNotNull(Address.find(marc.getAdresse().getId(), Address.class));
