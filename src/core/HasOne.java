@@ -16,6 +16,14 @@ public class HasOne {
 		if (object != null) object.delete();
 	}
 
+	public boolean save(Hermes parent) {
+		Hermes object = (Hermes) Introspector.getObject(attributeName, parent);
+		
+		if (object == null) return true;
+		object.belongsTo(parent);
+		return object.save();
+	}
+
 	// Getters & Setters
 	public String getAttributeName() {
 		return attributeName;

@@ -15,6 +15,17 @@ public class HasMany {
 		cascadeDelete = dependency.equals("dependent:destroy");
 	}
 
+	public boolean save(Hermes parent) {
+		Set<Hermes> objects = (Set<Hermes>) Introspector.getObject(attributeName, parent);
+		
+		if (objects == null) return true;
+		for (Hermes occurence : objects) {
+			occurence.belongsTo(parent);
+			if (!occurence.save()) return false;
+		}
+		return true;
+	}
+
 	public void delete(Hermes parent) {
 		if (!cascadeDelete) return;
 		Set<Hermes> objects = (Set<Hermes>) Introspector.getObject(attributeName, parent);

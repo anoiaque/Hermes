@@ -34,70 +34,45 @@ public class Associations {
 	}
 
 	public boolean save() {
-		return saveHasManyAssociations() && saveHasOneAssociations() && saveManyToManyAssociations();
+		return saveHasMany() && saveHasOne() && saveManyToMany();
 	}
 
 	public void delete() {
-		deleteHasOneAssociations();
-		deleteManyToManyAssociations();
-		deleteHasManyAssociations();
+		deleteHasOne();
+		deleteManyToMany();
+		deleteHasMany();
 	}
 
 	// Private methods
-	private boolean saveHasManyAssociations() {
-		Set<Hermes> set;
-
-		for (String attribute : hasManyAssociations.keySet()) {
-			set = (Set<Hermes>) Introspector.getObject(attribute, parent);
-			if (set == null) continue;
-			for (Hermes occurence : set) {
-				occurence.belongsTo(parent);
-				if (!occurence.save()) return false;
-			}
-		}
+	private boolean saveHasMany() {
+		for (HasMany relation : hasManyAssociations.values())
+			if (!relation.save(parent)) return false;
 		return true;
 	}
 
-	private boolean saveHasOneAssociations() {
-		Hermes object;
-
-		for (String attribute : hasOneAssociations.keySet()) {
-			object = (Hermes) Introspector.getObject(attribute, parent);
-			if (object == null) continue;
-			object.belongsTo(parent);
-			if (!object.save()) return false;
-		}
+	private boolean saveHasOne() {
+		for (HasOne relation : hasOneAssociations.values())
+			if (!relation.save(parent)) return false;
 		return true;
 	}
 
-	private boolean saveManyToManyAssociations() {
-		Set<Hermes> set;
-		Jointure jointure;
-
-		for (String attribute : manyToManyAssociations.keySet()) {
-			set = (Set<Hermes>) Introspector.getObject(attribute, parent);
-			if (set == null) continue;
-			jointure = manyToManyAssociations.get(attribute).getJointure();
-			jointure.clear(parent);
-			for (Hermes occurence : set) {
-				if (!occurence.save()) return false;
-				if (!jointure.save(parent.getId(), occurence.getId())) return false;
-			}
-		}
+	private boolean saveManyToMany() {
+		for (ManyToMany relation : manyToManyAssociations.values())
+			if (!relation.save(parent)) return false;
 		return true;
 	}
 
-	private void deleteHasOneAssociations() {
+	private void deleteHasOne() {
 		for (HasOne relation : hasOneAssociations.values())
 			relation.delete(parent);
 	}
 
-	private void deleteHasManyAssociations() {
+	private void deleteHasMany() {
 		for (HasMany relation : hasManyAssociations.values())
 			relation.delete(parent);
 	}
 
-	private void deleteManyToManyAssociations() {
+	private void deleteManyToMany() {
 		for (ManyToMany relation : manyToManyAssociations.values())
 			relation.delete(parent);
 	}

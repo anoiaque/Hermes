@@ -50,7 +50,7 @@ public class Loader {
 		
 		for (String attribute : object.getManyToManyAssociations().keySet()) {
 			field = Introspector.fieldFor(object, attribute);
-			objects = Jointure.objectsFor(attribute, object);
+			objects = Jointure.load(attribute, object);
 			Introspector.setField(object, objects, field);
 		}
 	}

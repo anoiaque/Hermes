@@ -29,11 +29,12 @@ public class Jointure extends Hermes {
 		delete("parentId=" + parent.getId());
 	}
 
-	public static Set<Hermes> objectsFor(String attribute, Hermes object) {
+	public static Set<Hermes> load(String attribute, Hermes object) {
 		Jointure jointure = object.getManyToManyAssociations().get(attribute).getJointure();
 		Set<Hermes> objects = new HashSet<Hermes>();
 		Class<Hermes> klass = Introspector.collectionTypeClass(object, attribute);
 		Set<Jointure> jointures = (Set<Jointure>) Finder.find(object.getId(), jointure);
+		
 		jointures.remove(null);
 		for (Jointure join : jointures) {
 			Hermes obj = Finder.find(join.getChildId(), klass);

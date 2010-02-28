@@ -14,6 +14,19 @@ public class ManyToMany {
 		cascadeDelete = dependency.equals("dependent:destroy");
 	}
 
+	public boolean save(Hermes parent) {
+		Set<Hermes> set = (Set<Hermes>) Introspector.getObject(attributeName, parent);
+
+		if (set == null) return true;
+		jointure.clear(parent);
+		
+		for (Hermes occurence : set) {
+			if (!occurence.save()) return false;
+			if (!jointure.save(parent.getId(), occurence.getId())) return false;
+		}
+		return true;
+	}
+
 	public void delete(Hermes parent) {
 		if (!cascadeDelete) return;
 		Set<Hermes> objects = (Set<Hermes>) Introspector.getObject(attributeName, parent);
@@ -24,6 +37,7 @@ public class ManyToMany {
 			obj.delete();
 	}
 
+	// Getters & Setters
 	public Jointure getJointure() {
 		return jointure;
 	}
