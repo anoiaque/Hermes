@@ -35,18 +35,28 @@ public class Analyser {
 				Matcher matcher = pattern.matcher(conditions);
 				matcher.find();
 				String condition = matcher.group();
+			//	conditions = conditions.replaceAll(condition, "");
 				pattern = Pattern.compile(attribute + ".");
 				condition = pattern.matcher(condition).replaceAll(tables.get(attribute) + ".");
 
 				String table = tables.get(attribute);
-				conditions.replaceAll(condition, "");
-				conditions += " and "+object.getTableName()+".id in " + joinedConditions(attribute, object, condition, table);
+				if (!conditions.equals("")) conditions += " and ";
+				conditions += object.getTableName()+".id in " + joinedConditions(attribute, object, condition, table);
 			} else {
+				
+				pattern = Pattern.compile("\\s+" + attribute + ".*?\\s*=\\s*('.*?')*(.)*\\s");
+				Matcher matcher = pattern.matcher(conditions);
+				matcher.find();
+				String condition = matcher.group();
 				pattern = Pattern.compile(attribute + ".");
-				conditions = pattern.matcher(conditions).replaceAll(tables.get(attribute) + ".");
+				conditions = conditions.replaceAll(condition, "");
+
+				condition = pattern.matcher(condition).replaceAll(tables.get(attribute) + ".");
+
+				conditions += " ("+condition;
 				conditions += " and " + tables.get(attribute) + ".";
 				conditions += object.getClass().getSimpleName().toLowerCase() + "_id" + "=";
-				conditions += object.getTableName() + ".id";
+				conditions += object.getTableName() + ".id)";
 			}
 		}
 		return conditions;
@@ -61,8 +71,6 @@ public class Analyser {
 		return sql;
 	}
 
-	// (select parentId from PEOPLE_PETS where childId in
-	// (select id from pets where pets.name="Medor"))
 
 	private static boolean isManyToManyAttribute(String attribute, Hermes object) {
 		return object.getAssociations().getManyToManyAsociations().containsKey(attribute);
