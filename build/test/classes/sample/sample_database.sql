@@ -3,13 +3,13 @@ use HERMES;
 create table  PEOPLE(
 id int primary key auto_increment,
 age int, 
-nom varchar(250),
-adresse_id int
+nom varchar(250)
 );
 create table ADDRESSES(
 id int primary key auto_increment,
 numero int,
-rue varchar(250)
+rue varchar(250),
+person_id int
 );
 create table PETS(
 id int primary key auto_increment,

@@ -97,6 +97,7 @@ public class Introspector {
 		return null;
 	}
 
+	// Private Methods
 	private static ParameterizedType collectionType(Hermes klass, String attribute) {
 		ParameterizedType ptype = null;
 		try {

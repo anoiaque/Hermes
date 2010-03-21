@@ -2,6 +2,7 @@ package unit.hermes;
 
 import helpers.Database;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -89,11 +90,31 @@ public class FindersTest extends TestCase {
 		assertEquals(1, people.size());
 	
 	}
-
-	public void testFindWithConditionsOnManyToManyAssociation() {
 	
+	public void testFindWithConditionsOnMultipleAttributes() {
+		Set<Person> people;
+		marc.setCars((Set<Car>) Factory.get("cars"));
+		marc.save();
+		people = (Set<Person>) Person.find("age = 30 and cars.brand = 'BMW'", Person.class);
+		assertEquals(1, people.size());
 	}
-
+	
+	public void testFindWithConditionsOnManyToManyAssociation() {
+		Set<Pet> pets = new HashSet<Pet>();
+		pets.add(new Pet("Chien", "Toutou"));
+		marc.setPets(pets);
+		marc.save();
+		Set<Person> people;
+		people = (Set<Person>) Person.find("pets.name = 'Toutou'", Person.class);
+		assertEquals(1, people.size());	
+		jean.setPets(pets);
+		jean.save();
+		people = (Set<Person>) Person.find("pets.name = 'Toutou'", Person.class);
+		assertEquals(2, people.size());	
+		people = (Set<Person>) Person.find("pets.name = 'Toutou' and age=30", Person.class);
+		assertEquals(1, people.size());	
+	}
+	
 	// Private methods
 	private void assertMarcRetrieveHisPets(Person newMarc) {
 		Person marc = (Person) Factory.get("marc");

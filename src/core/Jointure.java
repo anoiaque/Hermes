@@ -11,7 +11,6 @@ public class Jointure extends Hermes {
 	private int	parentId;
 	private int	childId;
 
-	// Constructors
 	public Jointure() {}
 
 	public Jointure(Hermes model, String attribute) {

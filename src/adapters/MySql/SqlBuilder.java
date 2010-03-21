@@ -61,16 +61,23 @@ public class SqlBuilder {
 	}
 
 	private static String select(String select, String conditions, Hermes object) {
-		String sql = "select " + select + " from " + fromClause(conditions, object);;
+		String sql = "select " + selectClause(select, object);
+		sql += " from " + fromClause(conditions, object);;
 		if (conditions == null) return sql;
-		return sql + " where " + Analyser.joinedConditions(conditions, object);
+		return sql + " where " + Analyser.conditions(conditions, object);
+	}
+
+	private static String selectClause(String select, Hermes object) {
+		select = " " + select.trim();
+		select = select.replaceAll("\\s((.)*?)", " " + object.getTableName() + ".$1");
+		return select;
 	}
 
 	private static String fromClause(String conditions, Hermes object) {
 		String from = object.getTableName();
 		if (conditions == null) return from;
 
-		for (String table : Analyser.joinedTables(conditions, object).values())
+		for (String table : Analyser.tables(conditions, object).values())
 			from += "," + table;
 		return from;
 	}
@@ -106,8 +113,8 @@ public class SqlBuilder {
 		List<BelongsTo> belongsTo = object.getAssociations().getBelongsToAssociations();
 		HashMap<String, Object> foreignKeys = new HashMap<String, Object>();
 
-		for (BelongsTo battribute : belongsTo)
-			foreignKeys.put(battribute.getFkName(), battribute.getFkValue());
+		for (BelongsTo attribute : belongsTo)
+			foreignKeys.put(attribute.getFkName(), attribute.getFkValue());
 		return foreignKeys;
 	}
 

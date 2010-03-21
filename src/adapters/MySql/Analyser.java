@@ -5,12 +5,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import core.Hermes;
+import core.Jointure;
 import core.Table;
 
 public class Analyser {
 
-	public static HashMap<String, String> joinedTables(String conditions, Hermes object) {
-		if (conditions == null) return null;
+	public static HashMap<String, String> tables(String conditions, Hermes object) {
 		HashMap<String, String> tables = new HashMap<String, String>();
 		String attribute;
 		Pattern pattern = Pattern.compile("'(.)*?'");;
@@ -20,25 +20,52 @@ public class Analyser {
 
 		while (matcher.find()) {
 			attribute = matcher.group().replace(".", "");
-			if (tables.containsKey(attribute)) continue;
 			tables.put(attribute, Table.nameFor(attribute, object));
 		}
 		return tables;
 	}
 
-	public static String joinedConditions(String conditions, Hermes object) {
-		if (conditions == null) return null;
-		HashMap<String, String> tables = joinedTables(conditions, object);
+	public static String conditions(String conditions, Hermes object) {
+		HashMap<String, String> tables = tables(conditions, object);
 		Pattern pattern;
-
+		conditions=" "+conditions+" ";
 		for (String attribute : tables.keySet()) {
-			pattern = Pattern.compile(attribute + ".");
-			conditions = pattern.matcher(conditions).replaceAll(tables.get(attribute) + ".");
-			conditions += " and " + tables.get(attribute) + ".";
-			conditions += object.getClass().getSimpleName().toLowerCase() + "_id" + "=";
-			conditions += object.getTableName() + ".id";
+			if (isManyToManyAttribute(attribute, object)) {
+				pattern = Pattern.compile("\\s+" + attribute + ".*?\\s*=\\s*.*?\\s");
+				Matcher matcher = pattern.matcher(conditions);
+				matcher.find();
+				String condition = matcher.group();
+				pattern = Pattern.compile(attribute + ".");
+				condition = pattern.matcher(condition).replaceAll(tables.get(attribute) + ".");
+
+				String table = tables.get(attribute);
+				conditions.replaceAll(condition, "");
+				conditions += " and "+object.getTableName()+".id in " + joinedConditions(attribute, object, condition, table);
+			} else {
+				pattern = Pattern.compile(attribute + ".");
+				conditions = pattern.matcher(conditions).replaceAll(tables.get(attribute) + ".");
+				conditions += " and " + tables.get(attribute) + ".";
+				conditions += object.getClass().getSimpleName().toLowerCase() + "_id" + "=";
+				conditions += object.getTableName() + ".id";
+			}
 		}
 		return conditions;
+	}
+
+	private static String joinedConditions(String attribute, Hermes object, String condition,
+			String table) {
+		Jointure jointure = object.getAssociations().getManyToManyAsociations().get(attribute)
+				.getJointure();
+		String sql = "(select parentId from " + jointure.getTableName();
+		sql += " where childId in (select id from " + table + " where " + condition +"))";
+		return sql;
+	}
+
+	// (select parentId from PEOPLE_PETS where childId in
+	// (select id from pets where pets.name="Medor"))
+
+	private static boolean isManyToManyAttribute(String attribute, Hermes object) {
+		return object.getAssociations().getManyToManyAsociations().containsKey(attribute);
 	}
 
 }
