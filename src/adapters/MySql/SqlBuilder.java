@@ -79,6 +79,9 @@ public class SqlBuilder {
 
 		for (String table : Analyser.tables(conditions, object).values())
 			from += "," + table;
+		
+		for (String table : Analyser.jointuresTables(conditions, object).values())
+			from += "," + table;
 		return from;
 	}
 

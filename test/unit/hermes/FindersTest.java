@@ -1,12 +1,11 @@
 package unit.hermes;
 
+import factory.Factory;
 import helpers.Database;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 import sample.Car;
@@ -14,14 +13,12 @@ import sample.Person;
 import sample.Personne;
 import sample.Pet;
 import core.Hermes;
-import factory.Factory;
 
 public class FindersTest extends TestCase {
 
 	public static Person	marc, jean;
 
 	public void setUp() {
-		Database.clear();
 		marc = (Person) Factory.get("marc");
 		jean = (Person) Factory.get("jean");
 	}
@@ -55,8 +52,8 @@ public class FindersTest extends TestCase {
 		people = (Set<Person>) Person.find("adresse.rue = 'rue Kervegan'", Person.class);
 		assertEquals(1, people.size());
 	}
-	
-		public void testFindWithMultipleLevelConditions() {
+
+	public void testFindWithMultipleLevelConditions() {
 		Set<Person> people;
 		people = (Set<Person>) Person.find("adresse.numero = 13 and age = 30", Person.class);
 		assertEquals(1, people.size());
@@ -91,9 +88,8 @@ public class FindersTest extends TestCase {
 		marc.save();
 		people = (Set<Person>) Person.find("cars.brand = 'BMW'", Person.class);
 		assertEquals(1, people.size());
-	
 	}
-	
+
 	public void testFindWithConditionsOnMultipleAttributes() {
 		Set<Person> people;
 		marc.setCars((Set<Car>) Factory.get("cars"));
@@ -101,31 +97,37 @@ public class FindersTest extends TestCase {
 		people = (Set<Person>) Person.find("age = 30 and cars.brand = 'BMW'", Person.class);
 		assertEquals(1, people.size());
 	}
-	
-	public void testFindWithOrInConditions(){
+
+	public void testFindWithOrInConditions() {
 		Set<Person> people;
 		marc.setCars((Set<Car>) Factory.get("cars"));
 		marc.save();
 		people = (Set<Person>) Person.find("age = 30 or cars.brand = 'BMW'", Person.class);
 		assertEquals(1, people.size());
 	}
-	
+
 	public void testFindWithConditionsOnManyToManyAssociation() {
 		Set<Pet> pets = new HashSet<Pet>();
-		pets.add(new Pet("Chien", "Toutou"));
+		pets.add(new Pet("Chien", "Toutou toutou"));
+		marc.setCars((Set<Car>) Factory.get("cars"));
 		marc.setPets(pets);
 		marc.save();
 		Set<Person> people;
-		people = (Set<Person>) Person.find("pets.name = 'Toutou'", Person.class);
-		assertEquals(1, people.size());	
+		people = (Set<Person>) Person.find("pets.name = 'Toutou toutou'", Person.class);
+		assertEquals(1, people.size());
 		jean.setPets(pets);
 		jean.save();
-		people = (Set<Person>) Person.find("pets.name = 'Toutou'", Person.class);
-		assertEquals(2, people.size());	
-		people = (Set<Person>) Person.find("pets.name = 'Toutou' and age=30", Person.class);
-		assertEquals(1, people.size());	
+		people = (Set<Person>) Person.find("pets.name = 'Toutou toutou'", Person.class);
+		assertEquals(2, people.size());
+		people = (Set<Person>) Person.find("pets.name = 'Toutou toutou' and age=30", Person.class);
+		assertEquals(1, people.size());
+		people = (Set<Person>) Person.find("pets.name = 'Toutou toutou' and cars.brand = 'BMW'",
+				Person.class);
+		assertEquals(1, people.size());
 	}
 	
+	
+
 	// Private methods
 	private void assertMarcRetrieveHisPets(Person newMarc) {
 		Person marc = (Person) Factory.get("marc");
