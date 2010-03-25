@@ -16,11 +16,13 @@ import core.Hermes;
 
 public class FindersTest extends TestCase {
 
-	public static Person	marc, jean;
+	public static Person	citizen, human;
 
 	public void setUp() {
-		marc = (Person) Factory.get("marc");
-		jean = (Person) Factory.get("jean");
+		citizen = (Person) Factory.get("human");
+		human = (Person) Factory.get("human");
+		human.setAge(25);
+		human.save();
 	}
 
 	public void tearDown() {
@@ -28,28 +30,25 @@ public class FindersTest extends TestCase {
 	}
 
 	public void testFindById() {
-		marc.setAge(0);
-		marc.setNom("");
-		marc = (Person) Hermes.find(marc.getId(), Person.class);
-		assertEquals(30, marc.getAge());
-		assertEquals("Marc", marc.getNom());
+		Person person = (Person) Hermes.find(citizen.getId(), Person.class);
+		assertEquals(citizen.getAge(), person.getAge());
+		assertEquals(citizen.getNom(), person.getNom());
 	}
 
 	public void testFindWithConditions() {
-		int id = marc.getId();
-		marc.setId(-1);
-		marc = (Person) Person.find("age = 30", Person.class).iterator().next();
-		assertEquals(id, marc.getId());
+		Person person = (Person) Person.findFirst("age = 30", Person.class);
+		assertEquals(citizen.getId(), person.getId());
 	}
 
 	public void testFindWithConditionsOnHasOneAssociation() {
-		Set<Person> people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
-		assertEquals(1, people.size());
-		jean.getAdresse().setNumero(13);
-		jean.save();
+		Set<Person> people;
+
 		people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
 		assertEquals(2, people.size());
-		people = (Set<Person>) Person.find("adresse.rue = 'rue Kervegan'", Person.class);
+
+		human.getAdresse().setNumero(10);
+		human.save();
+		people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
 		assertEquals(1, people.size());
 	}
 
@@ -57,85 +56,95 @@ public class FindersTest extends TestCase {
 		Set<Person> people;
 		people = (Set<Person>) Person.find("adresse.numero = 13 and age = 30", Person.class);
 		assertEquals(1, people.size());
+		assertEquals(citizen.getNom(), people.iterator().next().getNom());
 	}
 
 	public void testFindRetrieveManyToManyAssociations() {
-		Person newMarc = (Person) Person.find(marc.getId(), Person.class);
-		assertMarcRetrieveHisPets(newMarc);
-		newMarc = (Person) Person.find("age = 30", Person.class).iterator().next();
-		assertMarcRetrieveHisPets(newMarc);
+		Person person = (Person) Person.find(citizen.getId(), Person.class);
+		assertEquals(2, person.getPets().size());
+		Iterator<Pet> pets = citizen.getPets().iterator();
+		assertTrue(containPet(person.getPets(), pets.next()));
+		assertTrue(containPet(person.getPets(), pets.next()));
+
 	}
 
-	// Test find with static method (for external use) and on an instance(used in
-	// the model class)
-	public void testStaticAndOnInstanceFindersSameResult() {
-		Person clone1 = (Person) marc.find(marc.getId());
-		Person clone2 = (Person) Person.find(marc.getId(), Person.class);
+	public void testStaticAndOnInstanceFinders() {
+		Person clone1 = (Person) citizen.find(citizen.getId());
+		Person clone2 = (Person) Person.find(citizen.getId(), Person.class);
 		assertEquals(clone1.getId(), clone2.getId());
 	}
 
 	public void testFindWhithTableNameChangedInModel() {
-		Personne p = new Personne();
-		p.setNom("Pierre");
-		p.save();
-		p = (Personne) Personne.find(p.getId(), Personne.class);
-		assertEquals("Pierre", p.getNom());
+		Personne person = new Personne();
+		person.setNom("Pierre");
+		person.save();
+		person = (Personne) Personne.find(person.getId(), Personne.class);
+		assertEquals("Pierre", person.getNom());
 	}
 
-	public void testFindWithConditionsOnHasManyAssociation() {
+	public void testFindWithConditionOnHasManyAssociation() {
 		Set<Person> people;
-		marc.setCars((Set<Car>) Factory.get("cars"));
-		marc.save();
+		citizen.setCars((Set<Car>) Factory.get("cars"));
+		citizen.save();
 		people = (Set<Person>) Person.find("cars.brand = 'BMW'", Person.class);
 		assertEquals(1, people.size());
 	}
 
-	public void testFindWithConditionsOnMultipleAttributes() {
+	public void testFindWithConditionsOnHasManyAssociation() {
 		Set<Person> people;
-		marc.setCars((Set<Car>) Factory.get("cars"));
-		marc.save();
-		people = (Set<Person>) Person.find("age = 30 and cars.brand = 'BMW'", Person.class);
-		assertEquals(1, people.size());
+		Set<Car> cars = (Set<Car>) Factory.get("cars");
+		cars.iterator().next().setBrand("Audi");
+		human.setCars(cars);
+		human.save();
+		citizen.setCars((Set<Car>) Factory.get("cars"));
+		citizen.save();
+		people = (Set<Person>) Person.find("cars.brand = 'BMW' or cars.brand = 'Audi'", Person.class);
+		assertEquals(2, people.size());
 	}
 
-	public void testFindWithOrInConditions() {
+	public void testFindWithConditionsOnMultipleKindOfAttributes() {
 		Set<Person> people;
-		marc.setCars((Set<Car>) Factory.get("cars"));
-		marc.save();
-		people = (Set<Person>) Person.find("age = 30 or cars.brand = 'BMW'", Person.class);
-		assertEquals(1, people.size());
+		citizen.setCars((Set<Car>) Factory.get("cars"));
+		citizen.save();
+		people = (Set<Person>) Person.find("age = 30 and cars.brand = 'BMW'", Person.class);
+		assertEquals(citizen.getNom(), people.iterator().next().getNom());
 	}
 
 	public void testFindWithConditionsOnManyToManyAssociation() {
-		Set<Pet> pets = new HashSet<Pet>();
-		pets.add(new Pet("Chien", "Toutou toutou"));
-		marc.setCars((Set<Car>) Factory.get("cars"));
-		marc.setPets(pets);
-		marc.save();
 		Set<Person> people;
+		givePetAndCarsToCitizen();
+
 		people = (Set<Person>) Person.find("pets.name = 'Toutou toutou'", Person.class);
 		assertEquals(1, people.size());
-		jean.setPets(pets);
-		jean.save();
+
+		givePetToHuman();
 		people = (Set<Person>) Person.find("pets.name = 'Toutou toutou'", Person.class);
 		assertEquals(2, people.size());
+
 		people = (Set<Person>) Person.find("pets.name = 'Toutou toutou' and age=30", Person.class);
 		assertEquals(1, people.size());
+
 		people = (Set<Person>) Person.find("pets.name = 'Toutou toutou' and cars.brand = 'BMW'",
 				Person.class);
 		assertEquals(1, people.size());
 	}
-	
-	
 
 	// Private methods
-	private void assertMarcRetrieveHisPets(Person newMarc) {
-		Person marc = (Person) Factory.get("marc");
-		assertEquals(2, newMarc.getPets().size());
 
-		Iterator<Pet> pets = marc.getPets().iterator();
-		assertTrue(containPet(newMarc.getPets(), pets.next()));
-		assertTrue(containPet(newMarc.getPets(), pets.next()));
+	private void givePetToHuman() {
+		Set<Pet> pets = new HashSet<Pet>();
+		pets.add(new Pet("Chien", "Toutou toutou"));
+		human.setPets(pets);
+		human.save();
+
+	}
+
+	private void givePetAndCarsToCitizen() {
+		Set<Pet> pets = new HashSet<Pet>();
+		pets.add(new Pet("Chien", "Toutou toutou"));
+		citizen.setCars((Set<Car>) Factory.get("cars"));
+		citizen.setPets(pets);
+		citizen.save();
 	}
 
 	private boolean containPet(Set<Pet> pets, Pet pet) {

@@ -14,10 +14,10 @@ import sample.Pet;
 
 public class AssociationsTest extends TestCase {
 
-	public static Person	marc;
+	public static Person	citizen;
 
 	public void setUp() {
-		marc = (Person) Factory.get("marc");
+		citizen = (Person) Factory.get("human");
 	}
 
 	public void tearDown() {
@@ -25,53 +25,44 @@ public class AssociationsTest extends TestCase {
 	}
 
 	public void testAssociationsBuilding() {
-		assertTrue(marc.getHasOneAssociations().containsKey("adresse"));
-		assertTrue(marc.getManyToManyAssociations().containsKey("pets"));
-		assertTrue(marc.getHasManyAssociations().containsKey("cars"));
-		assertEquals(1, marc.getHasOneAssociations().size());
-		assertEquals(1, marc.getManyToManyAssociations().size());
-		assertEquals(1, marc.getHasManyAssociations().size());
+		assertTrue(citizen.getHasOneAssociations().containsKey("adresse"));
+		assertTrue(citizen.getManyToManyAssociations().containsKey("pets"));
+		assertTrue(citizen.getHasManyAssociations().containsKey("cars"));
+		assertEquals(1, citizen.getHasOneAssociations().size());
+		assertEquals(1, citizen.getManyToManyAssociations().size());
+		assertEquals(1, citizen.getHasManyAssociations().size());
 	}
 
-	// Test on update in a many_to_many relation when the many_to_many field
-	// reference existed before (not null)
-	// Must so not add or change a pair of key in the join_table , but just
+	// Must not add or change a pair of key in the join_table , but just
 	// update the child table
-	public void testUpdateManyToManyRelationWhenExistBefore() {
+	public void testUpdateManyToManyAttributeWhenExistBefore() {
 		assertEquals(2, Pet.findAll(Pet.class).size());
-		marc.getPets().iterator().next().setName("Idefix");
-		marc.save();
+		citizen.getPets().iterator().next().setName("Idefix");
+		citizen.save();
 		assertEquals(2, Pet.findAll(Pet.class).size());
-		assertEquals(2, TestHelper.jointureSizeFor(marc, "pets"));
+		assertEquals(2, TestHelper.jointureSizeFor(citizen, "pets"));
 	}
 
-	// Test on update in a many_to_many relation when the many_to_many field
-	// reference not exist before (null)
-	// Must so add pair (s)of key in the join_table , and add the object(s) in
+	// Must add pair(s)of key in the join_table , and add the object(s) in
 	// the child table
-	public void testUpdateManyToManyRelationWhenNullBefore() {
+	public void testUpdateManyToManyAttributeWhenNullBefore() {
 		assertEquals(2, Pet.findAll(Pet.class).size());
 		Person p = new Person();
 		p.save();
-		assertEquals(2, Pet.findAll(Pet.class).size());
 		p.setPets((Set<Pet>) Factory.get("pets"));
 		p.save();
 		assertEquals(4, Pet.findAll(Pet.class).size());
 		assertEquals(2, TestHelper.jointureSizeFor(p, "pets"));
 	}
 
-	// Test on update in a many_to_many relation when the many_to_many field
-	// reference not exist before (null)
-	// And assign an occurence (here pets) that already exist (here assign a pet
-	// of marc)
-	// Must so add pair (s)of key in the join_table , and not add the object(s)
+	// Must add pair(s) of key in the join_table , and not add the object(s)
 	// in the child table
 	// Just make a new reference in the join table for the new person
-	public void testUpdateManyToManyRelationWhenNullBeforeAndAssignAnExistingOccurence() {
+	public void testUpdateManyToManyAttributeWhenNullBeforeAndAssignAnExistingOccurence() {
 		assertEquals(2, Pet.findAll(Pet.class).size());
 		Person p = new Person();
 		Set<Pet> pets = new HashSet<Pet>();
-		pets.add(marc.getPets().iterator().next());
+		pets.add(citizen.getPets().iterator().next());
 		p.setPets(pets);
 		p.save();
 		assertEquals(2, Pet.findAll(Pet.class).size());
@@ -80,55 +71,48 @@ public class AssociationsTest extends TestCase {
 
 	// Test pairs of keys are deleted in join table when person is deleted
 	public void testRefreshJoinTable() {
-		marc.delete();
-		assertEquals(0, TestHelper.jointureSizeFor(marc, "pets"));
+		citizen.delete();
+		assertEquals(0, TestHelper.jointureSizeFor(citizen, "pets"));
 	}
 
-	// Test on delete cascading with many_to_many relations .
-	// If person is deleted , his pets must also be erased with
-	// Cascase.DELETE=true
-	public void testCascadeDeleteWithRelationManyToMany() {
-		marc.getManyToManyAssociations().get("pets").setCascadeDelete(true);
-		marc.delete();
-		assertNull(Pet.find(marc.getPets().iterator().next().getId(), Pet.class));
+	public void testCascadeDeleteWithManyToManyAttribute() {
+		citizen.getManyToManyAssociations().get("pets").setCascadeDelete(true);
+		citizen.delete();
+		assertNull(Pet.find(citizen.getPets().iterator().next().getId(), Pet.class));
 	}
 
-	// Test on delete cascading with many_to_many relations .
-	// If person is deleted , his pets must not be erased with
-	// Cascase.DELETE=false
-	// Pairs of keys in join table must be deleted
-	public void testNoCascadeDeleteWithRelationManyToMany() {
-		Iterator<Pet> pets = marc.getPets().iterator();
+	public void testNoCascadeDeleteWithManyToManyAttribute() {
+		Iterator<Pet> pets = citizen.getPets().iterator();
 		Pet pet1 = (Pet) pets.next();
 		Pet pet2 = (Pet) pets.next();
-		marc.getManyToManyAssociations().get("pets").setCascadeDelete(false);
-		marc.delete();
+		citizen.getManyToManyAssociations().get("pets").setCascadeDelete(false);
+		citizen.delete();
 		assertNotNull(Pet.find(pet1.getId(), Pet.class));
 		assertNotNull(Pet.find(pet2.getId(), Pet.class));
-		assertEquals(0, TestHelper.jointureSizeFor(marc, "pets"));
+		assertEquals(0, TestHelper.jointureSizeFor(citizen, "pets"));
 	}
 
 	// Test if add an occurence in the set , just one is added in table rows ,
-	// other are just updated.
+	// Other are just updated.
 	// Only one more link in join table.
-	public void testAddOccurenceInManyToManyRelationSet() {
-		marc.getPets().add(new Pet("Hamster", "Scorpio"));
-		marc.save();
+	public void testAddOccurenceInManyToManyAttribute() {
+		citizen.getPets().add(new Pet("Hamster", "Scorpio"));
+		citizen.save();
 		assertEquals(3, Pet.findAll(Pet.class).size());
-		marc = (Person) Person.find(marc.getId(), Person.class);
-		assertEquals(3, marc.getPets().size());
-		assertEquals(3, TestHelper.jointureSizeFor(marc, "pets"));
+		citizen = (Person) Person.find(citizen.getId(), Person.class);
+		assertEquals(3, citizen.getPets().size());
+		assertEquals(3, TestHelper.jointureSizeFor(citizen, "pets"));
 	}
 
 	// Test if an occurence is deleted in the set , the occurence in table is
 	// deleted when save has been called.
 	// The pair keys is deleted in the join table
-	public void testDeleteOccurenceInManyToManyRelationSet() {
-		Pet pet = marc.getPets().iterator().next();
-		marc.getPets().remove(pet);
-		assertEquals(1, marc.getPets().size());
-		marc.save();
-		marc = (Person) Person.find(marc.getId(), Person.class);
-		assertEquals(1, TestHelper.jointureSizeFor(marc, "pets"));
+	public void testDeleteOccurenceInManyToManyAttribute() {
+		Pet pet = citizen.getPets().iterator().next();
+		citizen.getPets().remove(pet);
+		assertEquals(1, citizen.getPets().size());
+		citizen.save();
+		citizen = (Person) Person.find(citizen.getId(), Person.class);
+		assertEquals(1, TestHelper.jointureSizeFor(citizen, "pets"));
 	}
 }

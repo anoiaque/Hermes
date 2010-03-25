@@ -17,10 +17,10 @@ import core.Table;
 
 public class BasicTest extends TestCase {
 
-	public static Person	marc;
+	public static Person	citizen;
 
 	public void setUp() {
-		marc = (Person) Factory.get("marc");
+		citizen = (Person) Factory.get("human");
 	}
 
 	public void tearDown() {
@@ -28,7 +28,7 @@ public class BasicTest extends TestCase {
 	}
 
 	public void testDefaultTableName() {
-		assertEquals("PEOPLE", marc.getTableName());
+		assertEquals("PEOPLE", citizen.getTableName());
 		assertEquals("PEOPLE", Table.nameFor(Person.class));
 		assertEquals("ADDRESSES", Table.nameFor(Address.class));
 		assertEquals("PETS", Table.nameFor(Pet.class));
@@ -39,28 +39,29 @@ public class BasicTest extends TestCase {
 		assertEquals("personnel", Table.nameFor(Personne.class));
 	}
 
-	public void testId() {
+	public void testIdIncrementation() {
 		Person joe = new Person();
 		joe.save();
-		assertEquals(marc.getId() + 1, joe.getId());
+		assertEquals(citizen.getId() + 1, joe.getId());
 	}
 
 	public void testBasicsFields() {
 		Integer varcharLength = Configuration.SqlConverterConfig.varcharLength;
-		String nameType = "varchar(" + varcharLength + ")";
-		List<Attribute> attributes = marc.getAttributes();
+		String nameSqlType = "varchar(" + varcharLength + ")";
+		List<Attribute> attributes = citizen.getAttributes();
+		
 		assertTrue(containsAttribute(attributes, "age", "int", 30));
-		assertTrue(containsAttribute(attributes, "nom", nameType, "Marc"));
+		assertTrue(containsAttribute(attributes, "nom", nameSqlType, "Marc"));
 	}
 
 	public void testReloading() {
-		marc.setAge(100);
-		marc.save();
-		marc = (Person) marc.reload();
-		assertEquals(100, marc.getAge());
+		citizen.setAge(100);
+		citizen.save();
+		citizen = (Person) citizen.reload();
+		assertEquals(100, citizen.getAge());
 	}
 
-	// private
+	// Private methods
 	private boolean containsAttribute(List<Attribute> list, String name, String type, Object value) {
 		for (Attribute attr : list) {
 			String aname = attr.getName();

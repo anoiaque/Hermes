@@ -8,7 +8,8 @@ import core.Jointure;
 public class TestHelper extends TestCase {
 
 	public static int jointureSizeFor(Hermes object, String attribute) {
-		Jointure jointure = object.getManyToManyAssociations().get(attribute).getJointure();
+		Jointure jointure;
+		jointure = object.getManyToManyAssociations().get(attribute).getJointure();
 		return Finder.find(object.getId(), jointure).size();
 	}
 

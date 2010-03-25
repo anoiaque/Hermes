@@ -12,12 +12,10 @@ public class Hermes {
 	private ArrayList<Attribute>	attributes		= new ArrayList<Attribute>();
 	private Associations					associations	= new Associations(this);
 
-	// Constructeurs
 	public Hermes() {
 		tableName = Inflector.pluralize(Introspector.className(this)).toUpperCase();
 	}
 
-	// Public methods
 	public boolean save() {
 		return Updater.save(this);
 	}
@@ -60,6 +58,10 @@ public class Hermes {
 
 	public Set<?> findAll() {
 		return Finder.find("*", null, this.getClass());
+	}
+
+	public static Hermes findFirst(String conditions, Class<? extends Hermes> model) {
+		return Finder.findFirst(conditions, model);
 	}
 
 	public Hermes findFirst(String conditions) {

@@ -8,10 +8,10 @@ import junit.framework.TestCase;
 
 public class JointureTest extends TestCase {
 
-	public static Person	marc;
+	public static Person	human;
 
 	public void setUp() {
-		marc = (Person) Factory.get("marc");
+		human = (Person) Factory.get("human");
 	}
 
 	public void tearDown() {
@@ -19,7 +19,7 @@ public class JointureTest extends TestCase {
 	}
 
 	public void testJointureTableName() {
-		Jointure jointure = marc.getManyToManyAssociations().get("pets").getJointure();
+		Jointure jointure = human.getManyToManyAssociations().get("pets").getJointure();
 		assertEquals("PEOPLE_PETS", jointure.getTableName());
 	}
 }

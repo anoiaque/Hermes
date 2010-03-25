@@ -7,10 +7,10 @@ import sample.Person;
 
 public class UpdaterTest extends TestCase {
 
-	public static Person	marc;
+	public static Person	human;
 
 	public void setUp() {
-		marc = (Person) Factory.get("marc");
+		human = (Person) Factory.get("human");
 	}
 
 	public void tearDown() {
@@ -19,6 +19,7 @@ public class UpdaterTest extends TestCase {
 
 	public void testSave() {
 		Person person = new Person();
+		
 		person.setNom("Anne");
 		person.setAge(30);
 		person.save();
@@ -28,16 +29,15 @@ public class UpdaterTest extends TestCase {
 	}
 
 	public void testUpdate() {
-		marc.setNom("joe");
-		marc.save();
-		marc.setNom("");
-		marc = (Person) marc.reload();
-		assertEquals("joe", marc.getNom());
+		human.setNom("joe");
+		human.save();
+		human = (Person) human.reload();
+		assertEquals("joe", human.getNom());
 	}
 
 	public void testDelete() {
-		marc.delete();
-		assertNull(Person.find(marc.getId(), Person.class));
+		human.delete();
+		assertNull(Person.find(human.getId(), Person.class));
 	}
 
 }

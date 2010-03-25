@@ -15,7 +15,6 @@ public class Pool {
   private String driverName = "";
   private HashMap<Connection, Boolean> pool = null;
 
-  // constructors
   private Pool() {
     config = Configuration.DBMSConfig.get();
     this.driverName = driverNameFor(config.getAdapter());
@@ -34,7 +33,6 @@ public class Pool {
     }
   }
 
-  // public methods
   public static Pool getInstance() {
     if (instance == null) {
       synchronized (Pool.class) {
@@ -73,7 +71,7 @@ public class Pool {
     return nbFree;
   }
 
-  // private methods
+  // Private methods
   private String driverNameFor(String dbmsName) {
     if (dbmsName.equalsIgnoreCase("MySql")) {
       return "com.mysql.jdbc.Driver";

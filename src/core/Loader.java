@@ -13,6 +13,7 @@ public class Loader {
 		}
 	}
 
+	// Private methods
 	private static void loadHasOneAssociations(Hermes object) {
 		String foreignKey;
 		Class<Hermes> klass;
@@ -47,7 +48,7 @@ public class Loader {
 	private static void loadManyToManyAssociations(Hermes object) {
 		Field field;
 		Set<Hermes> objects;
-		
+
 		for (String attribute : object.getManyToManyAssociations().keySet()) {
 			field = Introspector.fieldFor(object, attribute);
 			objects = Jointure.load(attribute, object);

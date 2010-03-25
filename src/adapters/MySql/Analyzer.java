@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import core.Hermes;
 import core.Table;
 
-public class Analyser {
+public class Analyzer {
 
 	public static HashMap<String, String> tables(String conditions, Hermes object) {
 		HashMap<String, String> tables = new HashMap<String, String>();
@@ -36,12 +36,10 @@ public class Analyser {
 		for (String attribute : tables.keySet()) {
 			table = tables.get(attribute);
 			conditions = conditions.replaceAll(attribute + ".", table + ".");
-
 			if (isManyToManyAttribute(attribute, object)) {
 				conditions += manyToManyCondition(attribute, object, table);
 			}
 			else conditions += hasOneOrManyCondition(object, table);
-
 		}
 		return conditions;
 	}

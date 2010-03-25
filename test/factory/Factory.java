@@ -11,8 +11,7 @@ import sample.Pet;
 public class Factory {
 
 	public static Object get(String feature) {
-		if (feature.equals("marc")) return marc();
-		if (feature.equals("jean")) return jean();
+		if (feature.equals("human")) return human();
 		if (feature.equals("pets")) return pets();
 		if (feature.equals("cars")) return cars();
 
@@ -33,7 +32,7 @@ public class Factory {
 		return pets;
 	}
 
-	private static Person marc() {
+	private static Person human() {
 		Person person = new Person();
 		person.setAge(30);
 		person.setNom("Marc");
@@ -43,15 +42,4 @@ public class Factory {
 		return person;
 	}
 
-	private static Person jean() {
-		Person person = new Person();
-		person.setAge(25);
-		person.setNom("Jean");
-		person.setAdresse(new Address(28, "rue Kervegan"));
-		Set<Pet> pets = pets();
-		pets.add(new Pet("Hamster", "Leon"));
-		person.setPets(pets);
-		person.save();
-		return person;
-	}
 }

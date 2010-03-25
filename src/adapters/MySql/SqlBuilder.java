@@ -64,7 +64,7 @@ public class SqlBuilder {
 		String sql = "select distinct " + selectClause(select, object);
 		sql += " from " + fromClause(conditions, object);;
 		if (conditions == null) return sql;
-		return sql + " where " + Analyser.conditions(conditions, object);
+		return sql + " where " + Analyzer.conditions(conditions, object);
 	}
 
 	private static String selectClause(String select, Hermes object) {
@@ -77,10 +77,10 @@ public class SqlBuilder {
 		String from = object.getTableName();
 		if (conditions == null) return from;
 
-		for (String table : Analyser.tables(conditions, object).values())
+		for (String table : Analyzer.tables(conditions, object).values())
 			from += "," + table;
 		
-		for (String table : Analyser.jointuresTables(conditions, object).values())
+		for (String table : Analyzer.jointuresTables(conditions, object).values())
 			from += "," + table;
 		return from;
 	}

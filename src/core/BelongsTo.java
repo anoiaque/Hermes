@@ -4,12 +4,10 @@ import java.util.Set;
 
 public class BelongsTo {
 
-	Hermes					parent;
 	private String	fkName;
 	private Integer	fkValue	= null;
 
 	public BelongsTo(Hermes object) {
-		parent = object;
 		fkName = Inflector.foreignKeyName(Introspector.className(object));
 		fkValue = object.getId();
 	}
