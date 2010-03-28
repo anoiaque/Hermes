@@ -50,7 +50,7 @@ public class BasicTest extends TestCase {
 		String nameSqlType = "varchar(" + varcharLength + ")";
 		List<Attribute> attributes = citizen.getAttributes();
 		
-		assertTrue(containsAttribute(attributes, "age", "int", 30));
+		assertTrue(containsAttribute(attributes, "age", "integer", 30));
 		assertTrue(containsAttribute(attributes, "nom", nameSqlType, "Marc"));
 	}
 

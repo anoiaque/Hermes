@@ -6,6 +6,34 @@ import java.util.Set;
 
 public class Introspector {
 
+	public static Hermes classOf(Class<? extends Hermes> model) {
+		try {
+			return model.newInstance();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
+	public static String className(Hermes klass) {
+		return klass.getClass().getSimpleName();
+	}
+
+	public static Object getObject(String attribute, Hermes klass) {
+		Field field;
+		try {
+			field = klass.getClass().getDeclaredField(attribute);
+			field.setAccessible(true);
+			return field.get(klass);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static void setField(Hermes object, Hermes fieldValue, Field field) {
 		try {
 			field.setAccessible(true);
@@ -46,17 +74,8 @@ public class Introspector {
 		}
 	}
 
-	public static Class<Hermes> hermesType(Hermes klass, String attribute) {
-		Field field = fieldFor(klass, attribute);
-		return (Class<Hermes>) field.getType();
-	}
-
 	public static Field[] fieldsOf(Hermes klass) {
 		return klass.getClass().getDeclaredFields();
-	}
-
-	public static String className(Hermes klass) {
-		return klass.getClass().getSimpleName();
 	}
 
 	public static String typeName(Hermes klass, String attribute) {
@@ -84,17 +103,9 @@ public class Introspector {
 		return ((Class<Hermes>) pType.getActualTypeArguments()[0]);
 	}
 
-	public static Object getObject(String attribute, Hermes klass) {
-		Field field;
-		try {
-			field = klass.getClass().getDeclaredField(attribute);
-			field.setAccessible(true);
-			return field.get(klass);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public static Class<Hermes> hermesType(Hermes klass, String attribute) {
+		Field field = fieldFor(klass, attribute);
+		return (Class<Hermes>) field.getType();
 	}
 
 	// Private Methods

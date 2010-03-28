@@ -19,7 +19,7 @@ public class Finder {
 		return (Hermes) set.next();
 	}
 
-	public static Hermes find(int id, Class<? extends Hermes> model) {
+	public static Hermes find(long id, Class<? extends Hermes> model) {
 		return findFirst("*", "id = " + id, model);
 	}
 
@@ -33,7 +33,7 @@ public class Finder {
 		return objects;
 	}
 
-	public static Set<?> find(int parentId, Jointure join) {
+	public static Set<?> find(long parentId, Jointure join) {
 		return adaptor.find("*", "parentId = " + parentId, join);
 	}
 }

@@ -8,8 +8,8 @@ import adapters.MySql.SqlBuilder;
 
 public class Jointure extends Hermes {
 
-	private int	parentId;
-	private int	childId;
+	private long	parentId;
+	private long	childId;
 
 	public Jointure() {}
 
@@ -18,7 +18,7 @@ public class Jointure extends Hermes {
 		Adapter.get().execute(SqlBuilder.build("jointure", tableName), this);
 	}
 
-	public boolean save(int parentId, int childId) {
+	public boolean save(long parentId, long childId) {
 		this.parentId = parentId;
 		this.childId = childId;
 		return save();
@@ -43,7 +43,7 @@ public class Jointure extends Hermes {
 	}
 
 	// Getters & setters
-	public int getParentId() {
+	public long getParentId() {
 		return parentId;
 	}
 
@@ -51,7 +51,7 @@ public class Jointure extends Hermes {
 		this.parentId = leftId;
 	}
 
-	public int getChildId() {
+	public long getChildId() {
 		return childId;
 	}
 

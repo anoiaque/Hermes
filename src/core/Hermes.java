@@ -7,13 +7,14 @@ import java.util.Set;
 
 public class Hermes {
 
-	private int										id						= 0;
-	protected String							tableName;
-	private ArrayList<Attribute>	attributes		= new ArrayList<Attribute>();
-	private Associations					associations	= new Associations(this);
+	private long						id						= 0;
+	protected String				tableName;
+	private List<Attribute>	attributes		= new ArrayList<Attribute>();
+	private Associations		associations	= new Associations(this);
 
 	public Hermes() {
 		tableName = Inflector.pluralize(Introspector.className(this)).toUpperCase();
+		loadAttributes();
 	}
 
 	public boolean save() {
@@ -28,11 +29,11 @@ public class Hermes {
 		return Updater.delete(this, conditions);
 	}
 
-	public static Hermes find(int id, Class<? extends Hermes> model) {
+	public static Hermes find(long id, Class<? extends Hermes> model) {
 		return Finder.find(id, model);
 	}
 
-	public Hermes find(int id) {
+	public Hermes find(long id) {
 		return Finder.find(id, this.getClass());
 	}
 
@@ -133,11 +134,11 @@ public class Hermes {
 		return this.tableName;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
