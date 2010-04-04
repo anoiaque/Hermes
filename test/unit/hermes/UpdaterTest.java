@@ -1,5 +1,6 @@
 package unit.hermes;
 
+import core.Hermes;
 import factory.Factory;
 import helpers.Database;
 import junit.framework.TestCase;
@@ -38,6 +39,15 @@ public class UpdaterTest extends TestCase {
 	public void testDelete() {
 		human.delete();
 		assertNull(Person.find(human.getId(), Person.class));
+	}
+	
+	public void testExecuteSql(){
+		Hermes.execute("update people set nom = 'joe' where age = 30");
+		human = (Person) human.reload();
+		assertEquals("joe", human.getNom());
+		Hermes.execute("insert into people(age) values(34)");
+		assertEquals(2, Hermes.findAll(Person.class).size());
+		
 	}
 
 }

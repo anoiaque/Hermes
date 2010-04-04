@@ -38,6 +38,11 @@ public class FindersTest extends TestCase {
 	public void testFindWithConditions() {
 		Person person = (Person) Person.findFirst("age = 30", Person.class);
 		assertEquals(citizen.getId(), person.getId());
+		citizen.setNom("George");
+		citizen.save();
+		person = (Person) Person.findFirst("nom = 'George'", Person.class);
+		assertEquals(citizen.getId(), person.getId());
+
 	}
 
 	public void testFindWithConditionsOnHasOneAssociation() {
@@ -126,6 +131,13 @@ public class FindersTest extends TestCase {
 
 		people = (Set<Person>) Person.find("pets.name = 'Toutou toutou' and cars.brand = 'BMW'",
 				Person.class);
+		assertEquals(1, people.size());
+	}
+
+	public void testFindBySql() {
+		Set<Person> people;
+
+		people = (Set<Person>) Hermes.findBySql("select * from people where age=30", Person.class);
 		assertEquals(1, people.size());
 	}
 

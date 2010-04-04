@@ -27,6 +27,10 @@ public class Jointure extends Hermes {
 	public void clear(Hermes parent) {
 		delete("parentId=" + parent.getId());
 	}
+	
+	public boolean delete(String conditions){
+		return Updater.delete(conditions, this);
+	}
 
 	public static Set<Hermes> load(String attribute, Hermes object) {
 		Jointure jointure = object.getManyToManyAssociations().get(attribute).getJointure();

@@ -36,4 +36,8 @@ public class Finder {
 	public static Set<?> find(long parentId, Jointure join) {
 		return adaptor.find("*", "parentId = " + parentId, join);
 	}
+
+	public static Set<?> findBySql(String sql, Class<? extends Hermes> model) {
+		return adaptor.finder(sql, model);
+	}
 }

@@ -1,13 +1,15 @@
 package adapters;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Set;
+
 import adapters.MySql.MySql;
 import configuration.Configuration;
 import configuration.Configuration.DBMSConfig;
 import core.Hermes;
 import core.Jointure;
-
-import java.sql.ResultSet;
-import java.util.Set;
 
 public abstract class Adapter {
 
@@ -33,15 +35,25 @@ public abstract class Adapter {
 
 	public abstract boolean delete(Hermes object);
 
-	public abstract boolean delete(Hermes object, String conditions);
+	public abstract boolean delete(String conditions, Hermes object);
 
 	public abstract boolean execute(String sql, Hermes object);
+
+	public abstract void save(Hermes object, Connection connexion) throws SQLException;
+
+	public abstract void update(Hermes object, Connection connexion) throws SQLException;
+
+	public abstract void delete(Hermes object, Connection connexion) throws SQLException;
+
+	public abstract void execute(String sql, Hermes object, Connection connexion) throws SQLException;
 
 	public abstract Set<Hermes> find(String select, String conditions, Class<? extends Hermes> model);
 
 	public abstract Set<Hermes> find(String select, String conditions, Jointure join);
 
-	public abstract ResultSet finder(String select, String conditions, Hermes model);
+	public abstract Set<Hermes> finder(String sql, Class<? extends Hermes> model);
+
+	public abstract ResultSet finder(String sql, Hermes model);
 
 	public abstract String javaToSql(String javaType);
 }

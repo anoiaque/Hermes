@@ -1,5 +1,8 @@
 package core;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import adapters.Adapter;
 
 public class Updater {
@@ -28,10 +31,47 @@ public class Updater {
 		return deleted;
 	}
 
-	public static boolean delete(Hermes object, String conditions) {
+	public static boolean delete(String conditions, Hermes object) {
 		object.getAssociations().delete();
-		boolean deleted = adapter.delete(object, conditions);
+		boolean deleted = adapter.delete(conditions, object);
 		if (deleted) object.setId(0);
 		return deleted;
 	}
+
+	public static boolean executeSql(String sql) {
+		return adapter.execute(sql, null);
+	}
+
+	// For Transactions
+
+	public static void save(Hermes object, Connection connexion) throws SQLException {
+		if (!object.isNewRecord()) update(object, connexion);
+		else {
+			object.loadAttributes();
+			adapter.save(object, connexion);
+			object.getAssociations().save();
+		}
+	}
+
+	public static void update(Hermes object, Connection connexion) throws SQLException {
+		object.loadAttributes();
+		adapter.update(object, connexion);
+		object.getAssociations().save();
+	}
+
+	public static void executeSql(String sql, Hermes object, Connection connexion)
+			throws SQLException {
+		adapter.execute(sql, object, connexion);
+	}
+
+	public static void delete(Hermes object, Connection connexion) throws SQLException {
+		System.out.println("here");
+		object.getAssociations().delete();
+		System.out.println("here");
+
+		adapter.delete(object, connexion);
+		System.out.println("here");
+
+	}
+
 }

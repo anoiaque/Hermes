@@ -14,7 +14,7 @@ public class MigrationTest extends TestCase {
 	private static Type	types	= new Type();
 
 	public void testIdToBigInt() {
-		String sql = "id bigint primary key auto_increment";
+		String sql = "id int primary key auto_increment";
 		assertEquals(sql, Migration.idColumnDefinition());
 	}
 
@@ -32,6 +32,10 @@ public class MigrationTest extends TestCase {
 
 	public void testTableDefinition() {
 		assertEquals(tableDefinition(), Migration.tableDefinition(Type.class));
+	}
+	
+	public void testForeignKeysDefinition(){
+		assertEquals("person_id bigint", Migration.foreignKeyDefinition("person_id"));
 	}
 
 	// Private methods
@@ -52,7 +56,7 @@ public class MigrationTest extends TestCase {
 	}
 
 	private String tableDefinition() {
-		return "create table TYPES(id bigint primary key auto_increment,\n" + "car char(1),\n"
+		return "create table TYPES(id int primary key auto_increment,\n" + "car char(1),\n"
 				+ "kcar char(1),\n" + "octet tinyint,\n" + "koctet tinyint,\n" + "court smallint,\n"
 				+ "kcourt smallint,\n" + "entier integer,\n" + "kentier integer,\n" + "longue bigint,\n"
 				+ "klongue bigint,\n" + "reel float,\n" + "kreel float,\n" + "bigreal float,\n" + "kbigreal float,\n"

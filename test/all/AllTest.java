@@ -3,13 +3,15 @@ package all;
 import helpers.Database;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import unit.hermes.AssociationsTest;
 import unit.hermes.BasicTest;
 import unit.hermes.FindersTest;
 import unit.hermes.HasManyTest;
 import unit.hermes.HasOneTest;
-import unit.hermes.AssociationsTest;
 import unit.hermes.JointureTest;
+import unit.hermes.TransactionTest;
 import unit.hermes.UpdaterTest;
+import unit.migration.MigrationTest;
 import unit.mysqladaptor.SqlBuilderTest;
 import unit.pool.PoolTest;
 
@@ -26,6 +28,8 @@ public class AllTest extends TestSuite {
 		suite.addTest(new TestSuite(HasOneTest.class));
 		suite.addTest(new TestSuite(JointureTest.class));
 		suite.addTest(new TestSuite(UpdaterTest.class));
+		suite.addTest(new TestSuite(TransactionTest.class));
+		suite.addTest(new TestSuite(MigrationTest.class));
 		suite.addTest(new TestSuite(PoolTest.class));
 		return suite;
 	}

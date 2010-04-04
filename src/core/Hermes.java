@@ -25,8 +25,12 @@ public class Hermes {
 		return Updater.delete(this);
 	}
 
-	public boolean delete(String conditions) {
-		return Updater.delete(this, conditions);
+	public static boolean delete(String conditions, Class<? extends Hermes> model) {
+		Set<Hermes> objects = (Set<Hermes>) find(conditions, model);
+		boolean deleted = true;
+		for (Hermes object : objects)
+			deleted = deleted && Updater.delete(object);
+		return deleted;
 	}
 
 	public static Hermes find(long id, Class<? extends Hermes> model) {
@@ -69,8 +73,12 @@ public class Hermes {
 		return Finder.findFirst(conditions, this.getClass());
 	}
 
-	public Set<?> findBySql(String sqlRequest) {
-		return null;
+	public static Set<?> findBySql(String sql, Class<? extends Hermes> model) {
+		return Finder.findBySql(sql, model);
+	}
+
+	public Set<?> findBySql(String sql) {
+		return Finder.findBySql(sql, this.getClass());
 	}
 
 	public boolean isNewRecord() {
@@ -111,6 +119,10 @@ public class Hermes {
 
 	public void loadAttributes() {
 		this.attributes = (ArrayList<Attribute>) Attribute.load(this);
+	}
+
+	public static boolean execute(String sql) {
+		return Updater.executeSql(sql);
 	}
 
 	// Getters & Setters

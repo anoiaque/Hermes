@@ -1,5 +1,7 @@
 package sample;
 
+import java.util.Set;
+
 import core.Hermes;
 
 public class Type extends Hermes {
@@ -19,4 +21,14 @@ public class Type extends Hermes {
 	double		bigreal;
 	Double		kbigreal;
 	String		str;
+	
+	Address adresse;
+  Set<Car> cars;
+	
+	public Type() {
+    hasOne("adresse");
+    hasMany("cars");
+  }
+
+   
 }
