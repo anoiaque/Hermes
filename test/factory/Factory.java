@@ -3,7 +3,7 @@ package factory;
 import java.util.HashSet;
 import java.util.Set;
 
-import sample.Address;
+import sample.Adress;
 import sample.Car;
 import sample.Person;
 import sample.Pet;
@@ -35,8 +35,8 @@ public class Factory {
 	private static Person human() {
 		Person person = new Person();
 		person.setAge(30);
-		person.setNom("Marc");
-		person.setAdresse(new Address(13, "rue Tabarly"));
+		person.setName("Marc");
+		person.setAdress(new Adress(13, "rue Tabarly"));
 		person.setPets(pets());
 		person.save();
 		return person;

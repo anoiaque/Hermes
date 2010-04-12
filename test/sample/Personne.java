@@ -4,17 +4,21 @@ import core.Hermes;
 
 public class Personne extends Hermes {
 
-    private String nom;
+	private String	name;
 
-    public String getNom() {
-	return nom;
-    }
+	public Personne() {
+		setTableName("personnel");
+	}
 
-    public void setNom(String nom) {
-	this.nom = nom;
-    }
+	public void Validations() {
+		validatePresenceOf("name", "name must be present yes!");
+	}
 
-    public Personne() {
-	setTableName("personnel");
-    }
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String nom) {
+		this.name = nom;
+	}
 }

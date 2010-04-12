@@ -44,6 +44,10 @@ public class MySql extends Adapter {
 		execute(SqlBuilder.build("delete", null, object), object, connexion);
 	}
 
+	public String javaToSql(String javaType) {
+		return Mapping.javaToSql(javaType);
+	}
+
 	public Set<Hermes> find(String select, String conditions, Class<? extends Hermes> model) {
 		try {
 			Hermes object = model.newInstance();
@@ -95,12 +99,9 @@ public class MySql extends Adapter {
 		}
 	}
 
-	public String javaToSql(String javaType) {
-		return Mapping.javaToSql(javaType);
-	}
-
 	public boolean execute(String sql, Hermes object) {
 		Connection connexion = null;
+		System.out.println(sql);
 		Pool pool = Pool.getInstance();
 		ResultSet rs = null;
 		PreparedStatement statement;

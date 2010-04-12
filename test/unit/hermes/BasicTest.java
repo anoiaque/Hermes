@@ -6,7 +6,7 @@ import helpers.Database;
 import java.util.List;
 
 import junit.framework.TestCase;
-import sample.Address;
+import sample.Adress;
 import sample.Car;
 import sample.Person;
 import sample.Personne;
@@ -30,7 +30,7 @@ public class BasicTest extends TestCase {
 	public void testDefaultTableName() {
 		assertEquals("PEOPLE", citizen.getTableName());
 		assertEquals("PEOPLE", Table.nameFor(Person.class));
-		assertEquals("ADDRESSES", Table.nameFor(Address.class));
+		assertEquals("ADRESSES", Table.nameFor(Adress.class));
 		assertEquals("PETS", Table.nameFor(Pet.class));
 		assertEquals("CARS", Table.nameFor(Car.class));
 	}
@@ -41,7 +41,7 @@ public class BasicTest extends TestCase {
 
 	public void testIdIncrementation() {
 		Person joe = new Person();
-		joe.save();
+		joe.saveWithoutValidation();
 		assertEquals(citizen.getId() + 1, joe.getId());
 	}
 
@@ -51,7 +51,7 @@ public class BasicTest extends TestCase {
 		List<Attribute> attributes = citizen.getAttributes();
 		
 		assertTrue(containsAttribute(attributes, "age", "integer", 30));
-		assertTrue(containsAttribute(attributes, "nom", nameSqlType, "Marc"));
+		assertTrue(containsAttribute(attributes, "name", nameSqlType, "Marc"));
 	}
 
 	public void testReloading() {

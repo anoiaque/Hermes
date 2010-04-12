@@ -25,10 +25,7 @@ public class Updater {
 	}
 
 	public static boolean delete(Hermes object) {
-		object.getAssociations().delete();
-		boolean deleted = adapter.delete(object);
-		if (deleted) object.setId(0);
-		return deleted;
+		return delete(null, object);
 	}
 
 	public static boolean delete(String conditions, Hermes object) {
@@ -65,13 +62,8 @@ public class Updater {
 	}
 
 	public static void delete(Hermes object, Connection connexion) throws SQLException {
-		System.out.println("here");
 		object.getAssociations().delete();
-		System.out.println("here");
-
 		adapter.delete(object, connexion);
-		System.out.println("here");
-
 	}
 
 }

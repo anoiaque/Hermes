@@ -5,7 +5,7 @@ import adapters.Adapter;
 public class Database {
 
 	public static void clear() {
-		String[] tables = { "addresses","cars","personnel", "people", "pets", "people_pets" };
+		String[] tables = { "adresses","cars","personnel", "people", "pets", "people_pets" };
 
 		for (String tableName : tables) {
 			String sql = "delete from " + tableName;

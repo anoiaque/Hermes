@@ -32,15 +32,15 @@ public class FindersTest extends TestCase {
 	public void testFindById() {
 		Person person = (Person) Hermes.find(citizen.getId(), Person.class);
 		assertEquals(citizen.getAge(), person.getAge());
-		assertEquals(citizen.getNom(), person.getNom());
+		assertEquals(citizen.getName(), person.getName());
 	}
 
 	public void testFindWithConditions() {
 		Person person = (Person) Person.findFirst("age = 30", Person.class);
 		assertEquals(citizen.getId(), person.getId());
-		citizen.setNom("George");
+		citizen.setName("George");
 		citizen.save();
-		person = (Person) Person.findFirst("nom = 'George'", Person.class);
+		person = (Person) Person.findFirst("name = 'George'", Person.class);
 		assertEquals(citizen.getId(), person.getId());
 
 	}
@@ -48,20 +48,20 @@ public class FindersTest extends TestCase {
 	public void testFindWithConditionsOnHasOneAssociation() {
 		Set<Person> people;
 
-		people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
+		people = (Set<Person>) Person.find("adress.number = 13", Person.class);
 		assertEquals(2, people.size());
 
-		human.getAdresse().setNumero(10);
+		human.getAdress().setNumber(10);
 		human.save();
-		people = (Set<Person>) Person.find("adresse.numero = 13", Person.class);
+		people = (Set<Person>) Person.find("adress.number= 13", Person.class);
 		assertEquals(1, people.size());
 	}
 
 	public void testFindWithMultipleLevelConditions() {
 		Set<Person> people;
-		people = (Set<Person>) Person.find("adresse.numero = 13 and age = 30", Person.class);
+		people = (Set<Person>) Person.find("adress.number = 13 and age = 30", Person.class);
 		assertEquals(1, people.size());
-		assertEquals(citizen.getNom(), people.iterator().next().getNom());
+		assertEquals(citizen.getName(), people.iterator().next().getName());
 	}
 
 	public void testFindRetrieveManyToManyAssociations() {
@@ -81,10 +81,10 @@ public class FindersTest extends TestCase {
 
 	public void testFindWhithTableNameChangedInModel() {
 		Personne person = new Personne();
-		person.setNom("Pierre");
+		person.setName("Pierre");
 		person.save();
 		person = (Personne) Personne.find(person.getId(), Personne.class);
-		assertEquals("Pierre", person.getNom());
+		assertEquals("Pierre", person.getName());
 	}
 
 	public void testFindWithConditionOnHasManyAssociation() {
@@ -112,7 +112,7 @@ public class FindersTest extends TestCase {
 		citizen.setCars((Set<Car>) Factory.get("cars"));
 		citizen.save();
 		people = (Set<Person>) Person.find("age = 30 and cars.brand = 'BMW'", Person.class);
-		assertEquals(citizen.getNom(), people.iterator().next().getNom());
+		assertEquals(citizen.getName(), people.iterator().next().getName());
 	}
 
 	public void testFindWithConditionsOnManyToManyAssociation() {

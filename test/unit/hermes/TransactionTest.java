@@ -23,7 +23,7 @@ public class TransactionTest extends TestCase {
 	}
 
 	public void testRollbackWithFailureOnDelete() {
-		testRollbackWith("delete from people where addresse = 10");
+		testRollbackWith("delete from people where adresse = 10");
 	}
 
 	private void testRollbackWith(String sql) {

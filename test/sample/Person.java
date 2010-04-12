@@ -6,55 +6,67 @@ import core.Hermes;
 
 public class Person extends Hermes {
 
-  private int age;
-  private String nom;
-  private Address adresse;
-  private Set<Pet> pets;
-  private Set<Car> cars;
+	private int				age;
+	private String		name;
+	private Adress		adress;
+	private Set<Pet>	pets;
+	private Set<Car>	cars;
 
-  public Person() {
-    hasOne("adresse", "dependent:destroy");
-    manyToMany("pets");
-    hasMany("cars");
-  }
+	public Person() {
+	}
 
-  public Set<Car> getCars() {
-    return cars;
-  }
+	public Person(String name, int age) {}
 
-  public void setCars(Set<Car> cars) {
-    this.cars = cars;
-  }
+	public void Associations() {
+		hasOne("adress", "dependent:destroy");
+		manyToMany("pets");
+		hasMany("cars");
+	}
 
-  public int getAge() {
-    return age;
-  }
+	public void Validations() {
+		validatePresenceOf("name");
+		validatePresenceOf("age");
+		validatePresenceOf("adress");
+		validateSizeOf("name",1,10);
+	}
 
-  public void setAge(int age) {
-    this.age = age;
-  }
+	public Set<Car> getCars() {
+		return cars;
+	}
 
-  public String getNom() {
-    return nom;
-  }
+	public void setCars(Set<Car> cars) {
+		this.cars = cars;
+	}
 
-  public void setNom(String nom) {
-    this.nom = nom;
-  }
+	public int getAge() {
+		return age;
+	}
 
-  public void setAdresse(Address adresse) {
-    this.adresse = adresse;
-  }
+	public void setAge(int age) {
+		this.age = age;
+	}
 
-  public Address getAdresse() {
-    return adresse;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public Set<Pet> getPets() {
-    return pets;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public void setPets(Set<Pet> pets) {
-    this.pets = pets;
-  }
+	public Adress getAdress() {
+		return adress;
+	}
+
+	public void setAdress(Adress adress) {
+		this.adress = adress;
+	}
+
+	public Set<Pet> getPets() {
+		return pets;
+	}
+
+	public void setPets(Set<Pet> pets) {
+		this.pets = pets;
+	}
 }

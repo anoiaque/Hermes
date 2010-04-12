@@ -25,7 +25,7 @@ public class AssociationsTest extends TestCase {
 	}
 
 	public void testAssociationsBuilding() {
-		assertTrue(citizen.getHasOneAssociations().containsKey("adresse"));
+		assertTrue(citizen.getHasOneAssociations().containsKey("adress"));
 		assertTrue(citizen.getManyToManyAssociations().containsKey("pets"));
 		assertTrue(citizen.getHasManyAssociations().containsKey("cars"));
 		assertEquals(1, citizen.getHasOneAssociations().size());
@@ -47,10 +47,10 @@ public class AssociationsTest extends TestCase {
 	// the child table
 	public void testUpdateManyToManyAttributeWhenNullBefore() {
 		assertEquals(2, Pet.findAll(Pet.class).size());
-		Person p = new Person();
-		p.save();
+		Person p = new Person("citizen",90);
+		p.saveWithoutValidation();
 		p.setPets((Set<Pet>) Factory.get("pets"));
-		p.save();
+		p.saveWithoutValidation();
 		assertEquals(4, Pet.findAll(Pet.class).size());
 		assertEquals(2, TestHelper.jointureSizeFor(p, "pets"));
 	}
@@ -60,11 +60,11 @@ public class AssociationsTest extends TestCase {
 	// Just make a new reference in the join table for the new person
 	public void testUpdateManyToManyAttributeWhenNullBeforeAndAssignAnExistingOccurence() {
 		assertEquals(2, Pet.findAll(Pet.class).size());
-		Person p = new Person();
+		Person p = new Person("citizen kane",90);
 		Set<Pet> pets = new HashSet<Pet>();
 		pets.add(citizen.getPets().iterator().next());
 		p.setPets(pets);
-		p.save();
+		p.saveWithoutValidation();
 		assertEquals(2, Pet.findAll(Pet.class).size());
 		assertEquals(1, TestHelper.jointureSizeFor(p, "pets"));
 	}

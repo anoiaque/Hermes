@@ -2,7 +2,7 @@ package unit.hermes;
 
 import factory.Factory;
 import helpers.Database;
-import sample.Address;
+import sample.Adress;
 import sample.Person;
 import junit.framework.TestCase;
 
@@ -19,41 +19,41 @@ public class HasOneTest extends TestCase {
 	}
 
 	public void testSave() {
-		human.getAdresse().setRue("");
+		human.getAdress().setStreet("");
 		human = (Person) human.reload();
-		assertEquals("rue Tabarly", human.getAdresse().getRue());
+		assertEquals("rue Tabarly", human.getAdress().getStreet());
 	}
 
 	public void testUpdate() {
-		human.getAdresse().setRue("rue de Brest");
+		human.getAdress().setStreet("rue de Brest");
 		human.save();
 		human = (Person) human.reload();
-		assertEquals("rue de Brest", human.getAdresse().getRue());
+		assertEquals("rue de Brest", human.getAdress().getStreet());
 	}
 
 	public void testDelete() {
-		human.getAdresse().delete();
+		human.getAdress().delete();
 		human = (Person) human.reload();
-		assertEquals(null, human.getAdresse());
+		assertEquals(null, human.getAdress());
 	}
 
 	public void testUpdateWithNewObject() {
-		human.getAdresse().delete();
-		human.setAdresse(new Address(25, "rue de Brest"));
+		human.getAdress().delete();
+		human.setAdress(new Adress(25, "rue de Brest"));
 		human.save();
 		human = (Person) human.reload();
-		assertEquals(25, human.getAdresse().getNumero());
-		assertEquals("rue de Brest", human.getAdresse().getRue());
+		assertEquals(25, human.getAdress().getNumber());
+		assertEquals("rue de Brest", human.getAdress().getStreet());
 	}
 
 	public void testCascadeDelete() {
 		human.delete();
-		assertNull(Address.find(human.getAdresse().getId(), Address.class));
+		assertNull(Adress.find(human.getAdress().getId(), Adress.class));
 	}
 
 	public void testNoCascadeDelete() {
-		human.getHasOneAssociations().get("adresse").setCascadeDelete(false);
+		human.getHasOneAssociations().get("adress").setCascadeDelete(false);
 		human.delete();
-		assertNotNull(Address.find(human.getAdresse().getId(), Address.class));
+		assertNotNull(Adress.find(human.getAdress().getId(), Adress.class));
 	}
 }

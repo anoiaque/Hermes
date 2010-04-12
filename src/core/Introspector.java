@@ -21,12 +21,12 @@ public class Introspector {
 		return klass.getClass().getSimpleName();
 	}
 
-	public static Object getObject(String attribute, Hermes klass) {
+	public static Object getObject(String attribute, Hermes object) {
 		Field field;
 		try {
-			field = klass.getClass().getDeclaredField(attribute);
+			field = object.getClass().getDeclaredField(attribute);
 			field.setAccessible(true);
-			return field.get(klass);
+			return field.get(object);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

@@ -7,17 +7,32 @@ import java.util.Set;
 
 public class Hermes {
 
-	private long						id						= 0;
-	protected String				tableName;
-	private List<Attribute>	attributes		= new ArrayList<Attribute>();
-	private Associations		associations	= new Associations(this);
+	private int														id						= 0;
+	protected String											tableName;
+	private List<Attribute>								attributes		= new ArrayList<Attribute>();
+	private Associations									associations	= new Associations(this);
+	private HashMap<String, List<Error>>	errors				= new HashMap<String, List<Error>>();
 
 	public Hermes() {
 		tableName = Inflector.pluralize(Introspector.className(this)).toUpperCase();
 		loadAttributes();
+		Associations();
+		Validations();
+		Callbacks();
 	}
 
+	public void Validations() {}
+
+	public void Callbacks() {}
+
+	public void Associations() {}
+
 	public boolean save() {
+		if (!isValid()) return false;
+		return Updater.save(this);
+	}
+
+	public boolean saveWithoutValidation() {
 		return Updater.save(this);
 	}
 
@@ -125,6 +140,43 @@ public class Hermes {
 		return Updater.executeSql(sql);
 	}
 
+	public Attribute getAttribute(String name) {
+		loadAttributes();
+		for (Attribute attribute : attributes)
+			if (attribute.getName().equals(name)) return attribute;
+		return null;
+	}
+
+	public void validatePresenceOf(String attribute) {
+		if (Validations.validatePresenceOf(attribute, this)) return;
+		Error error = new Error(Error.Symbol.PRESENCE);
+		errors.put(attribute, Error.add(error, errors.get(attribute)));
+	}
+
+	public void validatePresenceOf(String attribute, String message) {
+		if (Validations.validatePresenceOf(attribute, this)) return;
+		Error error = new Error(Error.Symbol.PRESENCE, message);
+		errors.put(attribute, Error.add(error, errors.get(attribute)));
+	}
+
+	public void validateSizeOf(String attribute, int min, int max) {
+		if (Validations.validateSizeOf(attribute, min, max, false, this)) return;
+		Error error = new Error(Error.Symbol.SIZE);
+		errors.put(attribute, Error.add(error, errors.get(attribute)));
+	}
+
+	public void validateSizeOf(String attribute, int min, int max, String message) {
+		if (Validations.validateSizeOf(attribute, min, max, false, this)) return;
+		Error error = new Error(Error.Symbol.SIZE, message);
+		errors.put(attribute, Error.add(error, errors.get(attribute)));
+	}
+
+	public boolean isValid() {
+		errors.clear();
+		Validations();
+		return errors.isEmpty();
+	}
+
 	// Getters & Setters
 	public HashMap<String, ManyToMany> getManyToManyAssociations() {
 		return associations.getManyToManyAsociations();
@@ -150,7 +202,7 @@ public class Hermes {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -165,4 +217,13 @@ public class Hermes {
 	public List<Attribute> getAttributes() {
 		return attributes;
 	}
+
+	public HashMap<String, List<Error>> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(HashMap<String, List<Error>> errors) {
+		this.errors = errors;
+	}
+
 }
