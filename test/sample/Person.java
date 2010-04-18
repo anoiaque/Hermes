@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import core.Hermes;
 
@@ -8,14 +9,17 @@ public class Person extends Hermes {
 
 	private int				age;
 	private String		name;
+	private String		phone;
 	private Adress		adress;
 	private Set<Pet>	pets;
 	private Set<Car>	cars;
 
-	public Person() {
-	}
+	public Person() {}
 
-	public Person(String name, int age) {}
+	public Person(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
 
 	public void Associations() {
 		hasOne("adress", "dependent:destroy");
@@ -27,7 +31,10 @@ public class Person extends Hermes {
 		validatePresenceOf("name");
 		validatePresenceOf("age");
 		validatePresenceOf("adress");
-		validateSizeOf("name",1,10);
+		validateSizeOf("name", 1, 10, true);
+		validateSizeOf("phone", 8, 10, true);
+		validateUniquenessOf("phone");
+		validateFormatOf("phone", Pattern.compile("\\d{8,10}"), true);
 	}
 
 	public Set<Car> getCars() {
@@ -68,5 +75,13 @@ public class Person extends Hermes {
 
 	public void setPets(Set<Pet> pets) {
 		this.pets = pets;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getPhone() {
+		return phone;
 	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 public class Error {
 
 	public enum Symbol {
-		PRESENCE, SIZE
+		PRESENCE, SIZE, UNIQUENESS, FORMAT
 	};
 
 	private String	message;
@@ -37,7 +37,12 @@ public class Error {
 		case SIZE:
 			message = "has bad length";
 			break;
-
+		case UNIQUENESS:
+			message = "must be unique";
+			break;
+		case FORMAT:
+			message = "has bad format";
+			break;
 		}
 		return message;
 	}

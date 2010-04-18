@@ -3,7 +3,8 @@ use HERMES;
 create table  PEOPLE(
 id int primary key auto_increment,
 age int, 
-name varchar(250)
+name varchar(250),
+phone varchar(250)
 ) ENGINE = InnoDB;
 create table ADRESSES(
 id int primary key auto_increment,

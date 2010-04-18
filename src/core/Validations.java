@@ -1,5 +1,12 @@
 package core;
 
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import adapters.Adapter;
+import adapters.MySql.ObjectBuilder;
+import adapters.MySql.SqlBuilder;
+
 public class Validations {
 
 	public enum Option {
@@ -10,12 +17,34 @@ public class Validations {
 		return Introspector.getObject(attribute, object) != null;
 	}
 
-	public static boolean validateSizeOf(String attribute, int min, int max, boolean allowNil,
+	public static boolean validateSizeOf(String attribute, int min, int max, boolean allowNull,
 			Hermes object) {
 		String value = (String) object.getAttribute(attribute).getValue();
-		if (allowNil && value == null) return true;
+		if (allowNull && value == null) return true;
 		if (value == null) return false;
 		return (value.length() >= min && value.length() <= max);
+	}
+
+	// Warn : Can't use Hermes finder here cause of Invalid access of stack red
+	// zone on mac OS x JRE 6
+	public static boolean validateUniquenessOf(String attribute, Hermes object) {
+		Object value = Introspector.getObject(attribute, object);
+		return !find(attribute, value, object);
+	}
+
+	private static boolean find(String attribute, Object value, Hermes object) {
+		Adapter adaptor = Adapter.get();
+		String conditions = attribute + "='" + value + "'";
+		String sql = SqlBuilder.build("select", "*", conditions, object);
+		Set<?> objects = ObjectBuilder.toObjects(adaptor.finder(sql, object), object.getClass());
+		return objects.size() > 0;
+	}
+
+	public static boolean validateFormatOf(String attribute, Pattern pattern, boolean allowNull,
+			Hermes object) {
+		String value = (String) object.getAttribute(attribute).getValue();
+		if (allowNull && value == null) return true;
+		return pattern.matcher(value).find();
 	}
 
 }

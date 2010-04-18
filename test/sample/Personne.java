@@ -12,6 +12,7 @@ public class Personne extends Hermes {
 
 	public void Validations() {
 		validatePresenceOf("name", "name must be present yes!");
+		validateSizeOf("name",0,20,true);
 	}
 
 	public String getName() {

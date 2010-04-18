@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class Hermes {
 
@@ -149,32 +150,55 @@ public class Hermes {
 
 	public void validatePresenceOf(String attribute) {
 		if (Validations.validatePresenceOf(attribute, this)) return;
-		Error error = new Error(Error.Symbol.PRESENCE);
-		errors.put(attribute, Error.add(error, errors.get(attribute)));
+		addError(attribute, Error.Symbol.PRESENCE, null);
 	}
 
 	public void validatePresenceOf(String attribute, String message) {
 		if (Validations.validatePresenceOf(attribute, this)) return;
-		Error error = new Error(Error.Symbol.PRESENCE, message);
-		errors.put(attribute, Error.add(error, errors.get(attribute)));
+		addError(attribute, Error.Symbol.PRESENCE, message);
 	}
 
-	public void validateSizeOf(String attribute, int min, int max) {
-		if (Validations.validateSizeOf(attribute, min, max, false, this)) return;
-		Error error = new Error(Error.Symbol.SIZE);
-		errors.put(attribute, Error.add(error, errors.get(attribute)));
+	public void validateSizeOf(String attribute, int min, int max, boolean allowNull) {
+		if (Validations.validateSizeOf(attribute, min, max, allowNull, this)) return;
+		addError(attribute, Error.Symbol.SIZE, null);
 	}
 
-	public void validateSizeOf(String attribute, int min, int max, String message) {
+	public void validateSizeOf(String attribute, int min, int max, boolean allowNull, String message) {
 		if (Validations.validateSizeOf(attribute, min, max, false, this)) return;
-		Error error = new Error(Error.Symbol.SIZE, message);
-		errors.put(attribute, Error.add(error, errors.get(attribute)));
+		addError(attribute, Error.Symbol.SIZE, message);
+	}
+
+	public void validateUniquenessOf(String attribute) {
+		if (Validations.validateUniquenessOf(attribute, this)) return;
+		addError(attribute, Error.Symbol.UNIQUENESS, null);
+	}
+
+	public void validateUniquenessOf(String attribute, String message) {
+		if (Validations.validateUniquenessOf(attribute, this)) return;
+		addError(attribute, Error.Symbol.UNIQUENESS, message);
+	}
+
+	public void validateFormatOf(String attribute, Pattern pattern, boolean allowNull) {
+		if (Validations.validateFormatOf(attribute, pattern, allowNull, this)) return;
+		addError(attribute, Error.Symbol.FORMAT, null);
+	}
+
+	public void validateFormatOf(String attribute, Pattern pattern, boolean allowNull, String message) {
+		if (Validations.validateFormatOf(attribute, pattern, allowNull, this)) return;
+		addError(attribute, Error.Symbol.FORMAT, message);
 	}
 
 	public boolean isValid() {
 		errors.clear();
 		Validations();
 		return errors.isEmpty();
+	}
+
+	public void addError(String attribute, Error.Symbol symbol, String message) {
+		Error error;
+		if (message == null) error = new Error(symbol);
+		else error = new Error(symbol, message);
+		errors.put(attribute, Error.add(error, errors.get(attribute)));
 	}
 
 	// Getters & Setters

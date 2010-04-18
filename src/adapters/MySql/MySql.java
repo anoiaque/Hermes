@@ -101,7 +101,6 @@ public class MySql extends Adapter {
 
 	public boolean execute(String sql, Hermes object) {
 		Connection connexion = null;
-		System.out.println(sql);
 		Pool pool = Pool.getInstance();
 		ResultSet rs = null;
 		PreparedStatement statement;
