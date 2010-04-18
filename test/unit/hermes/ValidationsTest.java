@@ -88,6 +88,12 @@ public class ValidationsTest extends TestCase {
 		assertTrue(citizen.isValid());
 	}
 
+	public void testOwnValidation() {
+		citizen.setAge(120);
+		assertFalse(citizen.isValid());
+		assertTrue(hasError(new Error(Error.Symbol.PARTICULAR, "age must be <= 100"), "age", citizen));
+	}
+
 	private static boolean hasError(Error error, String attribute, Hermes object) {
 		if (object.getErrors().isEmpty()) return false;
 		if (object.getErrors().get(attribute) == null) return false;

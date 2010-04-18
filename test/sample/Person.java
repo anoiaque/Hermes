@@ -21,13 +21,13 @@ public class Person extends Hermes {
 		this.age = age;
 	}
 
-	public void Associations() {
+	protected void Associations() {
 		hasOne("adress", "dependent:destroy");
 		manyToMany("pets");
 		hasMany("cars");
 	}
 
-	public void Validations() {
+	protected void Validations() {
 		validatePresenceOf("name");
 		validatePresenceOf("age");
 		validatePresenceOf("adress");
@@ -35,6 +35,11 @@ public class Person extends Hermes {
 		validateSizeOf("phone", 8, 10, true);
 		validateUniquenessOf("phone");
 		validateFormatOf("phone", Pattern.compile("\\d{8,10}"), true);
+		validate();
+	}
+
+	private void validate() {
+		if (age > 100) addError("age", "age must be <= 100");
 	}
 
 	public Set<Car> getCars() {

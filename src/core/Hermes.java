@@ -22,11 +22,11 @@ public class Hermes {
 		Callbacks();
 	}
 
-	public void Validations() {}
+	protected void Validations() {}
 
-	public void Callbacks() {}
+	protected void Callbacks() {}
 
-	public void Associations() {}
+	protected void Associations() {}
 
 	public boolean save() {
 		if (!isValid()) return false;
@@ -198,6 +198,10 @@ public class Hermes {
 		Error error;
 		if (message == null) error = new Error(symbol);
 		else error = new Error(symbol, message);
+		errors.put(attribute, Error.add(error, errors.get(attribute)));
+	}
+	public void addError(String attribute, String message) {
+		Error error = new Error(Error.Symbol.PARTICULAR, message);
 		errors.put(attribute, Error.add(error, errors.get(attribute)));
 	}
 
