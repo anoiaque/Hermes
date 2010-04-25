@@ -5,11 +5,8 @@ import java.util.regex.Pattern;
 
 public class Inflector {
 
-	private static Matcher	matcher;
-	private static Pattern	pattern;
-
 	public static String pluralize(String word) {
-		return plural(word);
+		return (new Inflector()).new Plural(word).get();
 	}
 
 	public static String foreignKey(String model) {
@@ -20,20 +17,20 @@ public class Inflector {
 		return pluralize(Introspector.className(model)).toUpperCase();
 	}
 
-	public static String tableize(String attribute, Hermes object, boolean jointure) {
-		if (jointure) {
-			String parentName = object.getTableName();
-			String childName = tableize(attribute, object, false);
-			return parentName + "_" + childName;
-		}
-
+	public static String tableize(String attribute, Hermes object) {
 		String name = Introspector.typeName(object, attribute);
 		return Inflector.pluralize(name).toUpperCase();
 	}
 
+	public static String tableize(String attribute, Hermes object, String jointure) {
+		String parentName = object.getTableName();
+		String childName = tableize(attribute, object);
+		return parentName + "_" + childName;
+	}
+
 	public static String tableize(Class<? extends Hermes> model) {
 		try {
-			return (String) model.newInstance().getTableName();
+			return  model.newInstance().getTableName();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -41,46 +38,58 @@ public class Inflector {
 		}
 	}
 
-	// Private methods
+	private class Plural {
+		private Pattern	pattern;
+		private Matcher	matcher;
+		private String	plural;
 
-	private static String plural(String word) {
+		public String get() {
+			return plural;
+		}
 
-		if (uncountable(word)) return word;
-		if (word.toLowerCase().equals("ox")) return "oxen";
-		if (word.toLowerCase().equals("person")) return "people";
-		if (word.toLowerCase().equals("men")) return "man";
-		if (word.toLowerCase().equals("sex")) return "sexes";
-		if (word.toLowerCase().equals("child")) return "children";
+		public Plural(String word) {
+			this.plural = plural(word);
+		}
 
-		if (Pattern.matches("(?i)(s$)", word)) return word;
-		if (match(word, "(?i)(ax|test)is$")) return matcher.group().replace("is", "es");
-		if (match(word, "(?i)(octop|vir)us$")) return matcher.group().replace("us", "i");
-		if (match(word, "(?i)(alias|status|bus|tomato|buffalo)$")) return matcher.group() + "es";
-		if (match(word, "(?i)(.*)((matr|vert|ind)(?:ix|ex)$)")) return matcher.group(1)
-				+ matcher.group(3) + "ices";
-		if (match(word, "(?i)(.*)([ti]um$)")) return replacement("um", "a");
-		if (match(word, "(?i)(.*)(sis$)")) return replacement("sis", "ses");
-		if (match(word, "(?i)(.*)(([lr])f$)")) return replacement("f", "ves");
-		if (match(word, "(?i)(.*)(hive$)")) return matcher.group(1) + "hives";
-		if (match(word, "(?i)(.*)(([^aeiouy]|qu)y$)")) return replacement("y", "ies");
-		if (match(word, "(?i)(.*)((x|ch|ss|sh)$)")) return matcher.group(1) + matcher.group(2) + "es";
-		if (match(word, "(?i)(.*)(([m|l])ouse$)")) return replacement("ouse", "ices");
-		if (match(word, "(?i)(.*)((quiz)$)")) return replacement("quiz", "quizzes");
+		private String plural(String word) {
 
-		return word + "s";
-	}
+			if (uncountable(word)) return word;
+			if (word.toLowerCase().equals("ox")) return "oxen";
+			if (word.toLowerCase().equals("person")) return "people";
+			if (word.toLowerCase().equals("men")) return "man";
+			if (word.toLowerCase().equals("sex")) return "sexes";
+			if (word.toLowerCase().equals("child")) return "children";
 
-	private static String replacement(String singular, String plural) {
-		return matcher.group(1) + matcher.group(2).replace(singular, plural);
-	}
+			if (Pattern.matches("(?i)(s$)", word)) return word;
+			if (match(word, "(?i)(ax|test)is$")) return matcher.group().replace("is", "es");
+			if (match(word, "(?i)(octop|vir)us$")) return matcher.group().replace("us", "i");
+			if (match(word, "(?i)(alias|status|bus|tomato|buffalo)$")) return matcher.group() + "es";
+			if (match(word, "(?i)(.*)((matr|vert|ind)(?:ix|ex)$)")) return matcher.group(1)
+					+ matcher.group(3) + "ices";
+			if (match(word, "(?i)(.*)([ti]um$)")) return replacement("um", "a");
+			if (match(word, "(?i)(.*)(sis$)")) return replacement("sis", "ses");
+			if (match(word, "(?i)(.*)(([lr])f$)")) return replacement("f", "ves");
+			if (match(word, "(?i)(.*)(hive$)")) return matcher.group(1) + "hives";
+			if (match(word, "(?i)(.*)(([^aeiouy]|qu)y$)")) return replacement("y", "ies");
+			if (match(word, "(?i)(.*)((x|ch|ss|sh)$)")) return matcher.group(1) + matcher.group(2) + "es";
+			if (match(word, "(?i)(.*)(([m|l])ouse$)")) return replacement("ouse", "ices");
+			if (match(word, "(?i)(.*)((quiz)$)")) return replacement("quiz", "quizzes");
 
-	private static boolean uncountable(String word) {
-		return word.matches("equipment|information|rice|money|species|series|sheep");
-	}
+			return word + "s";
+		}
 
-	private static boolean match(String word, String regexp) {
-		pattern = Pattern.compile(regexp);
-		matcher = pattern.matcher(word);
-		return matcher.find();
+		private String replacement(String singular, String plural) {
+			return matcher.group(1) + matcher.group(2).replace(singular, plural);
+		}
+
+		private boolean uncountable(String word) {
+			return word.matches("equipment|information|rice|money|species|series|sheep");
+		}
+
+		private boolean match(String word, String regexp) {
+			pattern = Pattern.compile(regexp);
+			matcher = pattern.matcher(word);
+			return matcher.find();
+		}
 	}
 }

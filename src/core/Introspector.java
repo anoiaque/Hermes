@@ -14,7 +14,6 @@ public class Introspector {
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	public static String className(Hermes klass) {

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import core.Associations;
 import core.Hermes;
 import core.Introspector;
 
@@ -25,9 +26,8 @@ public class Analyzer {
 
 		for (String attribute : extractAttributes(conditions))
 			if (isManyToManyAttribute(attribute, object)) {
-				String name = object.getAssociations().getManyToManyAsociations().get(attribute)
-						.getJointure().getTableName();
-				tables.put(attribute, name);
+				String jointure = Associations.jointure(attribute, object);
+				tables.put(attribute, jointure);
 			}
 		return tables;
 	}
@@ -70,13 +70,12 @@ public class Analyzer {
 	}
 
 	private static String manyToManyCondition(String attribute, Hermes object, String table) {
-		String joinedTable = object.getAssociations().getManyToManyAsociations().get(attribute)
-				.getJointure().getTableName();;
-		String parentTable = object.getTableName();
+		String jointure = Associations.jointure(attribute, object);
+		String parent = object.getTableName();
 		String sql = "";
 
-		sql = " and (" + joinedTable + ".parentId = " + parentTable + ".id";
-		sql += " and " + joinedTable + ".childId" + "=" + table + ".id)";
+		sql = " and (" + jointure + ".parentId = " + parent + ".id";
+		sql += " and " + jointure + ".childId" + "=" + table + ".id)";
 		return sql;
 	}
 

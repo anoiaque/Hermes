@@ -14,7 +14,7 @@ public class Jointure extends Hermes {
 	public Jointure() {}
 
 	public Jointure(Hermes model, String attribute) {
-		this.tableName = Inflector.tableize(attribute, model, true);
+		this.tableName = Inflector.tableize(attribute, model, "jointure");
 		Adapter.get().execute(SqlBuilder.build("jointure", tableName), this);
 	}
 

@@ -42,6 +42,13 @@ public class Associations {
 		deleteHasMany();
 	}
 
+	public static String jointure(String attribute, Hermes object) {
+		ManyToMany association;
+		association = object.getAssociations().getManyToManyAsociations().get(attribute);
+		return association.getJointure().getTableName();
+
+	}
+
 	// Private methods
 	private boolean saveHasMany() {
 		for (HasMany relation : hasMany.values())
