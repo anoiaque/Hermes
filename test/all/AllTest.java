@@ -5,9 +5,11 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import unit.hermes.AssociationsTest;
 import unit.hermes.BasicTest;
+import unit.hermes.CallbacksTest;
 import unit.hermes.FindersTest;
 import unit.hermes.HasManyTest;
 import unit.hermes.HasOneTest;
+import unit.hermes.InflectorTest;
 import unit.hermes.JointureTest;
 import unit.hermes.TransactionTest;
 import unit.hermes.UpdaterTest;
@@ -32,6 +34,8 @@ public class AllTest extends TestSuite {
 		suite.addTest(new TestSuite(TransactionTest.class));
 		suite.addTest(new TestSuite(MigrationTest.class));
 		suite.addTest(new TestSuite(ValidationsTest.class));
+		suite.addTest(new TestSuite(CallbacksTest.class));
+		suite.addTest(new TestSuite(InflectorTest.class));
 		suite.addTest(new TestSuite(PoolTest.class));
 		return suite;
 	}

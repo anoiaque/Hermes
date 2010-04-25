@@ -2,7 +2,7 @@ package unit.hermes;
 
 import helpers.Database;
 import junit.framework.TestCase;
-import sample.Adress;
+import sample.Address;
 import sample.Person;
 import core.Hermes;
 import factory.Factory;
@@ -21,7 +21,7 @@ public class UpdaterTest extends TestCase {
 
 	public void testSave() {
 		Person person = new Person("citizen kane",90);
-		person.setAdress(new Adress(10, "rue de Lannion"));
+		person.setAdress(new Address(10, "rue de Lannion"));
 		person.setName("Anne");
 		person.setAge(30);
 		person.save();

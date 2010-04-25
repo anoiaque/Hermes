@@ -2,7 +2,7 @@ package unit.hermes;
 
 import helpers.Database;
 import junit.framework.TestCase;
-import sample.Adress;
+import sample.Address;
 import sample.Person;
 import sample.Personne;
 import core.Error;
@@ -14,7 +14,7 @@ public class ValidationsTest extends TestCase {
 
 	public void setUp() {
 		citizen = new Person();
-		citizen.setAdress(new Adress());
+		citizen.setAdress(new Address());
 		citizen.setName("Job");
 	}
 
@@ -68,7 +68,7 @@ public class ValidationsTest extends TestCase {
 
 	public void testUniquenessValidation() {
 		Person human = new Person("Job", 90);
-		human.setAdress(new Adress());
+		human.setAdress(new Address());
 		human.setPhone("0678453676");
 		citizen.setPhone("0678453676");
 		citizen.save();
@@ -89,9 +89,9 @@ public class ValidationsTest extends TestCase {
 	}
 
 	public void testOwnValidation() {
-		citizen.setAge(120);
+		citizen.setAge(501);
 		assertFalse(citizen.isValid());
-		assertTrue(hasError(new Error(Error.Symbol.PARTICULAR, "age must be <= 100"), "age", citizen));
+		assertTrue(hasError(new Error(Error.Symbol.PARTICULAR, "You are not Master Yoda"), "age", citizen));
 	}
 
 	private static boolean hasError(Error error, String attribute, Hermes object) {

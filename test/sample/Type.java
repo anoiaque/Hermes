@@ -22,7 +22,7 @@ public class Type extends Hermes {
 	Double		kbigreal;
 	String		str;
 	
-	Adress adresse;
+	Address adresse;
   Set<Car> cars;
 	
 	public Type() {

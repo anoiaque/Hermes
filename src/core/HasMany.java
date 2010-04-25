@@ -11,7 +11,7 @@ public class HasMany {
 
 	public HasMany(String attribute, String dependency) {
 		attributeName = attribute;
-		fkName = Inflector.foreignKeyName(attribute);
+		fkName = Inflector.foreignKey(attribute);
 		cascadeDelete = dependency.equals("dependent:destroy");
 	}
 

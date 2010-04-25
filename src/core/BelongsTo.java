@@ -8,7 +8,7 @@ public class BelongsTo {
 	private Long		fkValue	= null;
 
 	public BelongsTo(Hermes object) {
-		fkName = Inflector.foreignKeyName(Introspector.className(object));
+		fkName = Inflector.foreignKey(Introspector.className(object));
 		fkValue = object.getId();
 	}
 

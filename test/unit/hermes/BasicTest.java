@@ -1,19 +1,19 @@
 package unit.hermes;
 
-import factory.Factory;
 import helpers.Database;
 
 import java.util.List;
 
 import junit.framework.TestCase;
-import sample.Adress;
+import sample.Address;
 import sample.Car;
 import sample.Person;
 import sample.Personne;
 import sample.Pet;
 import configuration.Configuration;
 import core.Attribute;
-import core.Table;
+import core.Inflector;
+import factory.Factory;
 
 public class BasicTest extends TestCase {
 
@@ -29,14 +29,14 @@ public class BasicTest extends TestCase {
 
 	public void testDefaultTableName() {
 		assertEquals("PEOPLE", citizen.getTableName());
-		assertEquals("PEOPLE", Table.nameFor(Person.class));
-		assertEquals("ADRESSES", Table.nameFor(Adress.class));
-		assertEquals("PETS", Table.nameFor(Pet.class));
-		assertEquals("CARS", Table.nameFor(Car.class));
+		assertEquals("PEOPLE", Inflector.tableize(Person.class));
+		assertEquals("ADDRESSES", Inflector.tableize(Address.class));
+		assertEquals("PETS", Inflector.tableize(Pet.class));
+		assertEquals("CARS", Inflector.tableize(Car.class));
 	}
 
 	public void testRedefinedTableName() {
-		assertEquals("personnel", Table.nameFor(Personne.class));
+		assertEquals("personnel", Inflector.tableize(Personne.class));
 	}
 
 	public void testIdIncrementation() {
@@ -49,7 +49,7 @@ public class BasicTest extends TestCase {
 		Integer varcharLength = Configuration.SqlConverterConfig.varcharLength;
 		String nameSqlType = "varchar(" + varcharLength + ")";
 		List<Attribute> attributes = citizen.getAttributes();
-		
+
 		assertTrue(containsAttribute(attributes, "age", "integer", 30));
 		assertTrue(containsAttribute(attributes, "name", nameSqlType, "Marc"));
 	}

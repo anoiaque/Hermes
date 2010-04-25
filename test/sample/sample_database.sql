@@ -6,7 +6,7 @@ age int,
 name varchar(250),
 phone varchar(250)
 ) ENGINE = InnoDB;
-create table ADRESSES(
+create table ADDRESSES(
 id int primary key auto_increment,
 number int,
 street varchar(250),

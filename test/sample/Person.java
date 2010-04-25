@@ -1,5 +1,6 @@
 package sample;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -10,7 +11,7 @@ public class Person extends Hermes {
 	private int				age;
 	private String		name;
 	private String		phone;
-	private Adress		adress;
+	private Address		adress;
 	private Set<Pet>	pets;
 	private Set<Car>	cars;
 
@@ -19,6 +20,12 @@ public class Person extends Hermes {
 	public Person(String name, int age) {
 		this.name = name;
 		this.age = age;
+	}
+
+	public Person(String name, int age, Address adress) {
+		this.name = name;
+		this.age = age;
+		this.adress = adress;
 	}
 
 	protected void Associations() {
@@ -38,10 +45,23 @@ public class Person extends Hermes {
 		validate();
 	}
 
-	private void validate() {
-		if (age > 100) addError("age", "age must be <= 100");
+	protected void beforeValidate() {
+		if (pets == null) pets = new HashSet<Pet>();
 	}
 
+	private void validate() {
+		if (age > 500) addError("age", "You are not Master Yoda");
+	}
+
+	protected void afterCreate() {
+		if (name == "Aurelia") this.setAge(35);
+	}
+
+	public static Set<Person> allYoungs() {
+		return (Set<Person>) find("age < 30", Person.class);
+	}
+
+	// Getters & Setters
 	public Set<Car> getCars() {
 		return cars;
 	}
@@ -66,11 +86,11 @@ public class Person extends Hermes {
 		this.name = name;
 	}
 
-	public Adress getAdress() {
+	public Address getAdress() {
 		return adress;
 	}
 
-	public void setAdress(Adress adress) {
+	public void setAdress(Address adress) {
 		this.adress = adress;
 	}
 

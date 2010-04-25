@@ -19,6 +19,6 @@ public class SqlBuilderTest extends TestCase {
 		assertEquals(2, tables.size());
 		assertTrue(tables.containsKey("adress"));
 		assertTrue(tables.containsKey("pets"));
-		assertTrue(tables.get("adress").equals(Inflector.pluralize("adress").toUpperCase()));
+		assertTrue(tables.get("adress").equals(Inflector.pluralize("address").toUpperCase()));
 	}
 }

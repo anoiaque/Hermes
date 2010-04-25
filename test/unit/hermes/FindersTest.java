@@ -1,6 +1,5 @@
 package unit.hermes;
 
-import factory.Factory;
 import helpers.Database;
 
 import java.util.HashSet;
@@ -8,11 +7,13 @@ import java.util.Iterator;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import sample.Address;
 import sample.Car;
 import sample.Person;
 import sample.Personne;
 import sample.Pet;
 import core.Hermes;
+import factory.Factory;
 
 public class FindersTest extends TestCase {
 
@@ -21,7 +22,7 @@ public class FindersTest extends TestCase {
 	public void setUp() {
 		citizen = (Person) Factory.get("human");
 		human = (Person) Factory.get("human");
-		human.setAge(25);
+		human.setAge(31);
 		human.save();
 	}
 
@@ -139,6 +140,17 @@ public class FindersTest extends TestCase {
 
 		people = (Set<Person>) Hermes.findBySql("select * from people where age=30", Person.class);
 		assertEquals(1, people.size());
+	}
+
+	public void testInstanceFinder() {
+		Person david = new Person("David", 30, new Address());
+		Person eve = new Person("Eve", 29, new Address());
+		Person anne = new Person("Anne", 20, new Address());
+			
+		david.save();
+		eve.save();
+		anne.save();
+		assertEquals(2, Person.allYoungs().size());
 	}
 
 	// Private methods

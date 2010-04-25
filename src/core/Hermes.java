@@ -15,18 +15,12 @@ public class Hermes {
 	private HashMap<String, List<Error>>	errors				= new HashMap<String, List<Error>>();
 
 	public Hermes() {
-		tableName = Inflector.pluralize(Introspector.className(this)).toUpperCase();
+		this.tableName = Inflector.tableize(this);
 		loadAttributes();
 		Associations();
+		Callback.beforeValidate(this);
 		Validations();
-		Callbacks();
 	}
-
-	protected void Validations() {}
-
-	protected void Callbacks() {}
-
-	protected void Associations() {}
 
 	public boolean save() {
 		if (!isValid()) return false;
@@ -190,6 +184,7 @@ public class Hermes {
 
 	public boolean isValid() {
 		errors.clear();
+		Callback.beforeValidate(this);
 		Validations();
 		return errors.isEmpty();
 	}
@@ -200,10 +195,33 @@ public class Hermes {
 		else error = new Error(symbol, message);
 		errors.put(attribute, Error.add(error, errors.get(attribute)));
 	}
+
 	public void addError(String attribute, String message) {
 		Error error = new Error(Error.Symbol.PARTICULAR, message);
 		errors.put(attribute, Error.add(error, errors.get(attribute)));
 	}
+
+	protected void Validations() {}
+
+	protected void Associations() {}
+
+	protected void beforeValidate() {}
+
+	protected void beforeSave() {}
+
+	protected void afterSave() {}
+
+	protected void beforeUpdate() {}
+
+	protected void afterUpdate() {}
+
+	protected void beforeCreate() {}
+
+	protected void afterCreate() {}
+
+	protected void beforeDelete() {}
+
+	protected void afterDelete() {}
 
 	// Getters & Setters
 	public HashMap<String, ManyToMany> getManyToManyAssociations() {

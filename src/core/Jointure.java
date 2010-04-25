@@ -14,7 +14,7 @@ public class Jointure extends Hermes {
 	public Jointure() {}
 
 	public Jointure(Hermes model, String attribute) {
-		this.tableName = Table.joinTableNameFor(attribute, model);
+		this.tableName = Inflector.tableize(attribute, model, true);
 		Adapter.get().execute(SqlBuilder.build("jointure", tableName), this);
 	}
 
@@ -27,8 +27,8 @@ public class Jointure extends Hermes {
 	public void clear(Hermes parent) {
 		delete("parentId=" + parent.getId());
 	}
-	
-	public boolean delete(String conditions){
+
+	public boolean delete(String conditions) {
 		return Updater.delete(conditions, this);
 	}
 
@@ -37,7 +37,7 @@ public class Jointure extends Hermes {
 		Set<Hermes> objects = new HashSet<Hermes>();
 		Class<Hermes> klass = Introspector.collectionTypeClass(object, attribute);
 		Set<Jointure> jointures = (Set<Jointure>) Finder.find(object.getId(), jointure);
-		
+
 		jointures.remove(null);
 		for (Jointure join : jointures) {
 			Hermes obj = Finder.find(join.getChildId(), klass);

@@ -11,32 +11,50 @@ public class Updater {
 
 	public static boolean save(Hermes object) {
 		if (!object.isNewRecord()) return update(object);
+		beforeCallbacks(object);
 		object.loadAttributes();
 		boolean saved = adapter.save(object);
 		saved = saved && object.getAssociations().save();
+		if (saved) afterCallbacks(object);
 		return saved;
 	}
 
 	public static boolean update(Hermes object) {
+		Callback.beforeUpdate(object);
 		object.loadAttributes();
 		boolean updated = adapter.update(object);
 		updated = updated && object.getAssociations().save();
+		if (updated) Callback.afterUpdate(object);
 		return updated;
 	}
 
 	public static boolean delete(Hermes object) {
-		return delete(null, object);
+		Callback.beforeDelete(object);
+		boolean deleted = delete(null, object);
+		if (deleted) Callback.afterDelete(object);
+		return deleted;
 	}
 
 	public static boolean delete(String conditions, Hermes object) {
+		Callback.beforeDelete(object);
 		object.getAssociations().delete();
 		boolean deleted = adapter.delete(conditions, object);
-		if (deleted) object.setId(0);
+		if (deleted) Callback.afterDelete(object);
 		return deleted;
 	}
 
 	public static boolean executeSql(String sql) {
 		return adapter.execute(sql, null);
+	}
+
+	private static void beforeCallbacks(Hermes object) {
+		Callback.beforeSave(object);
+		Callback.beforeCreate(object);
+	}
+
+	private static void afterCallbacks(Hermes object) {
+		Callback.afterSave(object);
+		Callback.afterCreate(object);
 	}
 
 	// For Transactions

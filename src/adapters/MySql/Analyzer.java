@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import core.Hermes;
-import core.Table;
+import core.Inflector;
 
 public class Analyzer {
 
@@ -15,7 +15,7 @@ public class Analyzer {
 		HashMap<String, String> tables = new HashMap<String, String>();
 
 		for (String attribute : extractAttributes(conditions))
-			tables.put(attribute, Table.nameFor(attribute, object));
+			tables.put(attribute, Inflector.tableize(attribute, object, false));
 		return tables;
 	}
 
@@ -24,7 +24,7 @@ public class Analyzer {
 
 		for (String attribute : extractAttributes(conditions))
 			if (isManyToManyAttribute(attribute, object)) {
-				tables.put(attribute, Table.joinTableNameFor(attribute, object));
+				tables.put(attribute, Inflector.tableize(attribute, object, true));
 			}
 		return tables;
 	}
@@ -67,7 +67,7 @@ public class Analyzer {
 	}
 
 	private static String manyToManyCondition(String attribute, Hermes object, String table) {
-		String joinedTable = Table.joinTableNameFor(attribute, object);
+		String joinedTable = Inflector.tableize(attribute, object, true);
 		String parentTable = object.getTableName();
 		String sql = "";
 

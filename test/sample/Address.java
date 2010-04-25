@@ -2,16 +2,16 @@ package sample;
 
 import core.Hermes;
 
-public class Adress extends Hermes {
+public class Address extends Hermes {
 
 	private int			number;
 	private String	street;
 
-	public Adress() {
+	public Address() {
 
 	}
 
-	public Adress(int num, String rue) {
+	public Address(int num, String rue) {
 		this.number = num;
 		this.street = rue;
 	}
