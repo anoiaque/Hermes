@@ -91,6 +91,30 @@ public class Introspector {
 		}
 	}
 
+	public static Class<Hermes> klass(Hermes object, String attribute) {
+		try {
+			Field field = object.getClass().getDeclaredField(attribute);
+			Class<?> type = field.getType();
+			if (!type.equals(Set.class)) return hermesType(object, attribute);
+			else return collectionTypeClass(object, attribute);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static String table(Hermes object, String attribute) {
+		try {
+			return klass(object, attribute).newInstance().getTableName();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
 	public static String collectionTypeName(Hermes klass, String attribute) {
 		ParameterizedType pType = collectionType(klass, attribute);
 		if (pType == null) return null;
@@ -121,4 +145,5 @@ public class Introspector {
 		}
 		return ptype;
 	}
+
 }
