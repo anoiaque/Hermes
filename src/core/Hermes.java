@@ -43,6 +43,18 @@ public class Hermes {
 		return deleted;
 	}
 
+	public static boolean deleteAll(Class<? extends Hermes> model) {
+		return Updater.deleteAll(model);
+	}
+
+	public boolean deleteAll() {
+		return deleteAll(this.getClass());
+	}
+
+	public static int count(Class<? extends Hermes> model) {
+		return Finder.count(model);
+	}
+
 	public static Hermes find(long id, Class<? extends Hermes> model) {
 		return Finder.find(id, model);
 	}

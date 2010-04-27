@@ -16,16 +16,16 @@ public class Analyzer {
 		HashMap<String, String> tables = new HashMap<String, String>();
 
 		for (String attribute : extractAttributes(conditions))
-			tables.put(attribute, Introspector.table(object, attribute));
+			tables.put(attribute, Introspector.table(attribute, object));
 
 		return tables;
 	}
 
-	public static HashMap<String, String> jointuresTables(String conditions, Hermes object) {
+	public static HashMap<String, String> jointures(String conditions, Hermes object) {
 		HashMap<String, String> tables = new HashMap<String, String>();
 
 		for (String attribute : extractAttributes(conditions))
-			if (isManyToManyAttribute(attribute, object)) {
+			if (Associations.isManyToManyAttribute(attribute, object)) {
 				String jointure = Associations.jointure(attribute, object);
 				tables.put(attribute, jointure);
 			}
@@ -39,7 +39,7 @@ public class Analyzer {
 		for (String attribute : tables.keySet()) {
 			table = tables.get(attribute);
 			conditions = conditions.replaceAll(attribute + ".", table + ".");
-			if (isManyToManyAttribute(attribute, object)) {
+			if (Associations.isManyToManyAttribute(attribute, object)) {
 				conditions += manyToManyCondition(attribute, object, table);
 			}
 			else conditions += hasOneOrManyCondition(object, table);
@@ -77,10 +77,6 @@ public class Analyzer {
 		sql = " and (" + jointure + ".parentId = " + parent + ".id";
 		sql += " and " + jointure + ".childId" + "=" + table + ".id)";
 		return sql;
-	}
-
-	private static boolean isManyToManyAttribute(String attribute, Hermes object) {
-		return object.getAssociations().getManyToManyAsociations().containsKey(attribute);
 	}
 
 }

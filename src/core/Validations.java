@@ -14,7 +14,7 @@ public class Validations {
 	}
 
 	public static boolean validatePresenceOf(String attribute, Hermes object) {
-		return Introspector.getObject(attribute, object) != null;
+		return Introspector.get(attribute, object) != null;
 	}
 
 	public static boolean validateSizeOf(String attribute, int min, int max, boolean allowNull,
@@ -26,18 +26,10 @@ public class Validations {
 	}
 
 	// Warn : Can't use Hermes finder here cause of Invalid access of stack red
-	// zone on mac OS x JRE 6
+	// zone on mac OS X JRE 6
 	public static boolean validateUniquenessOf(String attribute, Hermes object) {
-		Object value = Introspector.getObject(attribute, object);
+		Object value = Introspector.get(attribute, object);
 		return !find(attribute, value, object);
-	}
-
-	private static boolean find(String attribute, Object value, Hermes object) {
-		Adapter adaptor = Adapter.get();
-		String conditions = attribute + "='" + value + "'";
-		String sql = SqlBuilder.build("select", "*", conditions, object);
-		Set<?> objects = ObjectBuilder.toObjects(adaptor.finder(sql, object), object.getClass());
-		return objects.size() > 0;
 	}
 
 	public static boolean validateFormatOf(String attribute, Pattern pattern, boolean allowNull,
@@ -45,6 +37,14 @@ public class Validations {
 		String value = (String) object.getAttribute(attribute).getValue();
 		if (allowNull && value == null) return true;
 		return pattern.matcher(value).find();
+	}
+
+	private static boolean find(String attribute, Object value, Hermes object) {
+		Adapter adaptor = Adapter.get();
+		String conditions = attribute + "='" + value + "'";
+		String sql = SqlBuilder.build("select", "*", conditions, object);
+		Set<?> objects = ObjectBuilder.toObjects(adaptor.finder(sql), object.getClass());
+		return objects.size() > 0;
 	}
 
 }

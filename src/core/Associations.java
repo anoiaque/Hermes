@@ -48,6 +48,9 @@ public class Associations {
 		return association.getJointure().getTableName();
 
 	}
+	public static boolean isManyToManyAttribute(String attribute, Hermes object) {
+		return object.getAssociations().getManyToManyAsociations().containsKey(attribute);
+	}
 
 	// Private methods
 	private boolean saveHasMany() {

@@ -1,6 +1,5 @@
 package core;
 
-import java.lang.reflect.Field;
 import java.util.Set;
 
 public class Loader {
@@ -17,15 +16,13 @@ public class Loader {
 	private static void loadHasOneAssociations(Hermes object) {
 		String foreignKey;
 		Class<Hermes> klass;
-		Field field;
 		Hermes value;
 
 		for (String attribute : object.getHasOneAssociations().keySet()) {
-			foreignKey = Inflector.foreignKey(Introspector.className(object));
-			klass = Introspector.hermesType(object, attribute);
-			field = Introspector.fieldFor(object, attribute);
+			foreignKey = Inflector.foreignKey(Introspector.name(object));
+			klass = Introspector.hermesClass(attribute, object);
 			value = (Hermes) Finder.findFirst(foreignKey + "=" + object.getId(), klass);
-			Introspector.setField(object, value, field);
+			Introspector.set(attribute, value, object);
 		}
 	}
 
@@ -33,26 +30,22 @@ public class Loader {
 		String foreignKey;
 		Class<Hermes> klass;
 		Set<Hermes> set;
-		Field field;
 
 		for (String attribute : object.getHasManyAssociations().keySet()) {
-			foreignKey = Inflector.foreignKey(Introspector.className(object));
-			klass = Introspector.collectionTypeClass(object, attribute);
+			foreignKey = Inflector.foreignKey(Introspector.name(object));
+			klass = Introspector.collectionTypeClass(attribute, object);
 			set = (Set<Hermes>) Finder.find(foreignKey + "=" + object.getId(), klass);
 			BelongsTo.belongsTo(set, object);
-			field = Introspector.fieldFor(object, attribute);
-			Introspector.setField(object, set, field);
+			Introspector.set(attribute, set, object);
 		}
 	}
 
 	private static void loadManyToManyAssociations(Hermes object) {
-		Field field;
 		Set<Hermes> objects;
 
 		for (String attribute : object.getManyToManyAssociations().keySet()) {
-			field = Introspector.fieldFor(object, attribute);
 			objects = Jointure.load(attribute, object);
-			Introspector.setField(object, objects, field);
+			Introspector.set(attribute, objects, object);
 		}
 	}
 }

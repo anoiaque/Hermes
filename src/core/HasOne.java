@@ -12,12 +12,12 @@ public class HasOne {
 
 	public void delete(Hermes parent) {
 		if (!cascadeDelete) return;
-		Hermes object = (Hermes) Introspector.getObject(attributeName, parent);
+		Hermes object = (Hermes) Introspector.get(attributeName, parent);
 		if (object != null) object.delete();
 	}
 
 	public boolean save(Hermes parent) {
-		Hermes object = (Hermes) Introspector.getObject(attributeName, parent);
+		Hermes object = (Hermes) Introspector.get(attributeName, parent);
 		
 		if (object == null) return true;
 		object.belongsTo(parent);

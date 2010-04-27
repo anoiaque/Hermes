@@ -43,6 +43,10 @@ public class Updater {
 		return deleted;
 	}
 
+	public static boolean deleteAll(Class<? extends Hermes> model) {
+		return adapter.deleteAll(model);
+	}
+
 	public static boolean executeSql(String sql) {
 		return adapter.execute(sql, null);
 	}

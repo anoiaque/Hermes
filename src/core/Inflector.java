@@ -14,11 +14,11 @@ public class Inflector {
 	}
 
 	public static String tableize(Hermes model) {
-		return pluralize(Introspector.className(model)).toUpperCase();
+		return pluralize(Introspector.name(model)).toUpperCase();
 	}
 
 	public static String tableize(String attribute, Hermes object) {
-		String name = Introspector.typeName(object, attribute);
+		String name = Introspector.type(attribute, object);
 		return Inflector.pluralize(name).toUpperCase();
 	}
 
@@ -30,7 +30,7 @@ public class Inflector {
 
 	public static String tableize(Class<? extends Hermes> model) {
 		try {
-			return  model.newInstance().getTableName();
+			return model.newInstance().getTableName();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -39,6 +39,7 @@ public class Inflector {
 	}
 
 	private class Plural {
+
 		private Pattern	pattern;
 		private Matcher	matcher;
 		private String	plural;

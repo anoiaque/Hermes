@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class Introspector {
 
-	public static Hermes classOf(Class<? extends Hermes> model) {
+	public static Hermes instanciate(Class<? extends Hermes> model) {
 		try {
 			return model.newInstance();
 		}
@@ -16,11 +16,39 @@ public class Introspector {
 		}
 	}
 
-	public static String className(Hermes klass) {
+	public static String name(Hermes klass) {
 		return klass.getClass().getSimpleName();
 	}
 
-	public static Object getObject(String attribute, Hermes object) {
+	public static String table(String attribute, Hermes object) {
+		try {
+			return klass(attribute, object).newInstance().getTableName();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Class<Hermes> klass(String attribute, Hermes object) {
+		try {
+			Field field = object.getClass().getDeclaredField(attribute);
+			Class<?> type = field.getType();
+			if (!type.equals(Set.class)) return hermesClass(attribute, object);
+			else return collectionTypeClass(attribute, object);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Class<Hermes> hermesClass(String attribute, Hermes klass) {
+		Field field = field(attribute, klass);
+		return (Class<Hermes>) field.getType();
+	}
+
+	public static Object get(String attribute, Hermes object) {
 		Field field;
 		try {
 			field = object.getClass().getDeclaredField(attribute);
@@ -33,27 +61,29 @@ public class Introspector {
 		return null;
 	}
 
-	public static void setField(Hermes object, Hermes fieldValue, Field field) {
+	public static void set(String attribute, Object value, Hermes object) {
 		try {
+			Field field = field(attribute, object);
 			field.setAccessible(true);
-			field.set(object, fieldValue);
+			field.set(object, value);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void setField(Hermes object, Set<?> fieldValue, Field field) {
+	public static void set(Attribute attribute, Object value, Hermes object) {
 		try {
+			Field field = field(attribute, object);
 			field.setAccessible(true);
-			field.set(object, fieldValue);
+			field.set(object, value);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static Field fieldFor(Hermes klass, Attribute attribute) {
+	public static Field field(Attribute attribute, Hermes klass) {
 		try {
 			return klass.getClass().getDeclaredField(attribute.getName());
 		}
@@ -63,7 +93,7 @@ public class Introspector {
 		}
 	}
 
-	public static Field fieldFor(Hermes klass, String attribute) {
+	public static Field field(String attribute, Hermes klass) {
 		try {
 			return klass.getClass().getDeclaredField(attribute);
 		}
@@ -73,16 +103,16 @@ public class Introspector {
 		}
 	}
 
-	public static Field[] fieldsOf(Hermes klass) {
+	public static Field[] fields(Hermes klass) {
 		return klass.getClass().getDeclaredFields();
 	}
 
-	public static String typeName(Hermes klass, String attribute) {
+	public static String type(String attribute, Hermes klass) {
 		try {
 			Field field = klass.getClass().getDeclaredField(attribute);
 			Class<?> type = field.getType();
 			if (!type.equals(Set.class)) return type.getSimpleName();
-			else return Introspector.collectionTypeName(klass, attribute);
+			else return Introspector.collectionTypeName(attribute, klass);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -90,49 +120,19 @@ public class Introspector {
 		}
 	}
 
-	public static Class<Hermes> klass(Hermes object, String attribute) {
-		try {
-			Field field = object.getClass().getDeclaredField(attribute);
-			Class<?> type = field.getType();
-			if (!type.equals(Set.class)) return hermesType(object, attribute);
-			else return collectionTypeClass(object, attribute);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public static String table(Hermes object, String attribute) {
-		try {
-			return klass(object, attribute).newInstance().getTableName();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-
-	}
-
-	public static String collectionTypeName(Hermes klass, String attribute) {
-		ParameterizedType pType = collectionType(klass, attribute);
+	public static String collectionTypeName(String attribute, Hermes klass) {
+		ParameterizedType pType = collectionType(attribute, klass);
 		if (pType == null) return null;
 		return ((Class<?>) pType.getActualTypeArguments()[0]).getSimpleName();
 	}
 
-	public static Class<Hermes> collectionTypeClass(Hermes klass, String attribute) {
-		ParameterizedType pType = collectionType(klass, attribute);
+	public static Class<Hermes> collectionTypeClass(String attribute, Hermes klass) {
+		ParameterizedType pType = collectionType(attribute, klass);
 		if (pType == null) return null;
 		return ((Class<Hermes>) pType.getActualTypeArguments()[0]);
 	}
 
-	public static Class<Hermes> hermesType(Hermes klass, String attribute) {
-		Field field = fieldFor(klass, attribute);
-		return (Class<Hermes>) field.getType();
-	}
-
-	// Private Methods
-	private static ParameterizedType collectionType(Hermes klass, String attribute) {
+	private static ParameterizedType collectionType(String attribute, Hermes klass) {
 		ParameterizedType ptype = null;
 		try {
 			Field field = klass.getClass().getDeclaredField(attribute);

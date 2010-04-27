@@ -80,7 +80,7 @@ public class SqlBuilder {
 		for (String table : Analyzer.tables(conditions, object).values())
 			from += "," + table;
 		
-		for (String table : Analyzer.jointuresTables(conditions, object).values())
+		for (String table : Analyzer.jointures(conditions, object).values())
 			from += "," + table;
 		return from;
 	}

@@ -8,7 +8,7 @@ public class Migration {
 
 	public static String tableDefinition(Class<? extends Hermes> model) {
 		String sql;
-		Hermes klass = Introspector.classOf(model);
+		Hermes klass = Introspector.instanciate(model);
 		klass.loadAttributes();
 		sql = "create table " + klass.getTableName() + "(";
 		sql += idColumnDefinition();

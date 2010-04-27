@@ -1,6 +1,5 @@
 package adapters.MySql;
 
-import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -38,11 +37,11 @@ public class ObjectBuilder {
 	// Private methods
 	private static void loadAttributeValue(Hermes object, ResultSet rs, Attribute attribute) {
 		try {
-			Field field = Introspector.fieldFor(object, attribute);
-			field.setAccessible(true);
-			field.set(object, rs.getObject(field.getName()));
+			Introspector.set(attribute, rs.getObject(attribute.getName()), object);
 		}
-		catch (Exception e) {}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void loadAttributesValue(Hermes object, ResultSet rs) {

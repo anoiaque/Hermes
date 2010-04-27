@@ -40,4 +40,9 @@ public class Finder {
 	public static Set<?> findBySql(String sql, Class<? extends Hermes> model) {
 		return adaptor.finder(sql, model);
 	}
+
+	public static int count(Class<? extends Hermes> model) {
+		return adaptor.count(Introspector.instanciate(model).getTableName());
+
+	}
 }

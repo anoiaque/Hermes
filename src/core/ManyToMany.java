@@ -15,7 +15,7 @@ public class ManyToMany {
 	}
 
 	public boolean save(Hermes parent) {
-		Set<Hermes> set = (Set<Hermes>) Introspector.getObject(attributeName, parent);
+		Set<Hermes> set = (Set<Hermes>) Introspector.get(attributeName, parent);
 
 		if (set == null) return true;
 		jointure.clear(parent);
@@ -29,7 +29,7 @@ public class ManyToMany {
 
 	public void delete(Hermes parent) {
 		if (!cascadeDelete) return;
-		Set<Hermes> objects = (Set<Hermes>) Introspector.getObject(attributeName, parent);
+		Set<Hermes> objects = (Set<Hermes>) Introspector.get(attributeName, parent);
 
 		if (objects == null) return;
 		jointure.delete("parentId=" + parent.getId());

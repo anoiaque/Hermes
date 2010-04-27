@@ -37,6 +37,8 @@ public abstract class Adapter {
 
 	public abstract boolean delete(String conditions, Hermes object);
 
+	public abstract boolean deleteAll(Class<? extends Hermes> model);
+
 	public abstract boolean execute(String sql, Hermes object);
 
 	public abstract void save(Hermes object, Connection connexion) throws SQLException;
@@ -53,7 +55,9 @@ public abstract class Adapter {
 
 	public abstract Set<Hermes> finder(String sql, Class<? extends Hermes> model);
 
-	public abstract ResultSet finder(String sql, Hermes model);
+	public abstract ResultSet finder(String sql);
+
+	public abstract int count(String table);
 
 	public abstract String javaToSql(String javaType);
 }

@@ -20,7 +20,7 @@ public class Attribute {
 
 	public static ArrayList<Attribute> load(Hermes model) {
 		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
-		for (Field field : Introspector.fieldsOf(model))
+		for (Field field : Introspector.fields(model))
 			if (basic(field, model)) attributes.add(attributize(field, model));
 		return attributes;
 	}

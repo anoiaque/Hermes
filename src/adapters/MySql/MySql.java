@@ -28,6 +28,16 @@ public class MySql extends Adapter {
 		return execute(SqlBuilder.build("delete", null, object), object);
 	}
 
+	public boolean deleteAll(Class<? extends Hermes> model) {
+		try {
+			return execute("delete from " + model.newInstance().getTableName(), null);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public boolean delete(String conditions, Hermes object) {
 		return execute(SqlBuilder.build("delete", conditions, object), object);
 	}
@@ -52,7 +62,7 @@ public class MySql extends Adapter {
 		try {
 			Hermes object = model.newInstance();
 			String sql = SqlBuilder.build("select", select, conditions, object);
-			ResultSet rs = finder(sql, object);
+			ResultSet rs = finder(sql);
 			Set<?> objects = ObjectBuilder.toObjects(rs, model);
 			return (Set<Hermes>) objects;
 		}
@@ -65,13 +75,13 @@ public class MySql extends Adapter {
 	public Set<Hermes> find(String select, String conditions, Jointure join) {
 		String sql = SqlBuilder.build("select", select, conditions, join);
 
-		ResultSet rs = finder(sql, join);
+		ResultSet rs = finder(sql);
 		return ObjectBuilder.toObjects(rs, Jointure.class);
 	}
 
 	public Set<Hermes> finder(String sql, Class<? extends Hermes> model) {
 		try {
-			ResultSet rs = finder(sql, model.newInstance());
+			ResultSet rs = finder(sql);
 			Set<?> objects = ObjectBuilder.toObjects(rs, model);
 			return (Set<Hermes>) objects;
 
@@ -82,7 +92,20 @@ public class MySql extends Adapter {
 		return null;
 	}
 
-	public ResultSet finder(String sql, Hermes model) {
+	public int count(String table) {
+		ResultSet rs = finder("select count(*) from " + table);
+		try {
+			rs.next();
+			return rs.getInt(1);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+
+		}
+	}
+
+	public ResultSet finder(String sql) {
 		Connection connexion = null;
 		Pool pool = Pool.getInstance();
 		try {

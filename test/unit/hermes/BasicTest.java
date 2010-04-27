@@ -12,6 +12,7 @@ import sample.Personne;
 import sample.Pet;
 import configuration.Configuration;
 import core.Attribute;
+import core.Hermes;
 import core.Inflector;
 import factory.Factory;
 
@@ -33,6 +34,10 @@ public class BasicTest extends TestCase {
 		assertEquals("ADDRESSES", Inflector.tableize(Address.class));
 		assertEquals("PETS", Inflector.tableize(Pet.class));
 		assertEquals("CARS", Inflector.tableize(Car.class));
+	}
+	
+	public void testCount(){
+		assertEquals(1,Hermes.count(Person.class));
 	}
 
 	public void testRedefinedTableName() {
