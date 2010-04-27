@@ -5,7 +5,7 @@ import java.util.Set;
 public class BelongsTo {
 
 	private String	fkName;
-	private Long		fkValue	= null;
+	private Integer	fkValue	= null;
 
 	public BelongsTo(Hermes object) {
 		fkName = Inflector.foreignKey(Introspector.name(object));
@@ -26,11 +26,11 @@ public class BelongsTo {
 		this.fkName = fkName;
 	}
 
-	public Long getFkValue() {
+	public int getFkValue() {
 		return fkValue;
 	}
 
-	public void setFkValue(Long fkValue) {
+	public void setFkValue(int fkValue) {
 		this.fkValue = fkValue;
 	}
 }

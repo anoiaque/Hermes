@@ -35,9 +35,9 @@ public class BasicTest extends TestCase {
 		assertEquals("PETS", Inflector.tableize(Pet.class));
 		assertEquals("CARS", Inflector.tableize(Car.class));
 	}
-	
-	public void testCount(){
-		assertEquals(1,Hermes.count(Person.class));
+
+	public void testCount() {
+		assertEquals(1, Hermes.count(Person.class));
 	}
 
 	public void testRedefinedTableName() {
@@ -64,6 +64,23 @@ public class BasicTest extends TestCase {
 		citizen.save();
 		citizen = (Person) citizen.reload();
 		assertEquals(100, citizen.getAge());
+	}
+
+	public void testIsChanged() {
+		citizen.setAge(100);
+		citizen.save();
+		assertFalse(citizen.isChanged());
+		citizen.setAge(10);
+		assertTrue(citizen.isChanged());
+	}
+
+	public void testExists() {
+		assertTrue(citizen.exists());
+		assertTrue(citizen.exists("name = Marc"));
+	}
+
+	public void testToggle() {
+	// assertFalse(citizen.isMarried());
 	}
 
 	// Private methods

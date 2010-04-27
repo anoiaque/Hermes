@@ -63,11 +63,31 @@ public class Hermes {
 		return Finder.count(model);
 	}
 
-	public static Hermes find(long id, Class<? extends Hermes> model) {
+	public boolean isChanged() {
+		Hermes old = find(this.getId());
+		for (Attribute attribute : this.getAttributes()) {
+			Object newValue = Introspector.get(attribute.getName(), this);
+			Object oldValue = Introspector.get(attribute.getName(), old);
+			System.out.println(newValue);
+			System.out.println(oldValue);
+			if (newValue != null && !newValue.equals(oldValue)) return true;
+		}
+		return false;
+	}
+
+	public boolean exists() {
+		return find(this.getId()) != null;
+	}
+
+	public boolean exists(String condition) {
+		return find(condition) != null;
+	}
+
+	public static Hermes find(int id, Class<? extends Hermes> model) {
 		return Finder.find(id, model);
 	}
 
-	public Hermes find(long id) {
+	public Hermes find(int id) {
 		return Finder.find(id, this.getClass());
 	}
 
@@ -264,7 +284,7 @@ public class Hermes {
 		return this.tableName;
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 

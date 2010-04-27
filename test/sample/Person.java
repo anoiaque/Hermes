@@ -12,6 +12,7 @@ public class Person extends Hermes {
 	private String		name;
 	private String		phone;
 	private Address		adress;
+	//private boolean 	married;
 	private Set<Pet>	pets;
 	private Set<Car>	cars;
 
@@ -110,5 +111,4 @@ public class Person extends Hermes {
 		return phone;
 	}
 
-	
 }
