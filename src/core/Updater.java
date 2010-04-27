@@ -2,6 +2,7 @@ package core;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import adapters.Adapter;
 
@@ -41,6 +42,14 @@ public class Updater {
 		boolean deleted = adapter.delete(conditions, object);
 		if (deleted) Callback.afterDelete(object);
 		return deleted;
+	}
+
+	public static Hermes create(HashMap<String, Object> values, Class<? extends Hermes> model) {
+		Hermes object = Introspector.instanciate(model);
+		for (String attribute : values.keySet())
+			Introspector.set(attribute, values.get(attribute), object);
+		if (object.save()) return object;
+		return null;
 	}
 
 	public static boolean deleteAll(Class<? extends Hermes> model) {

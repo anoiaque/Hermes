@@ -51,6 +51,14 @@ public class Hermes {
 		return deleteAll(this.getClass());
 	}
 
+	public static Hermes create(HashMap<String, Object> values, Class<? extends Hermes> model) {
+		return Updater.create(values, model);
+	}
+
+	public Hermes create(HashMap<String, Object> values) {
+		return create(values, this.getClass());
+	}
+
 	public static int count(Class<? extends Hermes> model) {
 		return Finder.count(model);
 	}

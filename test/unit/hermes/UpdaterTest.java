@@ -1,5 +1,7 @@
 package unit.hermes;
 
+import java.util.HashMap;
+
 import helpers.Database;
 import junit.framework.TestCase;
 import sample.Address;
@@ -28,6 +30,18 @@ public class UpdaterTest extends TestCase {
 		person = (Person) person.reload();
 		assertEquals("Anne", person.getName());
 		assertEquals(30, person.getAge());
+	}
+
+	public void testCreate() {
+		HashMap<String, Object> attributes = new HashMap<String, Object>();
+		attributes.put("name", "Paul");
+		attributes.put("adress", new Address());
+		attributes.put("age", 30);
+		Person paul = (Person) Hermes.create(attributes, Person.class);
+
+		assertNotNull(paul);
+		assertEquals("Paul", paul.getName());
+		assertEquals(30, paul.getAge());
 	}
 
 	public void testUpdate() {
