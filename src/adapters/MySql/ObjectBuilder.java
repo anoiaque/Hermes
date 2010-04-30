@@ -11,10 +11,10 @@ import core.Introspector;
 
 public class ObjectBuilder {
 
-	public static Hermes toObject(ResultSet rs, Class<? extends Hermes> model) {
+	public static Hermes toObject(ResultSet rs, Class<?> model) {
 		try {
 			if (rs == null || !rs.next()) return null;
-			Hermes object = model.newInstance();
+			Hermes object = (Hermes) model.newInstance();
 			loadObject(object, rs);
 			return object;
 		}
@@ -24,7 +24,7 @@ public class ObjectBuilder {
 		}
 	}
 
-	public static Set<Hermes> toObjects(ResultSet rs, Class<? extends Hermes> model) {
+	public static Set<Hermes> toObjects(ResultSet rs, Class<?> model) {
 		Set<Hermes> result = new HashSet<Hermes>();
 		Hermes obj = null;
 		do {

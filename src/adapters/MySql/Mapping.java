@@ -31,6 +31,7 @@ public class Mapping {
 		javaToSql.put("Float", "float");
 		javaToSql.put("double", "float");
 		javaToSql.put("Double", "float");
-		
+		javaToSql.put("Boolean", "boolean");
+		javaToSql.put("boolean", "boolean");
 	}
 }

@@ -15,7 +15,7 @@ public class Hermes {
 	private HashMap<String, List<Error>>	errors				= new HashMap<String, List<Error>>();
 
 	public Hermes() {
-		this.tableName = Inflector.tableize(this);
+		this.tableName = Table.name(this);
 		loadAttributes();
 		Associations();
 		Callback.beforeValidate(this);
@@ -68,11 +68,14 @@ public class Hermes {
 		for (Attribute attribute : this.getAttributes()) {
 			Object newValue = Introspector.get(attribute.getName(), this);
 			Object oldValue = Introspector.get(attribute.getName(), old);
-			System.out.println(newValue);
-			System.out.println(oldValue);
 			if (newValue != null && !newValue.equals(oldValue)) return true;
 		}
 		return false;
+	}
+
+	public void toggle(String attribute) {
+		boolean value = !Introspector.get(attribute, this).equals(new Boolean(true));
+		Introspector.set(attribute, value, this);
 	}
 
 	public boolean exists() {

@@ -58,9 +58,9 @@ public class MySql extends Adapter {
 		return Mapping.javaToSql(javaType);
 	}
 
-	public Set<Hermes> find(String select, String conditions, Class<? extends Hermes> model) {
+	public Set<Hermes> find(String select, String conditions, Class<?> model) {
 		try {
-			Hermes object = model.newInstance();
+			Hermes object = (Hermes) model.newInstance();
 			String sql = SqlBuilder.build("select", select, conditions, object);
 			ResultSet rs = finder(sql);
 			Set<?> objects = ObjectBuilder.toObjects(rs, model);

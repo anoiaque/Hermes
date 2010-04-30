@@ -7,6 +7,7 @@ import java.util.List;
 import junit.framework.TestCase;
 import sample.Address;
 import sample.Car;
+import sample.Man;
 import sample.Person;
 import sample.Personne;
 import sample.Pet;
@@ -76,11 +77,16 @@ public class BasicTest extends TestCase {
 
 	public void testExists() {
 		assertTrue(citizen.exists());
-		assertTrue(citizen.exists("name = Marc"));
+		assertTrue(citizen.exists("name = 'Marc'"));
 	}
 
 	public void testToggle() {
-	// assertFalse(citizen.isMarried());
+		Man man = new Man();
+		assertFalse(man.isMarried());
+		man.toggle("married");
+		assertTrue(man.isMarried());
+		man.toggle("married");
+		assertFalse(man.isMarried());
 	}
 
 	// Private methods

@@ -49,7 +49,7 @@ public abstract class Adapter {
 
 	public abstract void execute(String sql, Hermes object, Connection connexion) throws SQLException;
 
-	public abstract Set<Hermes> find(String select, String conditions, Class<? extends Hermes> model);
+	public abstract Set<Hermes> find(String select, String conditions, Class<?> model);
 
 	public abstract Set<Hermes> find(String select, String conditions, Jointure join);
 

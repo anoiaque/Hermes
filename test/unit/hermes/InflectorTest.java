@@ -15,6 +15,7 @@ public class InflectorTest extends TestCase {
 		assertEquals("buses", Inflector.pluralize("bus"));		
 		assertEquals("tomatoes", Inflector.pluralize("tomato"));	
 		assertEquals("fishes", Inflector.pluralize("fish"));	
+		assertEquals("men", Inflector.pluralize("man"));	
 
 		assertEquals("millenia", Inflector.pluralize("millenium"));		
 		assertEquals("theses", Inflector.pluralize("thesis"));		

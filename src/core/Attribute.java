@@ -1,6 +1,7 @@
 package core;
 
 import adapters.Adapter;
+import adapters.MySql.TypeCast;
 
 import java.lang.reflect.Field;
 
@@ -46,6 +47,10 @@ public class Attribute {
 		return sqlType;
 	}
 
+	public Object getCastedValue() {
+		return TypeCast.value(this);
+	}
+
 	// Private methods
 	private static Attribute attributize(Field field, Hermes model) {
 		try {
@@ -69,4 +74,5 @@ public class Attribute {
 		if (relations.getHasManyAssociations().containsKey(attribute)) return false;
 		return true;
 	}
+
 }

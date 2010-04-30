@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import core.Associations;
 import core.Hermes;
 import core.Introspector;
+import core.Table;
 
 public class Analyzer {
 
@@ -64,7 +65,7 @@ public class Analyzer {
 	private static String hasOneOrManyCondition(Hermes object, String table) {
 		String sql = "";
 		sql += " and (" + table + ".";
-		sql += object.getClass().getSimpleName().toLowerCase() + "_id" + "=";
+		sql += Table.foreignKeyName(object).toLowerCase() + "=";
 		sql += object.getTableName() + ".id)";
 		return sql;
 	}

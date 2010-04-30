@@ -57,7 +57,8 @@ public class Inflector {
 			if (uncountable(word)) return word;
 			if (word.toLowerCase().equals("ox")) return "oxen";
 			if (word.toLowerCase().equals("person")) return "people";
-			if (word.toLowerCase().equals("men")) return "man";
+			if (word.toLowerCase().equals("man")) return "men";
+			if (word.toLowerCase().equals("woman")) return "women";
 			if (word.toLowerCase().equals("sex")) return "sexes";
 			if (word.toLowerCase().equals("child")) return "children";
 

@@ -108,7 +108,7 @@ public class SqlBuilder {
 	private static HashMap<String, Object> attributesValues(Hermes object) {
 		HashMap<String, Object> attributes = new HashMap<String, Object>();
 		for (Attribute attribute : object.getAttributes())
-			attributes.put(attribute.getName(), attribute.getValue());
+			attributes.put(attribute.getName(), attribute.getCastedValue());
 		return attributes;
 	}
 
