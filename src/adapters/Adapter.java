@@ -57,7 +57,7 @@ public abstract class Adapter {
 
 	public abstract ResultSet finder(String sql);
 
-	public abstract int count(String table);
+	public abstract int count(String conditions, String table);
 
 	public abstract String javaToSql(String javaType);
 }

@@ -92,8 +92,10 @@ public class MySql extends Adapter {
 		return null;
 	}
 
-	public int count(String table) {
-		ResultSet rs = finder("select count(*) from " + table);
+	public int count(String conditions, String table) {
+		String sql = "select count(*) from " + table;
+		if (conditions != null) sql += " where " + conditions;
+		ResultSet rs = finder(sql);
 		try {
 			rs.next();
 			return rs.getInt(1);

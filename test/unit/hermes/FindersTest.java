@@ -2,8 +2,10 @@ package unit.hermes;
 
 import helpers.Database;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -34,6 +36,16 @@ public class FindersTest extends TestCase {
 		Person person = (Person) Hermes.find(citizen.getId(), Person.class);
 		assertEquals(citizen.getAge(), person.getAge());
 		assertEquals(citizen.getName(), person.getName());
+	}
+
+	public void testFindByIds() {
+		List<Integer> ids = new ArrayList<Integer>();
+		ids.add(citizen.getId());
+		Set<Person> people = (Set<Person>) Hermes.find(ids, Person.class);
+		assertEquals(1, people.size());
+		ids.add(human.getId());
+		people = (Set<Person>) Hermes.find(ids, Person.class);
+		assertEquals(2, people.size());
 	}
 
 	public void testFindWithConditions() {
@@ -146,7 +158,7 @@ public class FindersTest extends TestCase {
 		Person david = new Person("David", 30, new Address());
 		Person eve = new Person("Eve", 29, new Address());
 		Person anne = new Person("Anne", 20, new Address());
-			
+
 		david.save();
 		eve.save();
 		anne.save();

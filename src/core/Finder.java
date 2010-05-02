@@ -1,6 +1,7 @@
 package core;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import adapters.Adapter;
@@ -37,12 +38,28 @@ public class Finder {
 		return adaptor.find("*", "parentId = " + parentId, join);
 	}
 
+	public static Set<?> find(List<Integer> ids, Class<? extends Hermes> model) {
+		String condition = "id in (";
+		for (Integer id : ids) {
+			condition += id;
+			if (ids.indexOf(id) < ids.size() - 1) condition += ",";
+		}
+		condition += ")";
+		return find(condition, model);
+	}
+
 	public static Set<?> findBySql(String sql, Class<? extends Hermes> model) {
 		return adaptor.finder(sql, model);
 	}
 
-	public static int count(Class<? extends Hermes> model) {
-		return adaptor.count(Introspector.instanciate(model).getTableName());
+	public static int count(String conditions, Class<? extends Hermes> model) {
+		return adaptor.count(conditions, Introspector.instanciate(model).getTableName());
 
 	}
+
+	public static int count(Class<? extends Hermes> model) {
+		return adaptor.count(null, Introspector.instanciate(model).getTableName());
+
+	}
+
 }

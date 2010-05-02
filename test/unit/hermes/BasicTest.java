@@ -41,6 +41,12 @@ public class BasicTest extends TestCase {
 		assertEquals(1, Hermes.count(Person.class));
 	}
 
+	public void testCountWithConditions() {
+		citizen.setName("Anne");
+		citizen.save();
+		assertEquals(1, Hermes.count("name='Anne'", Person.class));
+	}
+
 	public void testRedefinedTableName() {
 		assertEquals("personnel", Inflector.tableize(Personne.class));
 	}
