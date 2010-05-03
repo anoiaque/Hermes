@@ -5,7 +5,7 @@ import core.Attribute;
 public class TypeCast {
 
 	public static Object value(Attribute attribute) {
-		if (attribute.getSqlType().equals("boolean")) return booleanToSql(attribute);
+		if (attribute.getSqlType().equals(Mapping.BOOLEAN)) return booleanToSql(attribute);
 		return attribute.getValue();
 	}
 

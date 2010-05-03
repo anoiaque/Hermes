@@ -9,6 +9,15 @@ public class Mapping {
 	private static HashMap<String, String>	javaToSql			= null;
 	private static int											varcharLength	= Configuration.SqlConverterConfig.varcharLength;
 
+	public static final String							INTEGER				= "integer";
+	public static final String							BOOLEAN				= "boolean";
+	public static final String							STRING				= "varchar(" + varcharLength + ")";
+	public static final String							CHAR					= "char(1)";
+	public static final String							BYTE					= "tinyint";
+	public static final String							SHORT					= "smallint";
+	public static final String							LONG					= "bigint";
+	public static final String							FLOAT					= "float";
+
 	public static String javaToSql(String type) {
 		if (javaToSql == null) mapping();
 		return javaToSql.get(type);
@@ -16,22 +25,22 @@ public class Mapping {
 
 	private static void mapping() {
 		javaToSql = new HashMap<String, String>();
-		javaToSql.put("int", "integer");
-		javaToSql.put("Integer", "integer");
-		javaToSql.put("String", "varchar(" + varcharLength + ")");
-		javaToSql.put("char", "char(1)");
-		javaToSql.put("Character", "char(1)");
-		javaToSql.put("byte", "tinyint");
-		javaToSql.put("Byte", "tinyint");
-		javaToSql.put("short", "smallint");
-		javaToSql.put("Short", "smallint");
-		javaToSql.put("long", "bigint");
-		javaToSql.put("Long", "bigint");
-		javaToSql.put("float", "float");
-		javaToSql.put("Float", "float");
-		javaToSql.put("double", "float");
-		javaToSql.put("Double", "float");
-		javaToSql.put("Boolean", "boolean");
-		javaToSql.put("boolean", "boolean");
+		javaToSql.put("int", INTEGER);
+		javaToSql.put("Integer", INTEGER);
+		javaToSql.put("String", STRING);
+		javaToSql.put("char", CHAR);
+		javaToSql.put("Character", CHAR);
+		javaToSql.put("byte", BYTE);
+		javaToSql.put("Byte", BYTE);
+		javaToSql.put("short", SHORT);
+		javaToSql.put("Short", SHORT);
+		javaToSql.put("long", LONG);
+		javaToSql.put("Long", LONG);
+		javaToSql.put("float", FLOAT);
+		javaToSql.put("Float", FLOAT);
+		javaToSql.put("double", FLOAT);
+		javaToSql.put("Double", FLOAT);
+		javaToSql.put("Boolean", BOOLEAN);
+		javaToSql.put("boolean", BOOLEAN);
 	}
 }
