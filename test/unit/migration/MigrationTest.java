@@ -35,7 +35,7 @@ public class MigrationTest extends TestCase {
 	}
 	
 	public void testForeignKeysDefinition(){
-		assertEquals("person_id bigint", Migration.foreignKeyDefinition("person_id"));
+		assertEquals("person_id integer", Migration.foreignKeyDefinition("person_id"));
 	}
 
 	// Private methods

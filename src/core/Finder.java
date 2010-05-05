@@ -28,8 +28,19 @@ public class Finder {
 		return find("*", conditions, model);
 	}
 
+	public static Set<?> find(String conditions, Class<? extends Hermes> model, String options) {
+		return find("*", conditions, model, options);
+	}
+
 	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model) {
-		Set<?> objects = adaptor.find(select, conditions, model);
+		Set<?> objects = adaptor.find(select, conditions, model, null);
+		Loader.loadAssociations(objects);
+		return objects;
+	}
+
+	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model,
+			String options) {
+		Set<?> objects = adaptor.find(select, conditions, model, options);
 		Loader.loadAssociations(objects);
 		return objects;
 	}

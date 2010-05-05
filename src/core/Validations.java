@@ -42,7 +42,7 @@ public class Validations {
 	private static boolean find(String attribute, Object value, Hermes object) {
 		Adapter adaptor = Adapter.get();
 		String conditions = attribute + "='" + value + "'";
-		String sql = SqlBuilder.build("select", "*", conditions, object);
+		String sql = SqlBuilder.build("select", "*", conditions, object, null);
 		Set<?> objects = ObjectBuilder.toObjects(adaptor.finder(sql), object.getClass());
 		return objects.size() > 0;
 	}

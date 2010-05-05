@@ -49,8 +49,6 @@ public abstract class Adapter {
 
 	public abstract void execute(String sql, Hermes object, Connection connexion) throws SQLException;
 
-	public abstract Set<Hermes> find(String select, String conditions, Class<?> model);
-
 	public abstract Set<Hermes> find(String select, String conditions, Jointure join);
 
 	public abstract Set<Hermes> finder(String sql, Class<? extends Hermes> model);
@@ -60,4 +58,7 @@ public abstract class Adapter {
 	public abstract int count(String conditions, String table);
 
 	public abstract String javaToSql(String javaType);
+
+	public abstract Set<?> find(String select, String conditions, Class<?> model, String options);
+
 }

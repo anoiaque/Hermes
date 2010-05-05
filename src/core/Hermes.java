@@ -75,6 +75,7 @@ public class Hermes {
 	public static boolean delete(String conditions, Class<? extends Hermes> model) {
 		Set<Hermes> objects = (Set<Hermes>) find(conditions, model);
 		boolean deleted = true;
+
 		for (Hermes object : objects)
 			deleted = deleted && Updater.delete(object);
 		return deleted;
@@ -140,7 +141,7 @@ public class Hermes {
 	}
 
 	/**
-	 * Instance method for count.Count all objects of the class in the database.
+	 * Instance method for count.Count all objects of this class in the database.
 	 * 
 	 * @return number of objects.
 	 */
@@ -170,8 +171,9 @@ public class Hermes {
 		return Finder.count(conditions, this.getClass());
 	}
 
+	// TODO check for changes in associations attributes
 	/**
-	 * Check if an object is different from its database value
+	 * Check if an object is different from persistance state
 	 * 
 	 * @return True/False
 	 */
@@ -275,15 +277,42 @@ public class Hermes {
 	}
 
 	/**
+	 * Find objects with conditions, and options
+	 * 
+	 * @param conditions
+	 *          : string of conditions where attributes associations can be used.
+	 * @param model
+	 * @param options
+	 * @return Set of founded objects
+	 * @Example find("name='Job' and pets.name='Medor'",Person.class)
+	 */
+	public static Set<?> find(String conditions, Class<? extends Hermes> model, String options) {
+		return Finder.find(conditions, model, options);
+	}
+
+	/**
 	 * Find objects with conditions.
 	 * 
 	 * @param conditions
 	 *          : string of conditions where attributes associations can be used.
 	 * @return Set of founded objects
-	 * @Example find("name='Job' and pets.name='Medor'",Person.class)
+	 * @Example find("name='Job' and pets.name='Medor'")
 	 */
 	public Set<?> find(String conditions) {
 		return Finder.find(conditions, this.getClass());
+	}
+
+	/**
+	 * Find objects with conditions, and options
+	 * 
+	 * @param conditions
+	 *          : string of conditions where attributes associations can be used.
+	 * @param options
+	 * @return Set of founded objects
+	 * @Example find("name='Job' and pets.name='Medor'","limit => 10")
+	 */
+	public Set<?> find(String conditions, String options) {
+		return Finder.find(conditions, this.getClass(), options);
 	}
 
 	/**
@@ -303,16 +332,37 @@ public class Hermes {
 
 	/**
 	 * Find objects with conditions and with specified columns (sql select clause)
+	 * with options : limit, offset, order ...
 	 * 
 	 * @param select
 	 *          : string of columns to retrieve (ie : "name,age").
 	 * @param conditions
 	 *          : string of conditions where attributes associations can be used.
+	 * @param model
+	 * @param options
 	 * @return Set of founded objects
-	 * @Example find("name,age","name='Job' and pets.name='Medor'",Person.class)
+	 * @Example find("name,age","name='Job' and pets.name='Medor'",Person.class,
+	 *          "order => 'name desc'")
 	 */
-	public Set<?> find(String select, String conditions) {
-		return Finder.find(select, conditions, this.getClass());
+	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model,
+			String options) {
+		return Finder.find(select, conditions, model, options);
+	}
+
+	/**
+	 * Find objects with conditions and with specified columns (sql select clause)
+	 * 
+	 * @param select
+	 *          : string of columns to retrieve (ie : "name,age").
+	 * @param conditions
+	 *          : string of conditions where attributes associations can be used.
+	 * @param options
+	 *          : string of options on limit, offset, order ...
+	 * @return Set of founded objects
+	 * @Example find("name,age","name='Job' and pets.name='Medor'","limit => 12")
+	 */
+	public Set<?> find(String select, String conditions, String options) {
+		return Finder.find(select, conditions, this.getClass(), options);
 	}
 
 	/**
@@ -326,12 +376,35 @@ public class Hermes {
 	}
 
 	/**
+	 * Find all objects of the given class
+	 * 
+	 * @param model
+	 * @param options
+	 *          : string of options on limit, offset, order
+	 * @return Set of Hermes objects
+	 */
+	public static Set<?> findAll(Class<? extends Hermes> model, String options) {
+		return Finder.find("*", null, model, options);
+	}
+
+	/**
 	 * Get all objects of the class
 	 * 
 	 * @return Set of all objects
 	 */
 	public Set<?> findAll() {
 		return Finder.find("*", null, this.getClass());
+	}
+
+	/**
+	 * Get all objects of the class with options
+	 * 
+	 * @param string
+	 *          of options on limit, offset, order ...
+	 * @return Set of all objects
+	 */
+	public Set<?> findAll(String options) {
+		return Finder.find("*", null, this.getClass(), options);
 	}
 
 	/**

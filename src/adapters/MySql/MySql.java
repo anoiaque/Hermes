@@ -58,10 +58,10 @@ public class MySql extends Adapter {
 		return Mapping.javaToSql(javaType);
 	}
 
-	public Set<Hermes> find(String select, String conditions, Class<?> model) {
+	public Set<Hermes> find(String select, String conditions, Class<?> model, String options) {
 		try {
 			Hermes object = (Hermes) model.newInstance();
-			String sql = SqlBuilder.build("select", select, conditions, object);
+			String sql = SqlBuilder.build("select", select, conditions, object, options);
 			ResultSet rs = finder(sql);
 			Set<?> objects = ObjectBuilder.toObjects(rs, model);
 			return (Set<Hermes>) objects;
@@ -73,7 +73,7 @@ public class MySql extends Adapter {
 	}
 
 	public Set<Hermes> find(String select, String conditions, Jointure join) {
-		String sql = SqlBuilder.build("select", select, conditions, join);
+		String sql = SqlBuilder.build("select", select, conditions, join, null);
 
 		ResultSet rs = finder(sql);
 		return ObjectBuilder.toObjects(rs, Jointure.class);
@@ -84,7 +84,6 @@ public class MySql extends Adapter {
 			ResultSet rs = finder(sql);
 			Set<?> objects = ObjectBuilder.toObjects(rs, model);
 			return (Set<Hermes>) objects;
-
 		}
 		catch (Exception e) {
 			e.printStackTrace();

@@ -10,6 +10,11 @@ import sample.Pet;
 
 public class Factory {
 
+	public static void create(String feature, int number) {
+		for (int i = 1; i <= number; i++)
+			get(feature);
+	}
+
 	public static Object get(String feature) {
 		if (feature.equals("human")) return human();
 		if (feature.equals("pets")) return pets();

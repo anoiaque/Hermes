@@ -1,5 +1,6 @@
 package migration;
 
+import adapters.MySql.Mapping;
 import core.Attribute;
 import core.Hermes;
 import core.Introspector;
@@ -27,8 +28,8 @@ public class Migration {
 		sql += attribute.getSqlType();
 		return sql;
 	}
-	
-	public static String foreignKeyDefinition(String fkName){
-		return fkName+ " bigint";
+
+	public static String foreignKeyDefinition(String fkName) {
+		return fkName + " " + Mapping.INTEGER;
 	}
 }

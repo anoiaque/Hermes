@@ -7,6 +7,7 @@ import java.util.List;
 import core.Attribute;
 import core.BelongsTo;
 import core.Hermes;
+import core.Options;
 
 public class SqlBuilder {
 
@@ -20,8 +21,9 @@ public class SqlBuilder {
 		return "";
 	}
 
-	public static String build(String request, String select, String conditions, Hermes object) {
-		if (request.equals("select")) return select(select, conditions, object);
+	public static String build(String request, String select, String conditions, Hermes object,
+			String options) {
+		if (request.equals("select")) return select(select, conditions, object, options);
 		return "";
 	}
 
@@ -60,11 +62,23 @@ public class SqlBuilder {
 		return "delete from " + object.getTableName() + " where " + conditions;
 	}
 
-	private static String select(String select, String conditions, Hermes object) {
+	private static String select(String select, String conditions, Hermes object, String options) {
 		String sql = "select distinct " + selectClause(select, object);
-		sql += " from " + fromClause(conditions, object);;
-		if (conditions == null) return sql;
-		return sql + " where " + Analyzer.conditions(conditions, object);
+		sql += " from " + fromClause(conditions, object);
+		if (conditions == null) return sql + limit(options);
+		sql += " where " + Analyzer.conditions(conditions, object);
+		sql += limit(options);
+		return sql;
+	}
+
+	private static String limit(String options) {
+		Options opts = new Options(options);
+
+		String limit = opts.limit();
+		String offset = opts.offset();
+		if (limit == null) return "";
+		if (offset == null) return " limit " + limit;
+		return " limit " + offset + "," + limit;
 	}
 
 	private static String selectClause(String select, Hermes object) {
@@ -79,7 +93,7 @@ public class SqlBuilder {
 
 		for (String table : Analyzer.tables(conditions, object).values())
 			from += "," + table;
-		
+
 		for (String table : Analyzer.jointures(conditions, object).values())
 			from += "," + table;
 		return from;

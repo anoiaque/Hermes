@@ -3,7 +3,7 @@ package all;
 import helpers.Database;
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import unit.hermes.TypeCastTest;
+import unit.hermes.OptionsTest;
 import unit.hermes.AssociationsTest;
 import unit.hermes.BasicTest;
 import unit.hermes.CallbacksTest;
@@ -14,6 +14,7 @@ import unit.hermes.InflectorTest;
 import unit.hermes.InheritanceTest;
 import unit.hermes.JointureTest;
 import unit.hermes.TransactionTest;
+import unit.hermes.TypeCastTest;
 import unit.hermes.UpdaterTest;
 import unit.hermes.ValidationsTest;
 import unit.migration.MigrationTest;
@@ -40,6 +41,7 @@ public class AllTest extends TestSuite {
 		suite.addTest(new TestSuite(InflectorTest.class));
 		suite.addTest(new TestSuite(InheritanceTest.class));
 		suite.addTest(new TestSuite(TypeCastTest.class));
+		suite.addTest(new TestSuite(OptionsTest.class));
 
 		suite.addTest(new TestSuite(PoolTest.class));
 		return suite;

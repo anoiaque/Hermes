@@ -17,6 +17,8 @@ public class Mapping {
 	public static final String							SHORT					= "smallint";
 	public static final String							LONG					= "bigint";
 	public static final String							FLOAT					= "float";
+	public static final String							DATE					= "date";
+	public static final String							DATETIME			= "datetime";
 
 	public static String javaToSql(String type) {
 		if (javaToSql == null) mapping();
