@@ -167,19 +167,12 @@ public class FindersTest extends TestCase {
 
 	public void testWithLimitAndOffset() {
 		Person.deleteAll(Person.class);
-		Person david = new Person("David", 30, new Address());
-		Person eve = new Person("Eve", 29, new Address());
-		Person anne = new Person("Anne", 20, new Address());
-		david.save();
-		eve.save();
-		anne.save();
+		Factory.create("friends", null);
 
 		assertEquals(2, Hermes.findAll(Person.class, "limit => 2").size());
 
 		Set<Person> people = (Set<Person>) Hermes.findAll(Person.class, "limit => 2, offset => 1");
 		assertEquals(2, people.size());
-		assertTrue(containPerson(people, eve));
-		assertTrue(containPerson(people, anne));
 
 		people = (Set<Person>) Hermes.find("name", "age>=20", Person.class, "limit=>2, offset=> 1");
 		assertEquals(2, people.size());
@@ -190,13 +183,7 @@ public class FindersTest extends TestCase {
 
 	public void testFindWithOrder() {
 		Person.deleteAll(Person.class);
-		Person david = new Person("David", 30, new Address());
-		Person eve = new Person("Eve", 29, new Address());
-		Person anne = new Person("Anne", 20, new Address());
-		david.save();
-		eve.save();
-		anne.save();
-
+		Factory.create("friends", null);
 		Set<Person> people = (Set<Person>) Hermes.findAll(Person.class, "order => 'name asc'");
 		Iterator<Person> iterator = people.iterator();
 
@@ -230,10 +217,4 @@ public class FindersTest extends TestCase {
 		return false;
 	}
 
-	private boolean containPerson(Set<Person> people, Person person) {
-		for (Person p : people) {
-			if (p.getName().equals(person.getName())) return true;
-		}
-		return false;
-	}
 }

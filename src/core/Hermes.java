@@ -63,14 +63,18 @@ public class Hermes {
 	/**
 	 * Delete objects of a class from database with conditions
 	 * 
-	 * @Example 
-	 *          Hermes.delete("name = 'anonymous' and address.street='rue de Brest'"
-	 *          ,Person.class)
 	 * @param conditions
 	 *          : conditions on record(s) to delete
 	 * @param model
 	 *          : Class extending Hermes of the objects to delete.
 	 * @return True if all deleted, else False.
+	 * 
+	 *         <pre>
+	 * <strong>Example</strong> 
+	 * <code>
+	 * Hermes.delete("name = 'anonymous' and address.street='rue de Brest'",Person.class)
+	 * /code>
+	 *</pre>
 	 */
 	public static boolean delete(String conditions, Class<? extends Hermes> model) {
 		Set<Hermes> objects = (Set<Hermes>) find(conditions, model);
@@ -270,7 +274,13 @@ public class Hermes {
 	 *          : string of conditions where attributes associations can be used.
 	 * @param model
 	 * @return Set of founded objects
-	 * @Example find("name='Job' and pets.name='Medor'",Person.class)
+	 * 
+	 *         <pre>
+	 * <strong>Example</strong> 
+	 * <code>
+	 * find("name='Job' and pets.name='Medor'",Person.class)
+	 * </code>
+	 * </pre>
 	 */
 	public static Set<?> find(String conditions, Class<? extends Hermes> model) {
 		return Finder.find(conditions, model);
@@ -284,7 +294,13 @@ public class Hermes {
 	 * @param model
 	 * @param options
 	 * @return Set of founded objects
-	 * @Example find("name='Job' and pets.name='Medor'",Person.class)
+	 * 
+	 *         <pre>
+	 * <strong>Example</strong> 
+	 * <code>
+	 * find("name='Job' and pets.name='Medor'",Person.class)
+	 * </code>
+	 *</pre>
 	 */
 	public static Set<?> find(String conditions, Class<? extends Hermes> model, String options) {
 		return Finder.find(conditions, model, options);
@@ -296,7 +312,13 @@ public class Hermes {
 	 * @param conditions
 	 *          : string of conditions where attributes associations can be used.
 	 * @return Set of founded objects
-	 * @Example find("name='Job' and pets.name='Medor'")
+	 * 
+	 *         <pre>
+	 * <strong>Example</strong> 
+	 * <code>
+	 * find("name='Job' and pets.name='Medor'")
+	 * </code>
+	 *</pre>
 	 */
 	public Set<?> find(String conditions) {
 		return Finder.find(conditions, this.getClass());
@@ -309,7 +331,13 @@ public class Hermes {
 	 *          : string of conditions where attributes associations can be used.
 	 * @param options
 	 * @return Set of founded objects
-	 * @Example find("name='Job' and pets.name='Medor'","limit => 10")
+	 * 
+	 *         <pre>
+	 * <strong>Example</strong> 
+	 * <code>
+	 * find("name='Job' and pets.name='Medor'","limit => 10")
+	 * </code>
+	 *</pre>
 	 */
 	public Set<?> find(String conditions, String options) {
 		return Finder.find(conditions, this.getClass(), options);
@@ -324,7 +352,13 @@ public class Hermes {
 	 *          : string of conditions where attributes associations can be used.
 	 * @param model
 	 * @return Set of founded objects
-	 * @Example find("name,age","name='Job' and pets.name='Medor'",Person.class)
+	 * 
+	 *         <pre>
+	 * <strong>Example</strong> 
+	 * <code>
+	 * find("name,age","name='Job' and pets.name='Medor'",Person.class)
+	 * </code>
+	 *</pre>
 	 */
 	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model) {
 		return Finder.find(select, conditions, model);
@@ -341,8 +375,13 @@ public class Hermes {
 	 * @param model
 	 * @param options
 	 * @return Set of founded objects
-	 * @Example find("name,age","name='Job' and pets.name='Medor'",Person.class,
-	 *          "order => 'name desc'")
+	 * 
+	 *         <pre>
+	 * <strong>Example</strong> 
+	 * <code>
+	 * find("name,age","name='Job' and pets.name='Medor'",Person.class,"order => 'name desc'")
+	 * </code>
+	 * </pre>
 	 */
 	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model,
 			String options) {
@@ -359,7 +398,13 @@ public class Hermes {
 	 * @param options
 	 *          : string of options on limit, offset, order ...
 	 * @return Set of founded objects
-	 * @Example find("name,age","name='Job' and pets.name='Medor'","limit => 12")
+	 * 
+	 *         <pre>
+	 * <strong>Example</strong> 
+	 * <code>
+	 * find("name,age","name='Job' and pets.name='Medor'","limit => 12")
+	 * </code>
+	 * </pre>
 	 */
 	public Set<?> find(String select, String conditions, String options) {
 		return Finder.find(select, conditions, this.getClass(), options);

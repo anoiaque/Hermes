@@ -5,6 +5,10 @@ import java.util.regex.Pattern;
 
 public class Inflector {
 
+	/**
+	 * @param word
+	 * @return
+	 */
 	public static String pluralize(String word) {
 		return (new Inflector()).new Plural(word).get();
 	}

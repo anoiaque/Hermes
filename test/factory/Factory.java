@@ -10,8 +10,9 @@ import sample.Pet;
 
 public class Factory {
 
-	public static void create(String feature, int number) {
-		for (int i = 1; i <= number; i++)
+	public static void create(String feature, Integer number) {
+		if (feature.equals("friends")) createFriends();
+		else for (int i = 1; i <= number; i++)
 			get(feature);
 	}
 
@@ -21,6 +22,12 @@ public class Factory {
 		if (feature.equals("cars")) return cars();
 
 		return null;
+	}
+
+	private static void createFriends() {
+		new Person("David", 30, new Address()).save();
+		new Person("Eve", 29, new Address()).save();
+		new Person("Anne", 20, new Address()).save();
 	}
 
 	private static Set<Car> cars() {
