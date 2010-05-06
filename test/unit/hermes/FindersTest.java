@@ -174,10 +174,10 @@ public class FindersTest extends TestCase {
 		Set<Person> people = (Set<Person>) Hermes.findAll(Person.class, "limit => 2, offset => 1");
 		assertEquals(2, people.size());
 
-		people = (Set<Person>) Hermes.find("name", "age>=20", Person.class, "limit=>2, offset=> 1");
+		people = (Set<Person>) Hermes.find("name", "age >= 20", Person.class, "limit=>2, offset=> 1");
 		assertEquals(2, people.size());
 
-		people = (Set<Person>) Hermes.find("name", "age>=20", Person.class, "limit=>5, offset=> 2");
+		people = (Set<Person>) Hermes.find("name", "age >= 20", Person.class, "limit=>5, offset=> 2");
 		assertEquals(1, people.size());
 	}
 
@@ -190,6 +190,13 @@ public class FindersTest extends TestCase {
 		assertEquals("Anne", iterator.next().getName());
 		assertEquals("David", iterator.next().getName());
 		assertEquals("Eve", iterator.next().getName());
+	}
+
+	public void testSanitize() {
+		human.setName("o'clock");
+		assertTrue(human.save());
+		Set<Person> humans = (Set<Person>) Hermes.find("name='o'clock'", Person.class);
+		assertEquals(1, humans.size());
 	}
 
 	// Private methods

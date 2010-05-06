@@ -45,10 +45,22 @@ public class Analyzer {
 			}
 			else conditions += hasOneOrManyCondition(object, table);
 		}
-		return conditions;
+		return doubleQuote(conditions);
 	}
 
 	// Private methods
+
+	private static String doubleQuote(String conditions) {
+		Pattern pattern = Pattern.compile("=.*?'(.*?)'(.*?)'");
+		Matcher matcher = pattern.matcher(conditions);
+
+		while (matcher.find()) 
+			if(! (matcher.group(2).contains(" or ") || matcher.group(2).contains(" and ")))
+			conditions = conditions.replace("'" + matcher.group(1) + "'" + matcher.group(2) + "'", "'"
+					+ matcher.group(1) + "''" + matcher.group(2) + "'");
+		
+		return conditions;
+	}
 
 	private static List<String> extractAttributes(String conditions) {
 		List<String> attributes = new ArrayList<String>();

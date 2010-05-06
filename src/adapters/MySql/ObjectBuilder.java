@@ -39,10 +39,11 @@ public class ObjectBuilder {
 	// Private methods
 	private static void loadAttributeValue(Hermes object, ResultSet rs, Attribute attribute) {
 		try {
+
 			Introspector.set(attribute, rs.getObject(attribute.getName()), object);
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+			// if selected columns , some columns can not be found inf resultset
 		}
 	}
 
