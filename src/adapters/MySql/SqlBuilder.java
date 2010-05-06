@@ -65,8 +65,9 @@ public class SqlBuilder {
 	private static String select(String select, String conditions, Hermes object, String options) {
 		String sql = "select distinct " + selectClause(select, object);
 		sql += " from " + fromClause(conditions, object);
-		if (conditions == null) return sql + limit(options);
+		if (conditions == null) return sql + order(options) + limit(options);
 		sql += " where " + Analyzer.conditions(conditions, object);
+		sql += order(options);
 		sql += limit(options);
 		return sql;
 	}
@@ -79,6 +80,14 @@ public class SqlBuilder {
 		if (limit == null) return "";
 		if (offset == null) return " limit " + limit;
 		return " limit " + offset + "," + limit;
+	}
+
+	private static String order(String options) {
+		;
+		Options opts = new Options(options);
+		String order = opts.order();
+		if (order == null) return "";
+		return " order by " + order;
 	}
 
 	private static String selectClause(String select, Hermes object) {

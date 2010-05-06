@@ -16,7 +16,7 @@ public class OptionsTest extends TestCase {
 	}
 
 	public void testOrder() {
-		assertEquals("'name asc'", new Options(options).order());
+		assertEquals("name asc", new Options(options).order());
 	}
 
 }

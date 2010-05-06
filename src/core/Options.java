@@ -24,7 +24,9 @@ public class Options {
 	}
 
 	public String order() {
-		return match(ORDER_REGEXP);
+		String order = match(ORDER_REGEXP);
+		if (order == null) return null;
+		return order.replace("'", "");
 	}
 
 	private String match(String regexp) {

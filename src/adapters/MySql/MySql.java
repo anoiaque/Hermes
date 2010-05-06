@@ -107,6 +107,7 @@ public class MySql extends Adapter {
 	}
 
 	public ResultSet finder(String sql) {
+		// System.out.println(sql);
 		Connection connexion = null;
 		Pool pool = Pool.getInstance();
 		try {

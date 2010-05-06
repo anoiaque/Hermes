@@ -188,6 +188,23 @@ public class FindersTest extends TestCase {
 		assertEquals(1, people.size());
 	}
 
+	public void testFindWithOrder() {
+		Person.deleteAll(Person.class);
+		Person david = new Person("David", 30, new Address());
+		Person eve = new Person("Eve", 29, new Address());
+		Person anne = new Person("Anne", 20, new Address());
+		david.save();
+		eve.save();
+		anne.save();
+
+		Set<Person> people = (Set<Person>) Hermes.findAll(Person.class, "order => 'name asc'");
+		Iterator<Person> iterator = people.iterator();
+
+		assertEquals("Anne", iterator.next().getName());
+		assertEquals("David", iterator.next().getName());
+		assertEquals("Eve", iterator.next().getName());
+	}
+
 	// Private methods
 
 	private void givePetToHuman() {

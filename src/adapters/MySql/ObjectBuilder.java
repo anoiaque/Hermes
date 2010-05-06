@@ -2,7 +2,7 @@ package adapters.MySql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import core.Attribute;
@@ -25,12 +25,14 @@ public class ObjectBuilder {
 	}
 
 	public static Set<Hermes> toObjects(ResultSet rs, Class<?> model) {
-		Set<Hermes> result = new HashSet<Hermes>();
+		Set<Hermes> result = new LinkedHashSet<Hermes>();
+
 		Hermes obj = null;
 		do {
 			obj = toObject(rs, model);
 			if (obj != null) result.add(obj);
 		} while (obj != null);
+
 		return result;
 	}
 
