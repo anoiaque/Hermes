@@ -1,5 +1,6 @@
 package sample;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -14,6 +15,7 @@ public class Person extends Hermes {
 	private Address		adress;
 	private Set<Pet>	pets;
 	private Set<Car>	cars;
+	private Date			birthday;
 
 	public Person() {}
 
@@ -108,6 +110,14 @@ public class Person extends Hermes {
 
 	public String getPhone() {
 		return phone;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public Date getBirthday() {
+		return birthday;
 	}
 
 }
