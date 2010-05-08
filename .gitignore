@@ -4,3 +4,4 @@ lib
 .classpath
 .project
 .gitignore
+bin
