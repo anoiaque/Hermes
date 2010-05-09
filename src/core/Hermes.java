@@ -97,7 +97,7 @@ public class Hermes {
 	}
 
 	/**
-	 * Insatnce method of deleteAll() Delete all objects of the class from which
+	 * Instance method . Delete all objects of the class from which
 	 * this method is called
 	 * 
 	 * @return True if all deleted, else False.

@@ -1,10 +1,13 @@
 package unit.hermes;
 
-import adapters.MySql.TypeCast;
 import helpers.Database;
+
+import java.util.Calendar;
+
 import junit.framework.TestCase;
 import sample.Address;
 import sample.Man;
+import adapters.MySql.TypeCast;
 import core.Attribute;
 import core.Introspector;
 
@@ -36,6 +39,17 @@ public class TypeCastTest extends TestCase {
 		Attribute attribute = man.getAttribute("married");
 		Object value = Introspector.invokeMethod("booleanToSql", attribute, TypeCast.class);
 		assertEquals(1, value);
+	}
+	
+	public void testDateTypeCast(){
+		Calendar birthday = Calendar.getInstance();
+		birthday.set(1975, 10, 12);
+		man.setBirthday(birthday);
+		assertTrue(man.save());
+		man.reload();
+		assertEquals(1975,man.getBirthday().get(Calendar.YEAR));
+		assertEquals(10,man.getBirthday().get(Calendar.MONTH));
+		assertEquals(12,man.getBirthday().get(Calendar.DAY_OF_MONTH));
 	}
 
 }

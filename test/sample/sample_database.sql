@@ -7,7 +7,7 @@ name varchar(250),
 phone varchar(250),
 married boolean,
 job varchar(250),
-birthday datetime
+birthday date
 ) ENGINE = InnoDB;
 create table ADDRESSES(
 id int primary key auto_increment,

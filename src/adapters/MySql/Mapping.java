@@ -44,5 +44,8 @@ public class Mapping {
 		javaToSql.put("Double", FLOAT);
 		javaToSql.put("Boolean", BOOLEAN);
 		javaToSql.put("boolean", BOOLEAN);
+		javaToSql.put("Date", DATE);
+		javaToSql.put("Calendar", DATE);
+
 	}
 }
