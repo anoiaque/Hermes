@@ -16,7 +16,7 @@ public class Analyzer {
 	public static HashMap<String, String> tables(String conditions, Hermes object) {
 		HashMap<String, String> tables = new HashMap<String, String>();
 
-		for (String attribute : extractAttributes(conditions))
+		for (String attribute : attributes(conditions))
 			tables.put(attribute, Introspector.table(attribute, object));
 
 		return tables;
@@ -25,7 +25,7 @@ public class Analyzer {
 	public static HashMap<String, String> jointures(String conditions, Hermes object) {
 		HashMap<String, String> tables = new HashMap<String, String>();
 
-		for (String attribute : extractAttributes(conditions))
+		for (String attribute : attributes(conditions))
 			if (Associations.isManyToManyAttribute(attribute, object)) {
 				String jointure = Associations.jointure(attribute, object);
 				tables.put(attribute, jointure);
@@ -54,15 +54,15 @@ public class Analyzer {
 		Pattern pattern = Pattern.compile("=.*?'(.*?)'(.*?)'");
 		Matcher matcher = pattern.matcher(conditions);
 
-		while (matcher.find()) 
-			if(! (matcher.group(2).contains(" or ") || matcher.group(2).contains(" and ")))
-			conditions = conditions.replace("'" + matcher.group(1) + "'" + matcher.group(2) + "'", "'"
-					+ matcher.group(1) + "''" + matcher.group(2) + "'");
-		
+		while (matcher.find())
+			if (!(matcher.group(2).contains(" or ") || matcher.group(2).contains(" and "))) conditions = conditions
+					.replace("'" + matcher.group(1) + "'" + matcher.group(2) + "'", "'" + matcher.group(1)
+							+ "''" + matcher.group(2) + "'");
+
 		return conditions;
 	}
 
-	private static List<String> extractAttributes(String conditions) {
+	private static List<String> attributes(String conditions) {
 		List<String> attributes = new ArrayList<String>();
 		Pattern pattern = Pattern.compile("'(.)*?'");;
 		conditions = pattern.matcher(conditions).replaceAll("");

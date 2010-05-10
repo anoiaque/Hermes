@@ -61,4 +61,5 @@ public abstract class Adapter {
 
 	public abstract Set<?> find(String select, String conditions, Class<?> model, String options);
 
+	public abstract boolean find(String attribute, Object value, Hermes object);
 }

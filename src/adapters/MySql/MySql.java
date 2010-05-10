@@ -17,15 +17,15 @@ import core.Jointure;
 public class MySql extends Adapter {
 
 	public boolean save(Hermes object) {
-		return execute(SqlBuilder.build("insert", null, object), object);
+		return execute(new Sql(Sql.Request.INSERT, null, object).request(), object);
 	}
 
 	public boolean update(Hermes object) {
-		return execute(SqlBuilder.build("update", null, object), object);
+		return execute(new Sql(Sql.Request.UPDATE, null, object).request(), object);
 	}
 
 	public boolean delete(Hermes object) {
-		return execute(SqlBuilder.build("delete", null, object), object);
+		return execute(new Sql(Sql.Request.DELETE, null, object).request(), object);
 	}
 
 	public boolean deleteAll(Class<? extends Hermes> model) {
@@ -39,19 +39,19 @@ public class MySql extends Adapter {
 	}
 
 	public boolean delete(String conditions, Hermes object) {
-		return execute(SqlBuilder.build("delete", conditions, object), object);
+		return execute(new Sql(Sql.Request.DELETE, conditions, object).request(), object);
 	}
 
 	public void save(Hermes object, Connection connexion) throws SQLException {
-		execute(SqlBuilder.build("insert", null, object), object, connexion);
+		execute(new Sql(Sql.Request.INSERT, null, object).request(), object, connexion);
 	}
 
 	public void update(Hermes object, Connection connexion) throws SQLException {
-		execute(SqlBuilder.build("update", null, object), object, connexion);
+		execute(new Sql(Sql.Request.UPDATE, null, object).request(), object, connexion);
 	}
 
 	public void delete(Hermes object, Connection connexion) throws SQLException {
-		execute(SqlBuilder.build("delete", null, object), object, connexion);
+		execute(new Sql(Sql.Request.DELETE, null, object).request(), object, connexion);
 	}
 
 	public String javaToSql(String javaType) {
@@ -61,9 +61,9 @@ public class MySql extends Adapter {
 	public Set<Hermes> find(String select, String conditions, Class<?> model, String options) {
 		try {
 			Hermes object = (Hermes) model.newInstance();
-			String sql = SqlBuilder.build("select", select, conditions, object, options);
+			String sql = new Sql(Sql.Request.SELECT, select, conditions, options, object).request();
 			ResultSet rs = finder(sql);
-			Set<?> objects = ObjectBuilder.toObjects(rs, model);
+			Set<?> objects = Objects.get(rs, model);
 			return (Set<Hermes>) objects;
 		}
 		catch (Exception e) {
@@ -72,17 +72,24 @@ public class MySql extends Adapter {
 		}
 	}
 
+	public boolean find(String attribute, Object value, Hermes object) {
+		String conditions = attribute + "='" + value + "'";
+		String sql = new Sql(Sql.Request.SELECT, "*", conditions, null, object).request();
+		Set<?> objects = Objects.get(finder(sql), object.getClass());
+		return objects.size() > 0;
+	}
+
 	public Set<Hermes> find(String select, String conditions, Jointure join) {
-		String sql = SqlBuilder.build("select", select, conditions, join, null);
+		String sql = new Sql(Sql.Request.SELECT, select, conditions, null, join).request();
 
 		ResultSet rs = finder(sql);
-		return ObjectBuilder.toObjects(rs, Jointure.class);
+		return Objects.get(rs, Jointure.class);
 	}
 
 	public Set<Hermes> finder(String sql, Class<? extends Hermes> model) {
 		try {
 			ResultSet rs = finder(sql);
-			Set<?> objects = ObjectBuilder.toObjects(rs, model);
+			Set<?> objects = Objects.get(rs, model);
 			return (Set<Hermes>) objects;
 		}
 		catch (Exception e) {

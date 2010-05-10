@@ -9,22 +9,9 @@ import core.Attribute;
 import core.Hermes;
 import core.Introspector;
 
-public class ObjectBuilder {
+public class Objects {
 
-	public static Hermes toObject(ResultSet rs, Class<?> model) {
-		try {
-			if (rs == null || !rs.next()) return null;
-			Hermes object = (Hermes) model.newInstance();
-			loadObject(object, rs);
-			return object;
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public static Set<Hermes> toObjects(ResultSet rs, Class<?> model) {
+	public static Set<Hermes> get(ResultSet rs, Class<?> model) {
 		Set<Hermes> result = new LinkedHashSet<Hermes>();
 
 		Hermes obj = null;
@@ -37,6 +24,20 @@ public class ObjectBuilder {
 	}
 
 	// Private methods
+
+	private static Hermes toObject(ResultSet rs, Class<?> model) {
+		try {
+			if (rs == null || !rs.next()) return null;
+			Hermes object = (Hermes) model.newInstance();
+			loadObject(object, rs);
+			return object;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	private static void loadAttributeValue(Hermes object, ResultSet rs, Attribute attribute) {
 		try {
 			Object value = TypeCast.toJava(rs.getObject(attribute.getName()));

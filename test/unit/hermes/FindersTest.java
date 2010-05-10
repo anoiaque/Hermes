@@ -192,7 +192,7 @@ public class FindersTest extends TestCase {
 		assertEquals("Eve", iterator.next().getName());
 	}
 
-	public void testSanitize() {
+	public void testDoubleQuote() {
 		human.setName("o'clock");
 		assertTrue(human.save());
 		Set<Person> humans = (Set<Person>) Hermes.find("name='o'clock'", Person.class);

@@ -9,32 +9,63 @@ import core.BelongsTo;
 import core.Hermes;
 import core.Options;
 
-public class SqlBuilder {
+public class Sql {
 
-	static String	sql	= "";
-
-	public static String build(String request, String conditions, Hermes object) {
-		if (request.equals("insert")) return insert(object);
-		if (request.equals("update")) return update(object);
-		if (request.equals("delete") && conditions != null) return delete(object, conditions);
-		if (request.equals("delete")) return delete(object);
-		return "";
+	public enum Request {
+		INSERT, UPDATE, DELETE, SELECT, JOINTURE
 	}
 
-	public static String build(String request, String select, String conditions, Hermes object,
-			String options) {
-		if (request.equals("select")) return select(select, conditions, object, options);
-		return "";
+	private Request	request;
+	private String	conditions;
+	private String	select;
+	private String	options;
+	private String	name;
+	private Hermes	object;
+
+	public Sql(Request request, String name) {
+		this.request = request;
+		this.name = name;
 	}
 
-	public static String build(String request, String name) {
-		if (request.equals("jointure")) return createJoinTable(name);
+	public Sql(Request request, Hermes object) {
+		this.request = request;
+		this.object = object;
+	}
+
+	public Sql(Request request, String conditions, Hermes object) {
+		this.request = request;
+		this.conditions = conditions;
+		this.object = object;
+	}
+
+	public Sql(Request request, String select, String conditions, String options, Hermes object) {
+		this.request = request;
+		this.select = select;
+		this.conditions = conditions;
+		this.object = object;
+		this.options = options;
+	}
+
+	public String request() {
+		switch (request) {
+		case INSERT:
+			return insert(object);
+		case UPDATE:
+			return update(object);
+		case DELETE:
+			if (conditions == null) return delete(object);
+			return delete(object, conditions);
+		case SELECT:
+			return select(select, conditions, object, options);
+		case JOINTURE:
+			return jointure(name);
+		}
 		return "";
 	}
 
 	// Private methods
-	private static String createJoinTable(String name) {
-		sql = "create  table if not exists " + name;
+	private static String jointure(String name) {
+		String sql = "create  table if not exists " + name;
 		sql += "(parentId int default null,childId int default null);";
 		return sql;
 	}
@@ -43,12 +74,11 @@ public class SqlBuilder {
 		HashMap<String, Object> columnsValues = columnsValues(object);
 		String columns = epureColumns(columnsValues.keySet().toString());
 		String values = epureValues(columnsValues.values().toString());
-		sql = "insert into  " + object.getTableName() + "(" + columns + ")" + "values (" + values + ")";
-		return sql;
+		return "insert into " + object.getTableName() + "(" + columns + ")" + "values (" + values + ")";
 	}
 
 	private static String update(Hermes object) {
-		sql = "update " + object.getTableName() + " set ";
+		String sql = "update " + object.getTableName() + " set ";
 		sql += setClause(columnsValues(object)).replace("'null'", "null");
 		sql += " where id =" + object.getId();
 		return sql;
@@ -121,6 +151,15 @@ public class SqlBuilder {
 		return setClause;
 	}
 
+	private static String epureColumns(String columns) {
+		return columns.replace("[", "").replace("]", "");
+	}
+
+	private static String epureValues(String fields) {
+		String values = fields.replace("[", "'").replace("]", "'");
+		return values.replace(", ", "','").replace("'null'", "null");
+	}
+
 	private static HashMap<String, Object> columnsValues(Hermes object) {
 		HashMap<String, Object> columnsValues = new HashMap<String, Object>();
 		columnsValues.putAll(attributesValues(object));
@@ -131,7 +170,7 @@ public class SqlBuilder {
 	private static HashMap<String, Object> attributesValues(Hermes object) {
 		HashMap<String, Object> attributes = new HashMap<String, Object>();
 		for (Attribute attribute : object.getAttributes())
-			attributes.put(attribute.getName(), attribute.getCastedValue());
+			attributes.put(attribute.getName(), TypeCast.toSql(attribute));
 		return attributes;
 	}
 
@@ -144,12 +183,4 @@ public class SqlBuilder {
 		return foreignKeys;
 	}
 
-	private static String epureColumns(String columns) {
-		return columns.replace("[", "").replace("]", "");
-	}
-
-	private static String epureValues(String fields) {
-		String values = fields.replace("[", "'").replace("]", "'");
-		return values.replace(", ", "','").replace("'null'", "null");
-	}
 }

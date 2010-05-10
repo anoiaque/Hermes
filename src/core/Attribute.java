@@ -1,11 +1,9 @@
 package core;
 
-import adapters.Adapter;
-import adapters.MySql.TypeCast;
-
 import java.lang.reflect.Field;
-
 import java.util.ArrayList;
+
+import adapters.Adapter;
 
 public class Attribute {
 
@@ -45,10 +43,6 @@ public class Attribute {
 
 	public String getSqlType() {
 		return sqlType;
-	}
-
-	public Object getCastedValue() {
-		return TypeCast.value(this);
 	}
 
 	// Private methods

@@ -9,9 +9,6 @@ import java.util.Calendar;
 import junit.framework.TestCase;
 import sample.Address;
 import sample.Man;
-import adapters.MySql.TypeCast;
-import core.Attribute;
-import core.Introspector;
 
 public class TypeCastTest extends TestCase {
 
@@ -34,13 +31,6 @@ public class TypeCastTest extends TestCase {
 		assertTrue(man.save());
 		man.reload();
 		assertFalse(man.isMarried());
-	}
-
-	public void testTypeCastInvokingByIntropsector() {
-		man.setMarried(true);
-		Attribute attribute = man.getAttribute("married");
-		Object value = Introspector.invokeMethod("booleanToSql", attribute, TypeCast.class);
-		assertEquals(1, value);
 	}
 
 	public void testCalendarTypeCast() {

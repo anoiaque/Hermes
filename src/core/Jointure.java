@@ -3,9 +3,6 @@ package core;
 import java.util.HashSet;
 import java.util.Set;
 
-import adapters.Adapter;
-import adapters.MySql.SqlBuilder;
-
 public class Jointure extends Hermes {
 
 	private long	parentId;
@@ -15,7 +12,6 @@ public class Jointure extends Hermes {
 
 	public Jointure(Hermes model, String attribute) {
 		this.tableName = Inflector.tableize(attribute, model, "jointure");
-		Adapter.get().execute(SqlBuilder.build("jointure", tableName), this);
 	}
 
 	public boolean save(long parentId, long childId) {
