@@ -107,6 +107,11 @@ public class Introspector {
 	public static boolean isDate(Object value){
 		return value.getClass().getSimpleName().equals("Date");
 	}
+	
+	public static boolean isTimestamp(Object value){
+		return value.getClass().getSimpleName().equals("Timestamp");
+	}
+
 
 	// Just one level of inheritence for now . No recursive find
 	public static List<Field> inheritedFields(Hermes klass) {

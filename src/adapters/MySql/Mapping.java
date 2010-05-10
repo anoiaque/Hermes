@@ -18,7 +18,8 @@ public class Mapping {
 	public static final String							LONG					= "bigint";
 	public static final String							FLOAT					= "float";
 	public static final String							DATE					= "date";
-	public static final String							DATETIME			= "datetime";
+	public static final String							TIMESTAMP			= "timestamp";
+	public static final String							TIME					= "datetime";
 
 	public static String javaToSql(String type) {
 		if (javaToSql == null) mapping();
@@ -44,8 +45,8 @@ public class Mapping {
 		javaToSql.put("Double", FLOAT);
 		javaToSql.put("Boolean", BOOLEAN);
 		javaToSql.put("boolean", BOOLEAN);
-		javaToSql.put("Date", DATE);
+		javaToSql.put("Time", TIME);
 		javaToSql.put("Calendar", DATE);
-
+		javaToSql.put("Timestamp", TIMESTAMP);
 	}
 }

@@ -1,5 +1,7 @@
 package sample;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +18,8 @@ public class Person extends Hermes {
 	private Set<Pet>	pets;
 	private Set<Car>	cars;
 	private Calendar	birthday;
+	private Timestamp	createdAt;
+	private Time			wake;
 
 	public Person() {}
 
@@ -118,6 +122,22 @@ public class Person extends Hermes {
 
 	public Calendar getBirthday() {
 		return birthday;
+	}
+
+	public void setWake(Time wake) {
+		this.wake = wake;
+	}
+
+	public Time getWake() {
+		return wake;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
 	}
 
 }
