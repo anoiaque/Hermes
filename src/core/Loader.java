@@ -21,7 +21,7 @@ public class Loader {
 		for (String attribute : object.getHasOneAssociations().keySet()) {
 			foreignKey = Table.foreignKeyName(object);
 			klass = Introspector.hermesClass(attribute, object);
-			value = (Hermes) Finder.findFirst(foreignKey + "=" + object.getId(), klass);
+			value = (Hermes) Finder.findFirst("*", foreignKey + "=" + object.getId(), klass);
 			Introspector.set(attribute, value, object);
 		}
 	}
@@ -34,7 +34,7 @@ public class Loader {
 		for (String attribute : object.getHasManyAssociations().keySet()) {
 			foreignKey = Table.foreignKeyName(object);
 			klass = Introspector.collectionTypeClass(attribute, object);
-			set = (Set<Hermes>) Finder.find(foreignKey + "=" + object.getId(), klass);
+			set = (Set<Hermes>) Finder.find("*", foreignKey + "=" + object.getId(), null, klass);
 			BelongsTo.belongsTo(set, object);
 			Introspector.set(attribute, set, object);
 		}

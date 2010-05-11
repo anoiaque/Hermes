@@ -48,12 +48,22 @@ public class FindersTest extends TestCase {
 		assertEquals(2, people.size());
 	}
 
+	public void testFindFirst() {
+		Factory.create("humanoids", null);
+		assertEquals("humanoid", ((Person) Hermes.first(Person.class)).getName());
+	}
+
+	public void testFindLast() {
+		Factory.create("humanoids", null);
+		assertEquals("jupiteroid", ((Person) Hermes.last(Person.class)).getName());
+	}
+
 	public void testFindWithConditions() {
-		Person person = (Person) Person.findFirst("age = 30", Person.class);
+		Person person = (Person) Person.first("age = 30", Person.class);
 		assertEquals(citizen.getId(), person.getId());
 		citizen.setName("George");
 		citizen.save();
-		person = (Person) Person.findFirst("name = 'George'", Person.class);
+		person = (Person) Person.first("name = 'George'", Person.class);
 		assertEquals(citizen.getId(), person.getId());
 
 	}
@@ -169,9 +179,9 @@ public class FindersTest extends TestCase {
 		Person.deleteAll(Person.class);
 		Factory.create("friends", null);
 
-		assertEquals(2, Hermes.findAll(Person.class, "limit => 2").size());
+		assertEquals(2, Hermes.all(Person.class, "limit => 2").size());
 
-		Set<Person> people = (Set<Person>) Hermes.findAll(Person.class, "limit => 2, offset => 1");
+		Set<Person> people = (Set<Person>) Hermes.all(Person.class, "limit => 2, offset => 1");
 		assertEquals(2, people.size());
 
 		people = (Set<Person>) Hermes.find("name", "age >= 20", Person.class, "limit=>2, offset=> 1");
@@ -184,7 +194,7 @@ public class FindersTest extends TestCase {
 	public void testFindWithOrder() {
 		Person.deleteAll(Person.class);
 		Factory.create("friends", null);
-		Set<Person> people = (Set<Person>) Hermes.findAll(Person.class, "order => 'name asc'");
+		Set<Person> people = (Set<Person>) Hermes.all(Person.class, "order => 'name asc'");
 		Iterator<Person> iterator = people.iterator();
 
 		assertEquals("Anne", iterator.next().getName());

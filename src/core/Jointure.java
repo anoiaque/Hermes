@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class Jointure extends Hermes {
 
-	private long	parentId;
-	private long	childId;
+	private int	parentId;
+	private int	childId;
 
 	public Jointure() {}
 
@@ -14,9 +14,9 @@ public class Jointure extends Hermes {
 		this.tableName = Inflector.tableize(attribute, model, "jointure");
 	}
 
-	public boolean save(long parentId, long childId) {
-		this.parentId = parentId;
-		this.childId = childId;
+	public boolean save(int parentId, int childId) {
+		this.setParentId(parentId);
+		this.setChildId(childId);
 		return save();
 	}
 
@@ -31,7 +31,7 @@ public class Jointure extends Hermes {
 	public static Set<Hermes> load(String attribute, Hermes object) {
 		Jointure jointure = object.getManyToManyAssociations().get(attribute).getJointure();
 		Set<Hermes> objects = new HashSet<Hermes>();
-		Class<Hermes> klass = Introspector.collectionTypeClass(attribute,object);
+		Class<Hermes> klass = Introspector.collectionTypeClass(attribute, object);
 		Set<Jointure> jointures = (Set<Jointure>) Finder.find(object.getId(), jointure);
 
 		jointures.remove(null);
@@ -43,19 +43,19 @@ public class Jointure extends Hermes {
 	}
 
 	// Getters & setters
-	public long getParentId() {
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
+	}
+
+	public int getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(int leftId) {
-		this.parentId = leftId;
+	public void setChildId(int childId) {
+		this.childId = childId;
 	}
 
-	public long getChildId() {
+	public int getChildId() {
 		return childId;
-	}
-
-	public void setChildId(int rightId) {
-		this.childId = rightId;
 	}
 }

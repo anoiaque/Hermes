@@ -10,42 +10,31 @@ public class Finder {
 
 	private static Adapter	adaptor	= Adapter.get();
 
-	public static Hermes findFirst(String conditions, Class<? extends Hermes> model) {
-		return findFirst("*", conditions, model);
-	}
-
 	public static Hermes findFirst(String select, String conditions, Class<? extends Hermes> model) {
-		Iterator<?> set = find(conditions, model).iterator();
+		Iterator<?> set = find("*", conditions, "limit => 1", model).iterator();
 		if (!set.hasNext()) return null;
 		return (Hermes) set.next();
 	}
 
-	public static Hermes find(long id, Class<? extends Hermes> model) {
+	public static Hermes findLast(String select, String conditions, Class<? extends Hermes> model) {
+		int offset = count(conditions, model) - 1;
+		Iterator<?> set = find("*", conditions, "limit => 1, offset => " + offset, model).iterator();
+		if (!set.hasNext()) return null;
+		return (Hermes) set.next();
+	}
+
+	public static Hermes find(int id, Class<? extends Hermes> model) {
 		return findFirst("*", "id = " + id, model);
 	}
 
-	public static Set<?> find(String conditions, Class<? extends Hermes> model) {
-		return find("*", conditions, model);
-	}
-
-	public static Set<?> find(String conditions, Class<? extends Hermes> model, String options) {
-		return find("*", conditions, model, options);
-	}
-
-	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model) {
-		Set<?> objects = adaptor.find(select, conditions, model, null);
-		Loader.loadAssociations(objects);
-		return objects;
-	}
-
-	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model,
-			String options) {
+	public static Set<?> find(String select, String conditions, String options,
+			Class<? extends Hermes> model) {
 		Set<?> objects = adaptor.find(select, conditions, model, options);
 		Loader.loadAssociations(objects);
 		return objects;
 	}
 
-	public static Set<?> find(long parentId, Jointure join) {
+	public static Set<?> find(int parentId, Jointure join) {
 		return adaptor.find("*", "parentId = " + parentId, join);
 	}
 
@@ -56,7 +45,7 @@ public class Finder {
 			if (ids.indexOf(id) < ids.size() - 1) condition += ",";
 		}
 		condition += ")";
-		return find(condition, model);
+		return find("*", condition, null, model);
 	}
 
 	public static Set<?> findBySql(String sql, Class<? extends Hermes> model) {
@@ -65,12 +54,10 @@ public class Finder {
 
 	public static int count(String conditions, Class<? extends Hermes> model) {
 		return adaptor.count(conditions, Introspector.instanciate(model).getTableName());
-
 	}
 
 	public static int count(Class<? extends Hermes> model) {
 		return adaptor.count(null, Introspector.instanciate(model).getTableName());
-
 	}
 
 }

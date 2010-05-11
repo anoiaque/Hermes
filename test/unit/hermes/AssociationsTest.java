@@ -36,22 +36,22 @@ public class AssociationsTest extends TestCase {
 	// Must not add or change a pair of key in the join_table , but just
 	// update the child table
 	public void testUpdateManyToManyAttributeWhenExistBefore() {
-		assertEquals(2, Pet.findAll(Pet.class).size());
+		assertEquals(2, Pet.all(Pet.class).size());
 		citizen.getPets().iterator().next().setName("Idefix");
 		citizen.save();
-		assertEquals(2, Pet.findAll(Pet.class).size());
+		assertEquals(2, Pet.all(Pet.class).size());
 		assertEquals(2, TestHelper.jointureSizeFor(citizen, "pets"));
 	}
 
 	// Must add pair(s)of key in the join_table , and add the object(s) in
 	// the child table
 	public void testUpdateManyToManyAttributeWhenNullBefore() {
-		assertEquals(2, Pet.findAll(Pet.class).size());
+		assertEquals(2, Pet.all(Pet.class).size());
 		Person p = new Person("citizen",90);
 		p.saveWithoutValidation();
 		p.setPets((Set<Pet>) Factory.get("pets"));
 		p.saveWithoutValidation();
-		assertEquals(4, Pet.findAll(Pet.class).size());
+		assertEquals(4, Pet.all(Pet.class).size());
 		assertEquals(2, TestHelper.jointureSizeFor(p, "pets"));
 	}
 
@@ -59,13 +59,13 @@ public class AssociationsTest extends TestCase {
 	// in the child table
 	// Just make a new reference in the join table for the new person
 	public void testUpdateManyToManyAttributeWhenNullBeforeAndAssignAnExistingOccurence() {
-		assertEquals(2, Pet.findAll(Pet.class).size());
+		assertEquals(2, Pet.all(Pet.class).size());
 		Person p = new Person("citizen kane",90);
 		Set<Pet> pets = new HashSet<Pet>();
 		pets.add(citizen.getPets().iterator().next());
 		p.setPets(pets);
 		p.saveWithoutValidation();
-		assertEquals(2, Pet.findAll(Pet.class).size());
+		assertEquals(2, Pet.all(Pet.class).size());
 		assertEquals(1, TestHelper.jointureSizeFor(p, "pets"));
 	}
 
@@ -98,7 +98,7 @@ public class AssociationsTest extends TestCase {
 	public void testAddOccurenceInManyToManyAttribute() {
 		citizen.getPets().add(new Pet("Hamster", "Scorpio"));
 		citizen.save();
-		assertEquals(3, Pet.findAll(Pet.class).size());
+		assertEquals(3, Pet.all(Pet.class).size());
 		citizen = (Person) Person.find(citizen.getId(), Person.class);
 		assertEquals(3, citizen.getPets().size());
 		assertEquals(3, TestHelper.jointureSizeFor(citizen, "pets"));

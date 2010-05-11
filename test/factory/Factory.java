@@ -1,5 +1,7 @@
 package factory;
 
+import helpers.Database;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +14,7 @@ public class Factory {
 
 	public static void create(String feature, Integer number) {
 		if (feature.equals("friends")) createFriends();
+		else if (feature.equals("humanoids")) createHumanoids();
 		else for (int i = 1; i <= number; i++)
 			get(feature);
 	}
@@ -22,6 +25,17 @@ public class Factory {
 		if (feature.equals("cars")) return cars();
 
 		return null;
+	}
+
+	private static void createHumanoids() {
+		Database.clear();
+		Person humanoid = (Person) Factory.get("human");
+		Person jupiteroid = (Person) Factory.get("human");
+		humanoid.setName("humanoid");
+		jupiteroid.setName("jupiteroid");
+		humanoid.saveWithoutValidation();
+		jupiteroid.saveWithoutValidation();
+
 	}
 
 	private static void createFriends() {

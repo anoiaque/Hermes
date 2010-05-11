@@ -68,7 +68,7 @@ public class UpdaterTest extends TestCase {
 		human = (Person) human.reload();
 		assertEquals("joe", human.getName());
 		Hermes.execute("insert into people(age) values(34)");
-		assertEquals(2, Hermes.findAll(Person.class).size());
+		assertEquals(2, Hermes.all(Person.class).size());
 
 	}
 

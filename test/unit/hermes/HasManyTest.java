@@ -38,17 +38,17 @@ public class HasManyTest extends TestCase {
 
 	public void testCascadeDelete() {
 		citizen.getAssociations().getHasManyAssociations().get("cars").setCascadeDelete(true);
-		assertEquals(2, Car.findAll(Car.class).size());
+		assertEquals(2, Car.all(Car.class).size());
 		citizen.delete();
-		assertEquals(0, Car.findAll(Car.class).size());
+		assertEquals(0, Car.all(Car.class).size());
 		citizen.getAssociations().getHasManyAssociations().get("cars").setCascadeDelete(false);
 	}
 
 	public void testNoCascadeDelete() {
 		citizen.getAssociations().getHasManyAssociations().get("cars").setCascadeDelete(false);
-		assertEquals(2, Car.findAll(Car.class).size());
+		assertEquals(2, Car.all(Car.class).size());
 		citizen.delete();
-		assertEquals(2, Car.findAll(Car.class).size());
+		assertEquals(2, Car.all(Car.class).size());
 	}
 
 	// Private method

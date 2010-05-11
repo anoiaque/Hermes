@@ -283,7 +283,7 @@ public class Hermes {
 	 * </pre>
 	 */
 	public static Set<?> find(String conditions, Class<? extends Hermes> model) {
-		return Finder.find(conditions, model);
+		return Finder.find("*", conditions, null, model);
 	}
 
 	/**
@@ -303,7 +303,7 @@ public class Hermes {
 	 *</pre>
 	 */
 	public static Set<?> find(String conditions, Class<? extends Hermes> model, String options) {
-		return Finder.find(conditions, model, options);
+		return Finder.find("*", conditions, options, model);
 	}
 
 	/**
@@ -321,7 +321,7 @@ public class Hermes {
 	 *</pre>
 	 */
 	public Set<?> find(String conditions) {
-		return Finder.find(conditions, this.getClass());
+		return Finder.find("*", conditions, null, this.getClass());
 	}
 
 	/**
@@ -340,7 +340,7 @@ public class Hermes {
 	 *</pre>
 	 */
 	public Set<?> find(String conditions, String options) {
-		return Finder.find(conditions, this.getClass(), options);
+		return Finder.find("*", conditions, options, this.getClass());
 	}
 
 	/**
@@ -361,7 +361,7 @@ public class Hermes {
 	 *</pre>
 	 */
 	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model) {
-		return Finder.find(select, conditions, model);
+		return Finder.find(select, conditions, null, model);
 	}
 
 	/**
@@ -385,7 +385,7 @@ public class Hermes {
 	 */
 	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model,
 			String options) {
-		return Finder.find(select, conditions, model, options);
+		return Finder.find(select, conditions, options, model);
 	}
 
 	/**
@@ -407,7 +407,7 @@ public class Hermes {
 	 * </pre>
 	 */
 	public Set<?> find(String select, String conditions, String options) {
-		return Finder.find(select, conditions, this.getClass(), options);
+		return Finder.find(select, conditions, options, this.getClass());
 	}
 
 	/**
@@ -416,8 +416,8 @@ public class Hermes {
 	 * @param model
 	 * @return Set of all objects
 	 */
-	public static Set<?> findAll(Class<? extends Hermes> model) {
-		return Finder.find("*", null, model);
+	public static Set<?> all(Class<? extends Hermes> model) {
+		return Finder.find("*", null, null, model);
 	}
 
 	/**
@@ -428,8 +428,8 @@ public class Hermes {
 	 *          : string of options on limit, offset, order
 	 * @return Set of Hermes objects
 	 */
-	public static Set<?> findAll(Class<? extends Hermes> model, String options) {
-		return Finder.find("*", null, model, options);
+	public static Set<?> all(Class<? extends Hermes> model, String options) {
+		return Finder.find("*", null, options, model);
 	}
 
 	/**
@@ -437,8 +437,8 @@ public class Hermes {
 	 * 
 	 * @return Set of all objects
 	 */
-	public Set<?> findAll() {
-		return Finder.find("*", null, this.getClass());
+	public Set<?> all() {
+		return Finder.find("*", null, null, this.getClass());
 	}
 
 	/**
@@ -448,8 +448,8 @@ public class Hermes {
 	 *          of options on limit, offset, order ...
 	 * @return Set of all objects
 	 */
-	public Set<?> findAll(String options) {
-		return Finder.find("*", null, this.getClass(), options);
+	public Set<?> all(String options) {
+		return Finder.find("*", null, options, this.getClass());
 	}
 
 	/**
@@ -459,8 +459,8 @@ public class Hermes {
 	 * @param model
 	 * @return Hermes object
 	 */
-	public static Hermes findFirst(String conditions, Class<? extends Hermes> model) {
-		return Finder.findFirst(conditions, model);
+	public static Hermes first(String conditions, Class<? extends Hermes> model) {
+		return Finder.findFirst("*", conditions, model);
 	}
 
 	/**
@@ -469,8 +469,46 @@ public class Hermes {
 	 * @param conditions
 	 * @return Hermes object
 	 */
-	public Hermes findFirst(String conditions) {
-		return Finder.findFirst(conditions, this.getClass());
+	public Hermes first(String conditions) {
+		return Finder.findFirst("*", conditions, this.getClass());
+	}
+
+	/**
+	 * Get the first object by id on the given class
+	 * 
+	 * @param model
+	 * @return Hermes object
+	 */
+	public static Hermes first(Class<? extends Hermes> model) {
+		return Finder.findFirst("*", null, model);
+	}
+
+	/**
+	 * Get the first object by id.
+	 * 
+	 * @return Hermes object
+	 */
+	public Hermes first() {
+		return Finder.findFirst("*", null, this.getClass());
+	}
+
+	/**
+	 * Get the last object by id on the given class
+	 * 
+	 * @param model
+	 * @return Hermes object
+	 */
+	public static Hermes last(Class<? extends Hermes> model) {
+		return Finder.findLast("*", null, model);
+	}
+
+	/**
+	 * Get the last object by id.
+	 * 
+	 * @return Hermes object
+	 */
+	public Hermes last() {
+		return Finder.findLast("*", null, this.getClass());
 	}
 
 	/**
