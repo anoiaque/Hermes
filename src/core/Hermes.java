@@ -279,7 +279,8 @@ public class Hermes {
 	 *         <pre>
 	 * <strong>Example</strong> 
 	 * <code>
-	 * find("name='Job' and pets.name='Medor'",Person.class)
+	 * Object[] values = {"Job","Medor"}
+	 * find("name=? and pets.name= ?",values,Person.class)
 	 * </code>
 	 * </pre>
 	 */

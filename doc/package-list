@@ -1,6 +1,14 @@
 adapters
 adapters.MySql
+all
 configuration
 core
+factory
+helpers
 migration
 pool
+sample
+unit.hermes
+unit.migration
+unit.mysqladaptor
+unit.pool
