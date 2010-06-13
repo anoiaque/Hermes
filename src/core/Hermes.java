@@ -268,6 +268,26 @@ public class Hermes {
 	}
 
 	/**
+	 * Find objects with conditions. Sanitize values to prevent from sql
+	 * injections
+	 * 
+	 * @param conditions
+	 *          : string of conditions where attributes associations can be used.
+	 * @param model
+	 * @return Set of founded objects
+	 * 
+	 *         <pre>
+	 * <strong>Example</strong> 
+	 * <code>
+	 * find("name='Job' and pets.name='Medor'",Person.class)
+	 * </code>
+	 * </pre>
+	 */
+	public static Set<?> find(String conditions, Object[] values, Class<? extends Hermes> model) {
+		return Finder.find("*", Sanitizer.sanitize(conditions, values), null, model);
+	}
+
+	/**
 	 * Find objects with conditions.
 	 * 
 	 * @param conditions
@@ -471,6 +491,29 @@ public class Hermes {
 	 */
 	public Hermes first(String conditions) {
 		return Finder.findFirst("*", conditions, this.getClass());
+	}
+
+	/**
+	 * Get the first object matching given conditions, on the given class.
+	 * Sanitize values to prevent from sql injections.
+	 * 
+	 * @param conditions
+	 * @param model
+	 * @return Hermes object
+	 */
+	public static Hermes first(String conditions, Object[] values, Class<? extends Hermes> model) {
+		return Finder.findFirst("*", Sanitizer.sanitize(conditions, values), model);
+	}
+
+	/**
+	 * Get the first object matching given conditions on this class. Sanitize
+	 * values to prevent from sql injections.
+	 * 
+	 * @param conditions
+	 * @return Hermes object
+	 */
+	public Hermes first(String conditions, Object[] values) {
+		return Finder.findFirst("*", Sanitizer.sanitize(conditions, values), this.getClass());
 	}
 
 	/**

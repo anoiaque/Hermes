@@ -8,7 +8,6 @@ import core.Attribute;
 import core.Introspector;
 
 public class TypeCast {
-	
 
 	public static Object toJava(Object value) {
 		if (value == null) return null;
@@ -19,6 +18,32 @@ public class TypeCast {
 
 	public static Object toSql(Attribute attribute) {
 		return value(attribute);
+	}
+
+	public static Object toSql(Object value) {
+		if (Introspector.isBoolean(value)) return booleanToSql((Boolean) value);
+		if (Introspector.isDate(value)) return dateToSql((Calendar) value);
+		if (Introspector.isTimestamp(value)) return timestampToSql((Timestamp) value);
+		return value;
+	}
+
+	
+
+	public static Object dateToSql(Calendar value) {
+		if (value == null) return null;
+		int year = ((Calendar) value).get(Calendar.YEAR);
+		int month = ((Calendar) value).get(Calendar.MONTH);
+		int day = ((Calendar) value).get(Calendar.DAY_OF_MONTH);
+
+		return year + "-" + month + "-" + day;
+	}
+
+	public static int booleanToSql(Boolean value) {
+		return (value.equals(new Boolean(true))) ? 1 : 0;
+	}
+
+	public static Object timestampToSql(Timestamp value) {
+		return value;
 	}
 
 	// Private methods
@@ -32,12 +57,7 @@ public class TypeCast {
 	}
 
 	private static Object dateToSql(Attribute attribute) {
-		if (attribute.getValue() == null) return null;
-		int year = ((Calendar) attribute.getValue()).get(Calendar.YEAR);
-		int month = ((Calendar) attribute.getValue()).get(Calendar.MONTH);
-		int day = ((Calendar) attribute.getValue()).get(Calendar.DAY_OF_MONTH);
-
-		return year + "-" + month + "-" + day;
+		return dateToSql((Calendar) attribute.getValue());
 	}
 
 	private static int booleanToSql(Attribute attribute) {
