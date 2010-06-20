@@ -42,7 +42,6 @@ public class AllTest extends TestSuite {
 		suite.addTest(new TestSuite(InheritanceTest.class));
 		suite.addTest(new TestSuite(TypeCastTest.class));
 		suite.addTest(new TestSuite(OptionsTest.class));
-
 		suite.addTest(new TestSuite(PoolTest.class));
 		return suite;
 	}

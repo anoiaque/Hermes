@@ -22,11 +22,11 @@ public class Type extends Hermes {
 	Double		kbigreal;
 	String		str;
 	
-	Address adresse;
+	Address address;
   Set<Car> cars;
 	
-	public Type() {
-    hasOne("adresse");
+	public void Associations() {
+    hasOne("address");
     hasMany("cars");
   }
 

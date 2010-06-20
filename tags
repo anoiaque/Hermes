@@ -1,0 +1,611 @@
+1273609088
+Adapter	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	class Adapter
+Address	/Users/Philippe/Developer/workspace/Hermes/test/sample/Address.java	class Address
+Address	/Users/Philippe/Developer/workspace/Hermes/test/sample/Address.java	public Address(
+Address	/Users/Philippe/Developer/workspace/Hermes/test/sample/Address.java	public Address(
+AllTest	/Users/Philippe/Developer/workspace/Hermes/test/all/AllTest.java	class AllTest
+Analyzer	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Analyzer.java	class Analyzer
+Associations	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	class Associations
+Associations	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public Associations(
+Associations	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	private Associations									associations	= new Associations(
+AssociationsTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	class AssociationsTest
+Attribute	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	class Attribute
+Attribute	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	public Attribute(
+BasicTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	class BasicTest
+BelongsTo	/Users/Philippe/Developer/workspace/Hermes/src/core/BelongsTo.java	class BelongsTo
+BelongsTo	/Users/Philippe/Developer/workspace/Hermes/src/core/BelongsTo.java	public BelongsTo(
+Callback	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	class Callback
+CallbacksTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/CallbacksTest.java	class CallbacksTest
+Car	/Users/Philippe/Developer/workspace/Hermes/test/sample/Car.java	class Car
+Car	/Users/Philippe/Developer/workspace/Hermes/test/sample/Car.java	public Car(
+Car	/Users/Philippe/Developer/workspace/Hermes/test/sample/Car.java	public Car(
+Configuration	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	class Configuration
+DBMSConfig	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	class DBMSConfig
+Database	/Users/Philippe/Developer/workspace/Hermes/test/helpers/Database.java	class Database
+Error	/Users/Philippe/Developer/workspace/Hermes/src/core/Error.java	class Error
+Error	/Users/Philippe/Developer/workspace/Hermes/src/core/Error.java	public Error(
+Error	/Users/Philippe/Developer/workspace/Hermes/src/core/Error.java	public Error(
+Factory	/Users/Philippe/Developer/workspace/Hermes/test/factory/Factory.java	class Factory
+Finder	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	class Finder
+FindersTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	class FindersTest
+HasMany	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	class HasMany
+HasMany	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public HasMany(
+HasManyTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasManyTest.java	class HasManyTest
+HasOne	/Users/Philippe/Developer/workspace/Hermes/src/core/HasOne.java	class HasOne
+HasOne	/Users/Philippe/Developer/workspace/Hermes/src/core/HasOne.java	public HasOne(
+HasOneTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasOneTest.java	class HasOneTest
+Hermes	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class Hermes
+Hermes	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Hermes(
+Inflector	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	class Inflector
+InflectorTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InflectorTest.java	class InflectorTest
+InheritanceTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	class InheritanceTest
+Introspector	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	class Introspector
+Jointure	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	class Jointure
+Jointure	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public Jointure(
+Jointure	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public Jointure(
+JointureTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/JointureTest.java	class JointureTest
+Loader	/Users/Philippe/Developer/workspace/Hermes/src/core/Loader.java	class Loader
+Man	/Users/Philippe/Developer/workspace/Hermes/test/sample/Man.java	class Man
+Man	/Users/Philippe/Developer/workspace/Hermes/test/sample/Man.java	public Man(
+Man	/Users/Philippe/Developer/workspace/Hermes/test/sample/Man.java	public Man(
+ManyToMany	/Users/Philippe/Developer/workspace/Hermes/src/core/ManyToMany.java	class ManyToMany
+ManyToMany	/Users/Philippe/Developer/workspace/Hermes/src/core/ManyToMany.java	public ManyToMany(
+Mapping	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Mapping.java	class Mapping
+Migrate	/Users/Philippe/Developer/workspace/Hermes/src/migration/Migrate.java	class Migrate
+Migration	/Users/Philippe/Developer/workspace/Hermes/src/migration/Migration.java	class Migration
+MigrationTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/migration/MigrationTest.java	class MigrationTest
+MySql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	class MySql
+Objects	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Objects.java	class Objects
+Options	/Users/Philippe/Developer/workspace/Hermes/src/core/Options.java	class Options
+Options	/Users/Philippe/Developer/workspace/Hermes/src/core/Options.java	public Options(
+OptionsTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/OptionsTest.java	class OptionsTest
+Person	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	class Person
+Person	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public Person(
+Person	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public Person(
+Person	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public Person(
+Personne	/Users/Philippe/Developer/workspace/Hermes/test/sample/Personne.java	class Personne
+Personne	/Users/Philippe/Developer/workspace/Hermes/test/sample/Personne.java	public Personne(
+Pet	/Users/Philippe/Developer/workspace/Hermes/test/sample/Pet.java	class Pet
+Pet	/Users/Philippe/Developer/workspace/Hermes/test/sample/Pet.java	public Pet(
+Pet	/Users/Philippe/Developer/workspace/Hermes/test/sample/Pet.java	public Pet(
+Plural	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	class Plural
+Plural	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	public Plural(
+Pool	/Users/Philippe/Developer/workspace/Hermes/src/pool/Pool.java	class Pool
+Pool	/Users/Philippe/Developer/workspace/Hermes/src/pool/Pool.java	private Pool(
+PoolTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/pool/PoolTest.java	class PoolTest
+Sql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	class Sql
+Sql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	public Sql(
+Sql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	public Sql(
+Sql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	public Sql(
+Sql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	public Sql(
+SqlBuilderTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/mysqladaptor/SqlBuilderTest.java	class SqlBuilderTest
+SqlConverterConfig	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	class SqlConverterConfig
+Table	/Users/Philippe/Developer/workspace/Hermes/src/core/Table.java	class Table
+TestHelper	/Users/Philippe/Developer/workspace/Hermes/test/helpers/TestHelper.java	class TestHelper
+Transaction	/Users/Philippe/Developer/workspace/Hermes/src/core/Transaction.java	class Transaction
+TransactionTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TransactionTest.java	class TransactionTest
+Type	/Users/Philippe/Developer/workspace/Hermes/test/sample/Type.java	class Type
+Type	/Users/Philippe/Developer/workspace/Hermes/test/sample/Type.java	public Type(
+Type	/Users/Philippe/Developer/workspace/Hermes/test/unit/migration/MigrationTest.java	private static Type	types	= new Type(
+TypeCast	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	class TypeCast
+TypeCastTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TypeCastTest.java	class TypeCastTest
+Updater	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	class Updater
+UpdaterTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/UpdaterTest.java	class UpdaterTest
+Validations	/Users/Philippe/Developer/workspace/Hermes/src/core/Validations.java	class Validations
+Validations	/Users/Philippe/Developer/workspace/Hermes/test/sample/Personne.java	public void Validations(
+ValidationsTest	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	class ValidationsTest
+adaptor	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	private static Adapter adaptor(
+add	/Users/Philippe/Developer/workspace/Hermes/src/core/Error.java	public static List<Error> add(
+addError	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void addError(
+addError	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void addError(
+afterCallbacks	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	private static void afterCallbacks(
+afterCreate	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	public static void afterCreate(
+afterDelete	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	public static void afterDelete(
+afterSave	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	public static void afterSave(
+afterUpdate	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	public static void afterUpdate(
+all	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Set<?> all(
+all	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Set<?> all(
+all	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Set<?> all(
+all	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Set<?> all(
+allYoungs	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public static Set<Person> allYoungs(
+and	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	class and
+assertDefinition	/Users/Philippe/Developer/workspace/Hermes/test/unit/migration/MigrationTest.java	private void assertDefinition(
+attributes	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Analyzer.java	private static List<String> attributes(
+attributesValues	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static HashMap<String, Object> attributesValues(
+attributize	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	private static Attribute attributize(
+availableConnections	/Users/Philippe/Developer/workspace/Hermes/src/pool/Pool.java	public int availableConnections(
+basic	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	private static boolean basic(
+beforeCallbacks	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	private static void beforeCallbacks(
+beforeCreate	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	public static void beforeCreate(
+beforeDelete	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	public static void beforeDelete(
+beforeSave	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	public static void beforeSave(
+beforeUpdate	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	public static void beforeUpdate(
+beforeValidate	/Users/Philippe/Developer/workspace/Hermes/src/core/Callback.java	public static void beforeValidate(
+begin	/Users/Philippe/Developer/workspace/Hermes/src/core/Transaction.java	public void begin(
+belongsTo	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public void belongsTo(
+belongsTo	/Users/Philippe/Developer/workspace/Hermes/src/core/BelongsTo.java	public static void belongsTo(
+belongsTo	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void belongsTo(
+booleanToSql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	private static int booleanToSql(
+cars	/Users/Philippe/Developer/workspace/Hermes/test/factory/Factory.java	private static Set<Car> cars(
+clear	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public void clear(
+clear	/Users/Philippe/Developer/workspace/Hermes/test/helpers/Database.java	public static void clear(
+collectionType	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	private static ParameterizedType collectionType(
+collectionTypeClass	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static Class<Hermes> collectionTypeClass(
+collectionTypeName	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static String collectionTypeName(
+columnDefinition	/Users/Philippe/Developer/workspace/Hermes/src/migration/Migration.java	public static String columnDefinition(
+columnsValues	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static HashMap<String, Object> columnsValues(
+conditions	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Analyzer.java	public static String conditions(
+containPet	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	private boolean containPet(
+containsAttribute	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	private boolean containsAttribute(
+count	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract int count(
+count	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public int count(
+count	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	public static int count(
+count	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	public static int count(
+count	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public int count(
+count	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public int count(
+count	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static int count(
+count	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static int count(
+create	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Hermes create(
+create	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Hermes create(
+create	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static Hermes create(
+create	/Users/Philippe/Developer/workspace/Hermes/test/factory/Factory.java	public static void create(
+createFriends	/Users/Philippe/Developer/workspace/Hermes/test/factory/Factory.java	private static void createFriends(
+createHumanoids	/Users/Philippe/Developer/workspace/Hermes/test/factory/Factory.java	private static void createHumanoids(
+dateToJava	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	private static Calendar dateToJava(
+dateToSql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	private static Object dateToSql(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract void delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public void delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public void delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public void delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/HasOne.java	public void delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/ManyToMany.java	public void delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/Transaction.java	public boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static boolean delete(
+delete	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static void delete(
+deleteAll	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract boolean deleteAll(
+deleteAll	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public boolean deleteAll(
+deleteAll	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public boolean deleteAll(
+deleteAll	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static boolean deleteAll(
+deleteAll	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static boolean deleteAll(
+deleteHasMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	private void deleteHasMany(
+deleteHasOne	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	private void deleteHasOne(
+deleteManyToMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	private void deleteManyToMany(
+doubleQuote	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Analyzer.java	private static String doubleQuote(
+driverNameFor	/Users/Philippe/Developer/workspace/Hermes/src/pool/Pool.java	private String driverNameFor(
+end	/Users/Philippe/Developer/workspace/Hermes/src/core/Transaction.java	public void end(
+epureColumns	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String epureColumns(
+epureValues	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String epureValues(
+execute	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract boolean execute(
+execute	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract void execute(
+execute	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public boolean execute(
+execute	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public void execute(
+execute	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static boolean execute(
+execute	/Users/Philippe/Developer/workspace/Hermes/src/core/Transaction.java	public boolean execute(
+executeSql	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static boolean executeSql(
+executeSql	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static void executeSql(
+exists	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public boolean exists(
+exists	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public boolean exists(
+field	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static Field field(
+field	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static Field field(
+fields	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static List<Field> fields(
+finalize	/Users/Philippe/Developer/workspace/Hermes/src/core/Transaction.java	public void finalize(
+finalize	/Users/Philippe/Developer/workspace/Hermes/src/pool/Pool.java	public void finalize(
+find	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract Set<Hermes> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract boolean find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public Set<Hermes> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public Set<Hermes> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public boolean find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	public static Hermes find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	public static Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	public static Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	public static Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Hermes find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Hermes find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Set<?> find(
+find	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Set<?> find(
+findBySql	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	public static Set<?> findBySql(
+findBySql	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Set<?> findBySql(
+findBySql	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Set<?> findBySql(
+findFirst	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	public static Hermes findFirst(
+findLast	/Users/Philippe/Developer/workspace/Hermes/src/core/Finder.java	public static Hermes findLast(
+finder	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract ResultSet finder(
+finder	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract Set<Hermes> finder(
+finder	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public ResultSet finder(
+finder	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public Set<Hermes> finder(
+first	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Hermes first(
+first	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Hermes first(
+first	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Hermes first(
+first	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Hermes first(
+foreignKey	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	public static String foreignKey(
+foreignKeyDefinition	/Users/Philippe/Developer/workspace/Hermes/src/migration/Migration.java	public static String foreignKeyDefinition(
+foreignKeyName	/Users/Philippe/Developer/workspace/Hermes/src/core/Table.java	public static String foreignKeyName(
+foreignKeysValues	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static HashMap<String, Object> foreignKeysValues(
+from	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class from
+from	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class from
+fromClause	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String fromClause(
+get	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public static Adapter get(
+get	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Objects.java	public static Set<Hermes> get(
+get	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public static DBMSConfig get(
+get	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	public String get(
+get	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static Object get(
+get	/Users/Philippe/Developer/workspace/Hermes/test/factory/Factory.java	public static Object get(
+getAdapter	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public String getAdapter(
+getAdress	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public Address getAdress(
+getAge	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public int getAge(
+getAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Associations getAssociations(
+getAttribute	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Attribute getAttribute(
+getAttribute	/Users/Philippe/Developer/workspace/Hermes/test/unit/migration/MigrationTest.java	private Attribute getAttribute(
+getAttributeName	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public String getAttributeName(
+getAttributeName	/Users/Philippe/Developer/workspace/Hermes/src/core/HasOne.java	public String getAttributeName(
+getAttributes	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public List<Attribute> getAttributes(
+getBelongsToAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public List<BelongsTo> getBelongsToAssociations(
+getBirthday	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public Calendar getBirthday(
+getBrand	/Users/Philippe/Developer/workspace/Hermes/test/sample/Car.java	public String getBrand(
+getCars	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public Set<Car> getCars(
+getCategory	/Users/Philippe/Developer/workspace/Hermes/test/sample/Car.java	public int getCategory(
+getChildId	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public int getChildId(
+getConnexion	/Users/Philippe/Developer/workspace/Hermes/src/pool/Pool.java	public Connection getConnexion(
+getCreatedAt	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public Timestamp getCreatedAt(
+getDatabase	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public String getDatabase(
+getErrors	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public HashMap<String, List<Error>> getErrors(
+getField	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	private static Field getField(
+getFkName	/Users/Philippe/Developer/workspace/Hermes/src/core/BelongsTo.java	public String getFkName(
+getFkName	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public String getFkName(
+getFkValue	/Users/Philippe/Developer/workspace/Hermes/src/core/BelongsTo.java	public int getFkValue(
+getFkValue	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public int getFkValue(
+getHasManyAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public HashMap<String, HasMany> getHasManyAssociations(
+getHasManyAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public HashMap<String, HasMany> getHasManyAssociations(
+getHasOneAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public HashMap<String, HasOne> getHasOneAssociations(
+getHasOneAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public HashMap<String, HasOne> getHasOneAssociations(
+getHost	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public String getHost(
+getId	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public int getId(
+getInstance	/Users/Philippe/Developer/workspace/Hermes/src/pool/Pool.java	public static Pool getInstance(
+getJob	/Users/Philippe/Developer/workspace/Hermes/test/sample/Man.java	public String getJob(
+getJointure	/Users/Philippe/Developer/workspace/Hermes/src/core/ManyToMany.java	public Jointure getJointure(
+getManyToManyAsociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public HashMap<String, ManyToMany> getManyToManyAsociations(
+getManyToManyAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public HashMap<String, ManyToMany> getManyToManyAssociations(
+getMessage	/Users/Philippe/Developer/workspace/Hermes/src/core/Error.java	public String getMessage(
+getName	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	public String getName(
+getName	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public String getName(
+getName	/Users/Philippe/Developer/workspace/Hermes/test/sample/Personne.java	public String getName(
+getName	/Users/Philippe/Developer/workspace/Hermes/test/sample/Pet.java	public String getName(
+getNumber	/Users/Philippe/Developer/workspace/Hermes/test/sample/Address.java	public int getNumber(
+getParentId	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public int getParentId(
+getPassword	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public String getPassword(
+getPets	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public Set<Pet> getPets(
+getPhone	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public String getPhone(
+getPoolSize	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public int getPoolSize(
+getPort	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public String getPort(
+getSqlType	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	public String getSqlType(
+getStreet	/Users/Philippe/Developer/workspace/Hermes/test/sample/Address.java	public String getStreet(
+getSymbol	/Users/Philippe/Developer/workspace/Hermes/src/core/Error.java	public Symbol getSymbol(
+getTableName	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public String getTableName(
+getType	/Users/Philippe/Developer/workspace/Hermes/test/sample/Pet.java	public String getType(
+getURL	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public String getURL(
+getUser	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public String getUser(
+getValue	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	public Object getValue(
+getWake	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public Time getWake(
+givePetAndCarsToCitizen	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	private void givePetAndCarsToCitizen(
+givePetToHuman	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	private void givePetToHuman(
+hasError	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	private static boolean hasError(
+hasMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public void hasMany(
+hasMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void hasMany(
+hasMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void hasMany(
+hasOne	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public void hasOne(
+hasOne	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void hasOne(
+hasOne	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void hasOne(
+hasOneOrManyCondition	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Analyzer.java	private static String hasOneOrManyCondition(
+hermesClass	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static Class<Hermes> hermesClass(
+human	/Users/Philippe/Developer/workspace/Hermes/test/factory/Factory.java	private static Person human(
+idColumnDefinition	/Users/Philippe/Developer/workspace/Hermes/src/migration/Migration.java	public static String idColumnDefinition(
+in	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class in
+in	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class in
+in	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class in
+include	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasManyTest.java	private boolean include(
+inheritedFields	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static List<Field> inheritedFields(
+initPool	/Users/Philippe/Developer/workspace/Hermes/src/pool/Pool.java	private void initPool(
+insert	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String insert(
+instanciate	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static Hermes instanciate(
+invokeMethod	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static Object invokeMethod(
+isCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public boolean isCascadeDelete(
+isCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/src/core/HasOne.java	public boolean isCascadeDelete(
+isCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/src/core/ManyToMany.java	public boolean isCascadeDelete(
+isChanged	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public boolean isChanged(
+isDate	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static boolean isDate(
+isManyToManyAttribute	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public static boolean isManyToManyAttribute(
+isMarried	/Users/Philippe/Developer/workspace/Hermes/test/sample/Man.java	public boolean isMarried(
+isNewRecord	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public boolean isNewRecord(
+isTimestamp	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static boolean isTimestamp(
+isValid	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public boolean isValid(
+javaToSql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract String javaToSql(
+javaToSql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Mapping.java	public static String javaToSql(
+javaToSql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public String javaToSql(
+jointure	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String jointure(
+jointure	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public static String jointure(
+jointureSizeFor	/Users/Philippe/Developer/workspace/Hermes/test/helpers/TestHelper.java	public static int jointureSizeFor(
+jointures	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Analyzer.java	public static HashMap<String, String> jointures(
+klass	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static Class<Hermes> klass(
+last	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Hermes last(
+last	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public static Hermes last(
+limit	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String limit(
+limit	/Users/Philippe/Developer/workspace/Hermes/src/core/Options.java	public String limit(
+load	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	public static ArrayList<Attribute> load(
+load	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public static Set<Hermes> load(
+loadAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Loader.java	public static void loadAssociations(
+loadAttributes	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Objects.java	private static void loadAttributes(
+loadAttributes	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void loadAttributes(
+loadHasManyAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Loader.java	private static void loadHasManyAssociations(
+loadHasOneAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Loader.java	private static void loadHasOneAssociations(
+loadManyToManyAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Loader.java	private static void loadManyToManyAssociations(
+main	/Users/Philippe/Developer/workspace/Hermes/src/migration/Migrate.java	public static void main(
+manyToMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public void manyToMany(
+manyToMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void manyToMany(
+manyToMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void manyToMany(
+manyToManyCondition	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Analyzer.java	private static String manyToManyCondition(
+mapping	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Mapping.java	private static void mapping(
+match	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	private boolean match(
+match	/Users/Philippe/Developer/workspace/Hermes/src/core/Options.java	private String match(
+message	/Users/Philippe/Developer/workspace/Hermes/src/core/Error.java	public static String message(
+name	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static String name(
+name	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static String name(
+name	/Users/Philippe/Developer/workspace/Hermes/src/core/Table.java	public static String name(
+of	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class of
+of	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class of
+of	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class of
+offset	/Users/Philippe/Developer/workspace/Hermes/src/core/Options.java	public String offset(
+optionValue	/Users/Philippe/Developer/workspace/Hermes/src/core/Options.java	private String optionValue(
+order	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String order(
+order	/Users/Philippe/Developer/workspace/Hermes/src/core/Options.java	public String order(
+parent	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static Class<?> parent(
+pets	/Users/Philippe/Developer/workspace/Hermes/test/factory/Factory.java	private static Set<Pet> pets(
+plural	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	private String plural(
+pluralize	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	public static String pluralize(
+properties	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	private static Properties properties(
+release	/Users/Philippe/Developer/workspace/Hermes/src/pool/Pool.java	public void release(
+reload	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public Hermes reload(
+replacement	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	private String replacement(
+request	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	public String request(
+sanitize	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	private static String sanitize(
+save	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract void save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public void save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	public boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/core/HasOne.java	public boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/core/ManyToMany.java	public boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/core/Transaction.java	public boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static boolean save(
+save	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static void save(
+saveHasMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	private boolean saveHasMany(
+saveHasOne	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	private boolean saveHasOne(
+saveManyToMany	/Users/Philippe/Developer/workspace/Hermes/src/core/Associations.java	private boolean saveManyToMany(
+saveWithoutValidation	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public boolean saveWithoutValidation(
+select	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String select(
+selectClause	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String selectClause(
+set	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static void set(
+set	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static void set(
+setAdapter	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public void setAdapter(
+setAdress	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public void setAdress(
+setAge	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public void setAge(
+setAssociations	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void setAssociations(
+setAttributeName	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public void setAttributeName(
+setAttributeName	/Users/Philippe/Developer/workspace/Hermes/src/core/HasOne.java	public void setAttributeName(
+setBirthday	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public void setBirthday(
+setBrand	/Users/Philippe/Developer/workspace/Hermes/test/sample/Car.java	public void setBrand(
+setCars	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public void setCars(
+setCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public void setCascadeDelete(
+setCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/src/core/HasOne.java	public void setCascadeDelete(
+setCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/src/core/ManyToMany.java	public void setCascadeDelete(
+setCategory	/Users/Philippe/Developer/workspace/Hermes/test/sample/Car.java	public void setCategory(
+setChildId	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public void setChildId(
+setClause	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String setClause(
+setCreatedAt	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public void setCreatedAt(
+setDatabase	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public void setDatabase(
+setErrors	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void setErrors(
+setFkName	/Users/Philippe/Developer/workspace/Hermes/src/core/BelongsTo.java	public void setFkName(
+setFkName	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public void setFkName(
+setFkValue	/Users/Philippe/Developer/workspace/Hermes/src/core/BelongsTo.java	public void setFkValue(
+setFkValue	/Users/Philippe/Developer/workspace/Hermes/src/core/HasMany.java	public void setFkValue(
+setHost	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public void setHost(
+setId	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void setId(
+setJob	/Users/Philippe/Developer/workspace/Hermes/test/sample/Man.java	public void setJob(
+setMarried	/Users/Philippe/Developer/workspace/Hermes/test/sample/Man.java	public void setMarried(
+setMessage	/Users/Philippe/Developer/workspace/Hermes/src/core/Error.java	public void setMessage(
+setName	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	public void setName(
+setName	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public void setName(
+setName	/Users/Philippe/Developer/workspace/Hermes/test/sample/Personne.java	public void setName(
+setName	/Users/Philippe/Developer/workspace/Hermes/test/sample/Pet.java	public void setName(
+setNumber	/Users/Philippe/Developer/workspace/Hermes/test/sample/Address.java	public void setNumber(
+setParentId	/Users/Philippe/Developer/workspace/Hermes/src/core/Jointure.java	public void setParentId(
+setPassword	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public void setPassword(
+setPets	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public void setPets(
+setPhone	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public void setPhone(
+setPoolSize	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public void setPoolSize(
+setPort	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public void setPort(
+setStreet	/Users/Philippe/Developer/workspace/Hermes/test/sample/Address.java	public void setStreet(
+setSymbol	/Users/Philippe/Developer/workspace/Hermes/src/core/Error.java	public void setSymbol(
+setTableName	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void setTableName(
+setType	/Users/Philippe/Developer/workspace/Hermes/test/sample/Pet.java	public void setType(
+setURL	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public void setURL(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/CallbacksTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasManyTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasOneTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/JointureTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TransactionTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TypeCastTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/UpdaterTest.java	public void setUp(
+setUp	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void setUp(
+setUser	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	public void setUser(
+setValue	/Users/Philippe/Developer/workspace/Hermes/src/core/Attribute.java	public void setValue(
+setWake	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	public void setWake(
+suite	/Users/Philippe/Developer/workspace/Hermes/test/all/AllTest.java	public static Test suite(
+table	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static String table(
+tableDefinition	/Users/Philippe/Developer/workspace/Hermes/src/migration/Migration.java	public static String tableDefinition(
+tableDefinition	/Users/Philippe/Developer/workspace/Hermes/test/unit/migration/MigrationTest.java	private String tableDefinition(
+tableize	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	public static String tableize(
+tableize	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	public static String tableize(
+tableize	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	public static String tableize(
+tableize	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	public static String tableize(
+tables	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Analyzer.java	public static HashMap<String, String> tables(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasManyTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasOneTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/JointureTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TransactionTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TypeCastTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/UpdaterTest.java	public void tearDown(
+tearDown	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void tearDown(
+testAddOccurenceInManyToManyAttribute	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void testAddOccurenceInManyToManyAttribute(
+testAfterCreateCallBack	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/CallbacksTest.java	public void testAfterCreateCallBack(
+testAssociationsBuilding	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void testAssociationsBuilding(
+testAttributesSqlDefinition	/Users/Philippe/Developer/workspace/Hermes/test/unit/migration/MigrationTest.java	public void testAttributesSqlDefinition(
+testBasicsFields	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testBasicsFields(
+testBeforeValidationCallback	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/CallbacksTest.java	public void testBeforeValidationCallback(
+testBooleanTypeCast	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TypeCastTest.java	public void testBooleanTypeCast(
+testCalendarTypeCast	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TypeCastTest.java	public void testCalendarTypeCast(
+testCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasManyTest.java	public void testCascadeDelete(
+testCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasOneTest.java	public void testCascadeDelete(
+testCascadeDeleteWithManyToManyAttribute	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void testCascadeDeleteWithManyToManyAttribute(
+testChildShouldHaveParentTableName	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void testChildShouldHaveParentTableName(
+testCount	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testCount(
+testCountWithConditions	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testCountWithConditions(
+testCreate	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/UpdaterTest.java	public void testCreate(
+testDefaultTableName	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testDefaultTableName(
+testDelete	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasOneTest.java	public void testDelete(
+testDelete	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void testDelete(
+testDelete	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/UpdaterTest.java	public void testDelete(
+testDeleteAll	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/UpdaterTest.java	public void testDeleteAll(
+testDeleteOccurenceInManyToManyAttribute	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void testDeleteOccurenceInManyToManyAttribute(
+testDoubleQuote	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testDoubleQuote(
+testExecuteSql	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/UpdaterTest.java	public void testExecuteSql(
+testExists	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testExists(
+testFind	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void testFind(
+testFindById	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindById(
+testFindByIds	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindByIds(
+testFindBySql	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindBySql(
+testFindFirst	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindFirst(
+testFindLast	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindLast(
+testFindRetrieveManyToManyAssociations	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindRetrieveManyToManyAssociations(
+testFindWhithTableNameChangedInModel	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindWhithTableNameChangedInModel(
+testFindWithConditionOnHasManyAssociation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindWithConditionOnHasManyAssociation(
+testFindWithConditions	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindWithConditions(
+testFindWithConditionsOnHasManyAssociation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindWithConditionsOnHasManyAssociation(
+testFindWithConditionsOnHasOneAssociation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindWithConditionsOnHasOneAssociation(
+testFindWithConditionsOnManyToManyAssociation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindWithConditionsOnManyToManyAssociation(
+testFindWithConditionsOnMultipleKindOfAttributes	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindWithConditionsOnMultipleKindOfAttributes(
+testFindWithManyToManyConditions	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void testFindWithManyToManyConditions(
+testFindWithMultipleLevelConditions	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindWithMultipleLevelConditions(
+testFindWithOrder	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testFindWithOrder(
+testForeignKeysDefinition	/Users/Philippe/Developer/workspace/Hermes/test/unit/migration/MigrationTest.java	public void testForeignKeysDefinition(
+testFormatValidation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void testFormatValidation(
+testGetConnexionDefaultPoolSize	/Users/Philippe/Developer/workspace/Hermes/test/unit/pool/PoolTest.java	public void testGetConnexionDefaultPoolSize(
+testHasManyAssociation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasManyTest.java	public void testHasManyAssociation(
+testIdIncrementation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testIdIncrementation(
+testIdToBigInt	/Users/Philippe/Developer/workspace/Hermes/test/unit/migration/MigrationTest.java	public void testIdToBigInt(
+testInstanceFinder	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testInstanceFinder(
+testIsChanged	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testIsChanged(
+testJoinTablesNames	/Users/Philippe/Developer/workspace/Hermes/test/unit/mysqladaptor/SqlBuilderTest.java	public void testJoinTablesNames(
+testJointureTableName	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/JointureTest.java	public void testJointureTableName(
+testLimit	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/OptionsTest.java	public void testLimit(
+testNoCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasManyTest.java	public void testNoCascadeDelete(
+testNoCascadeDelete	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasOneTest.java	public void testNoCascadeDelete(
+testNoCascadeDeleteWithManyToManyAttribute	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void testNoCascadeDeleteWithManyToManyAttribute(
+testOffset	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/OptionsTest.java	public void testOffset(
+testOrder	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/OptionsTest.java	public void testOrder(
+testOwnValidation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void testOwnValidation(
+testPlurals	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InflectorTest.java	public void testPlurals(
+testRedefinedTableName	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testRedefinedTableName(
+testRefreshJoinTable	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void testRefreshJoinTable(
+testReleaseConnection	/Users/Philippe/Developer/workspace/Hermes/test/unit/pool/PoolTest.java	public void testReleaseConnection(
+testReloadHasManyAssociations	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void testReloadHasManyAssociations(
+testReloadHasOneAssociations	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void testReloadHasOneAssociations(
+testReloadManyToManyAssociations	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void testReloadManyToManyAssociations(
+testReloading	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testReloading(
+testRollbackIfOneStatementFail	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TransactionTest.java	public void testRollbackIfOneStatementFail(
+testRollbackWith	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TransactionTest.java	private void testRollbackWith(
+testRollbackWithFailureOnDelete	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TransactionTest.java	public void testRollbackWithFailureOnDelete(
+testSave	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasOneTest.java	public void testSave(
+testSave	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/UpdaterTest.java	public void testSave(
+testSaveAndLoadRetrieveAttribute	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasManyTest.java	public void testSaveAndLoadRetrieveAttribute(
+testSaveAndReloadAttributes	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/InheritanceTest.java	public void testSaveAndReloadAttributes(
+testShouldSaveIfAndOnlyIfObjectIsValid	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void testShouldSaveIfAndOnlyIfObjectIsValid(
+testStaticAndOnInstanceFinders	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testStaticAndOnInstanceFinders(
+testTableDefinition	/Users/Philippe/Developer/workspace/Hermes/test/unit/migration/MigrationTest.java	public void testTableDefinition(
+testTimeStampTypeCast	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TypeCastTest.java	public void testTimeStampTypeCast(
+testTimeTypeCast	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/TypeCastTest.java	public void testTimeTypeCast(
+testToggle	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/BasicTest.java	public void testToggle(
+testUniquenessValidation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void testUniquenessValidation(
+testUpdate	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasOneTest.java	public void testUpdate(
+testUpdate	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/UpdaterTest.java	public void testUpdate(
+testUpdateManyToManyAttributeWhenExistBefore	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void testUpdateManyToManyAttributeWhenExistBefore(
+testUpdateManyToManyAttributeWhenNullBefore	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void testUpdateManyToManyAttributeWhenNullBefore(
+testUpdateManyToManyAttributeWhenNullBeforeAndAssignAnExistingOccurence	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/AssociationsTest.java	public void testUpdateManyToManyAttributeWhenNullBeforeAndAssignAnExistingOccurence(
+testUpdateWithNewObject	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/HasOneTest.java	public void testUpdateWithNewObject(
+testValidatePresence	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void testValidatePresence(
+testValidateShouldNotAddErrorIfNullAllowed	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void testValidateShouldNotAddErrorIfNullAllowed(
+testValidateSize	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void testValidateSize(
+testValidateWithOwnMessage	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void testValidateWithOwnMessage(
+testValidationOnAssociation	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/ValidationsTest.java	public void testValidationOnAssociation(
+testWithLimitAndOffset	/Users/Philippe/Developer/workspace/Hermes/test/unit/hermes/FindersTest.java	public void testWithLimitAndOffset(
+testgetInstance	/Users/Philippe/Developer/workspace/Hermes/test/unit/pool/PoolTest.java	public void testgetInstance(
+timeStampToJava	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	private static Timestamp timeStampToJava(
+timestampToSql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	private static Object timestampToSql(
+toJava	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	public static Object toJava(
+toObject	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Objects.java	private static Hermes toObject(
+toSql	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	public static Object toSql(
+toggle	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void toggle(
+type	/Users/Philippe/Developer/workspace/Hermes/src/core/Introspector.java	public static String type(
+uncountable	/Users/Philippe/Developer/workspace/Hermes/src/core/Inflector.java	private boolean uncountable(
+update	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract boolean update(
+update	/Users/Philippe/Developer/workspace/Hermes/src/adapters/Adapter.java	public abstract void update(
+update	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public boolean update(
+update	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/MySql.java	public void update(
+update	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/Sql.java	private static String update(
+update	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static boolean update(
+update	/Users/Philippe/Developer/workspace/Hermes/src/core/Updater.java	public static void update(
+url	/Users/Philippe/Developer/workspace/Hermes/src/configuration/Configuration.java	private static String url(
+validate	/Users/Philippe/Developer/workspace/Hermes/test/sample/Person.java	private void validate(
+validateFormatOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void validateFormatOf(
+validateFormatOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void validateFormatOf(
+validateFormatOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Validations.java	public static boolean validateFormatOf(
+validatePresenceOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void validatePresenceOf(
+validatePresenceOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void validatePresenceOf(
+validatePresenceOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Validations.java	public static boolean validatePresenceOf(
+validateSizeOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void validateSizeOf(
+validateSizeOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void validateSizeOf(
+validateSizeOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Validations.java	public static boolean validateSizeOf(
+validateUniquenessOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void validateUniquenessOf(
+validateUniquenessOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	public void validateUniquenessOf(
+validateUniquenessOf	/Users/Philippe/Developer/workspace/Hermes/src/core/Validations.java	public static boolean validateUniquenessOf(
+value	/Users/Philippe/Developer/workspace/Hermes/src/adapters/MySql/TypeCast.java	private static Object value(
+which	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class which
+with	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class with
+with	/Users/Philippe/Developer/workspace/Hermes/src/core/Hermes.java	class with
