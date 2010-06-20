@@ -4,9 +4,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
-import adapters.MySql.Mapping;
 import core.Attribute;
 import core.Hermes;
+import core.Inflector;
 import core.Introspector;
 
 public class Migration {
@@ -17,6 +17,29 @@ public class Migration {
 		loadModels(packageName);
 		addIdDefinition();
 		addColumnsDefinitions();
+		addForeignKeysDefinitions();
+	}
+
+	private void addForeignKeysDefinitions() {
+		for (Table table : tables) {
+			Hermes klass = Introspector.instanciate(table.getKlass());
+			for (String attribute : klass.getAssociations().getHasOneAssociations().keySet()) {
+				Table associatedTable = associatedTable(attribute, klass);
+				String foreignKeyName = Inflector.foreignKey(klass);
+				associatedTable.getForeignKeys().put(foreignKeyName, "integer");
+			}
+		}
+	}
+
+	private Table associatedTable(String attribute, Hermes klass) {
+		Class<Hermes> associateKlass = Introspector.hermesClass(attribute, klass);
+		for (Table table : tables) {
+			System.out.println(table.getKlass());
+			System.out.println(associateKlass);
+
+			if (table.getKlass().equals(associateKlass)) return table;
+		}
+		return null;
 	}
 
 	private void addColumnsDefinitions() {
@@ -58,12 +81,6 @@ public class Migration {
 	public static String columnDefinition(Attribute attribute) {
 		return attribute.getSqlType();
 	}
-
-	public static String foreignKeyDefinition(String fkName) {
-		return fkName + " " + Mapping.INTEGER;
-	}
-
-	
 
 	// Getters & Setters
 

@@ -13,8 +13,13 @@ public class Inflector {
 		return (new Inflector()).new Plural(word).get();
 	}
 
+	// TODO : ??
 	public static String foreignKey(String model) {
 		return model.toLowerCase() + "_id";
+	}
+
+	public static String foreignKey(Hermes model) {
+		return model.getClass().getSimpleName().toLowerCase() + "_id";
 	}
 
 	public static String tableize(Hermes model) {

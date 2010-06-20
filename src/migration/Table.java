@@ -30,6 +30,8 @@ public class Table {
 		String sql = "";
 		for (String column : columns.keySet())
 			sql += column + " " + columns.get(column) + ",";
+		for (String foreigKey : foreignKeys.keySet())
+			sql += foreigKey + " " + foreignKeys.get(foreigKey) + ",";
 		return sql.substring(0, sql.length() - 1);
 	}
 
