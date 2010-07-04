@@ -1,5 +1,7 @@
 == Install
 
+Download hermes.jar and place it in your project classpath
+
 == Dependencies
 
 mysql-connector-java-5.1.10-bin , for mysql adapter
