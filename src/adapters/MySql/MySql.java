@@ -170,4 +170,8 @@ public class MySql extends Adapter {
 		if (rs.next() && object != null) object.setId(rs.getInt(1));
 	}
 
+	public String idDefinition() {
+		return "int primary key auto_increment";
+	}
+
 }

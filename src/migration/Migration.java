@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import adapters.Adapter;
+
 import core.Attribute;
 import core.Hermes;
 import core.Inflector;
@@ -18,27 +20,14 @@ import core.ManyToMany;
 public class Migration {
 
 	private ArrayList<Table>	tables	= new ArrayList<Table>();
+	private String						packageName;
+	private String						fileName;
 
-	public Migration(String packageName) {
-		loadModels(packageName);
+	public Migration(String packageName, String fileName) {
+		this.packageName = packageName;
+		this.fileName = fileName;
+		loadModels();
 		schematize();
-	}
-
-	public static void execute(String packageName, String fileName) {
-		Migration migration = new Migration(packageName);
-		Iterator<Table> tables = migration.getTables().iterator();
-		File file = new File(fileName);
-
-		try {
-			FileOutputStream migrationFile = new FileOutputStream(file);
-			PrintStream printStream = new PrintStream(migrationFile);
-			while (tables.hasNext())
-				printStream.println(tables.next().sql());
-			printStream.close();
-		}
-		catch (Exception e) {
-			System.err.println("Error writing to file");
-		}
 	}
 
 	// Private methods
@@ -47,6 +36,23 @@ public class Migration {
 		columnsDefinitions();
 		jointureDefinitions();
 		handleSTI();
+		createSqlSchemaFile();
+	}
+
+	private void createSqlSchemaFile() {
+		Iterator<Table> tablesIt = tables.iterator();
+		File file = new File(fileName);
+
+		try {
+			FileOutputStream migrationFile = new FileOutputStream(file);
+			PrintStream printStream = new PrintStream(migrationFile);
+			while (tablesIt.hasNext())
+				printStream.println(tablesIt.next().sql());
+			printStream.close();
+		}
+		catch (Exception e) {
+			System.err.println("Error writing to file");
+		}
 	}
 
 	private void jointureDefinitions() {
@@ -81,12 +87,11 @@ public class Migration {
 	}
 
 	private void columnsDefinitions() {
-		String idDefinition = "int primary key auto_increment";
 		Hermes klass = null;
 
 		for (Table table : tables) {
 			klass = Introspector.instanciate(table.getKlass());
-			table.getColumns().put("id", idDefinition);
+			table.getColumns().put("id", Adapter.get().idDefinition());
 			for (Attribute attribute : klass.getAttributes())
 				table.getColumns().put(attribute.getName(), attribute.getSqlType());
 			for (String attribute : klass.getAssociations().getHasOneAssociations().keySet())
@@ -101,7 +106,7 @@ public class Migration {
 		table.getForeignKeys().put(Inflector.foreignKey(klass), "integer");
 	}
 
-	private void loadModels(String packageName) {
+	private void loadModels() {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		URL resource = loader.getResource(packageName.replace('.', '/'));
 		File directory = new File(resource.getFile());

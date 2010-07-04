@@ -29,6 +29,8 @@ public abstract class Adapter {
 		return null;
 	}
 
+	public abstract String idDefinition();
+
 	public abstract boolean save(Hermes object);
 
 	public abstract boolean update(Hermes object);
