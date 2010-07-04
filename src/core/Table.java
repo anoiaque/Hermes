@@ -12,7 +12,7 @@ public class Table {
 	public static String foreignKeyName(Hermes object){
 		Class<?> parent = object.getClass().getSuperclass();
 		
-		if (parent.equals(Hermes.class)) return Inflector.foreignKey(Introspector.name(object));
+		if (parent.equals(Hermes.class)) return Inflector.foreignKey(object);
 		return Inflector.foreignKey(Introspector.name(parent));
 	}
 

@@ -26,8 +26,8 @@ public class Hermes {
 	 */
 	public Hermes() {
 		this.tableName = Table.name(this);
-		loadAttributes();
 		Associations();
+		loadAttributes();
 		Callback.beforeValidate(this);
 		Validations();
 	}

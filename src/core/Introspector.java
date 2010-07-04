@@ -14,6 +14,10 @@ public class Introspector {
 		return object.getClass().getSuperclass();
 	}
 
+	public static Class<?> parent(Class<?> klass) {
+		return klass.getClass().getSuperclass();
+	}
+
 	public static Hermes instanciate(Class<? extends Hermes> model) {
 		try {
 			return model.newInstance();

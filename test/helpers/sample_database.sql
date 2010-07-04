@@ -11,6 +11,7 @@ birthday date,
 wake time,
 createdAt timestamp
 ) ENGINE = InnoDB;
+
 create table ADDRESSES(
 id int primary key auto_increment,
 number int,

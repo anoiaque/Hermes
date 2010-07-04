@@ -5,21 +5,16 @@ import java.util.regex.Pattern;
 
 public class Inflector {
 
-	/**
-	 * @param word
-	 * @return
-	 */
 	public static String pluralize(String word) {
 		return (new Inflector()).new Plural(word).get();
 	}
 
-	// TODO : ??
-	public static String foreignKey(String model) {
-		return model.toLowerCase() + "_id";
+	public static String foreignKey(String modelName) {
+		return modelName.toLowerCase() + "_id";
 	}
 
 	public static String foreignKey(Hermes model) {
-		return model.getClass().getSimpleName().toLowerCase() + "_id";
+		return Introspector.name(model).toLowerCase() + "_id";
 	}
 
 	public static String tableize(Hermes model) {

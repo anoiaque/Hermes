@@ -62,6 +62,7 @@ public class Attribute {
 
 	private static boolean basic(Field field, Hermes object) {
 		Associations relations = object.getAssociations();
+		
 		String attribute = field.getName();
 		if (relations.getHasOneAssociations().containsKey(attribute)) return false;
 		if (relations.getManyToManyAsociations().containsKey(attribute)) return false;

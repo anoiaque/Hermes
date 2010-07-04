@@ -11,6 +11,7 @@ import sample.Man;
 import sample.Person;
 import sample.Personne;
 import sample.Pet;
+import sample.Type;
 import configuration.Configuration;
 import core.Attribute;
 import core.Hermes;
@@ -64,6 +65,12 @@ public class BasicTest extends TestCase {
 
 		assertTrue(containsAttribute(attributes, "age", "integer", 30));
 		assertTrue(containsAttribute(attributes, "name", nameSqlType, "Marc"));
+	}
+	
+	public void testAttributesOfTypeModel(){
+		Type types = new Type();
+		
+		assertEquals(15, types.getAttributes().size());
 	}
 
 	public void testReloading() {

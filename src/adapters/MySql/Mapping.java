@@ -19,7 +19,7 @@ public class Mapping {
 	public static final String							FLOAT					= "float";
 	public static final String							DATE					= "date";
 	public static final String							TIMESTAMP			= "timestamp";
-	public static final String							TIME					= "datetime";
+	public static final String							TIME					= "time";
 
 	public static String javaToSql(String type) {
 		if (javaToSql == null) mapping();

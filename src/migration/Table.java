@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import core.Hermes;
 import core.Introspector;
+import core.Jointure;
 
 public class Table {
 
@@ -11,15 +12,28 @@ public class Table {
 	private HashMap<String, String>	columns			= new HashMap<String, String>();
 	private HashMap<String, String>	foreignKeys	= new HashMap<String, String>();
 	private Class<? extends Hermes>	klass;
+	private Class<? extends Hermes>	parent;
+	private boolean									sti					= false;
+
+	// For Jointure Table
+	public Table(String name) {
+		this.foreignKeys.put("parentId", "integer");
+		this.foreignKeys.put("childId", "integer");
+		this.klass = Jointure.class;
+		this.sti = false;
+		this.name = name;
+	}
 
 	public Table(Class<? extends Hermes> klass) {
 		this.klass = klass;
+		this.name = Introspector.instanciate(klass).getTableName();
+		this.parent = (Class<? extends Hermes>) klass.getSuperclass();
+		this.sti = !parent.equals(Hermes.class);
 	}
 
 	public String sql() {
 		String sql;
-		String tableName = Introspector.instanciate(klass).getTableName();
-		sql = "create table " + tableName + "(";
+		sql = "create table " + name + "(";
 		sql += columns();
 		sql += ")";
 		sql += innoDBEngine();
@@ -70,6 +84,22 @@ public class Table {
 
 	public void setKlass(Class<? extends Hermes> klass) {
 		this.klass = klass;
+	}
+
+	public Class<? extends Hermes> getParent() {
+		return parent;
+	}
+
+	public void setParent(Class<? extends Hermes> parent) {
+		this.parent = parent;
+	}
+
+	public boolean isSingleTableInheritence() {
+		return sti;
+	}
+
+	public void setSingleTableInheritence(boolean singleTableInheritence) {
+		this.sti = singleTableInheritence;
 	}
 
 }
