@@ -1,5 +1,6 @@
 package migration;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import core.Hermes;
@@ -38,6 +39,18 @@ public class Table {
 		sql += ")";
 		sql += innoDBEngine();
 		return sql;
+	}
+
+	public static Table withKlass(Class<? extends Hermes> klass, Collection<Table> tables) {
+		for (Table table : tables)
+			if (table.getKlass().equals(klass)) return table;
+		return null;
+	}
+
+	public static boolean exists(String name, Collection<Table> tables) {
+		for (Table table : tables)
+			if (table.getName().equals(name)) return true;
+		return false;
 	}
 
 	private String columns() {

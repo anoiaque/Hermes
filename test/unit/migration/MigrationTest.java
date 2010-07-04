@@ -27,7 +27,7 @@ public class MigrationTest extends TestCase {
 
 	public void testAttributesFromChildClassAreAddedToParentClass() {
 		Migration migration = new Migration("sample");
-		Table person = migration.tableWithKlass(Person.class);
+		Table person = Table.withKlass(Person.class, migration.getTables());
 
 		assertEquals(7 + 2, person.getColumns().size());
 	}
