@@ -8,9 +8,9 @@ mysql-connector-java-5.1.10-bin , for mysql adapter
 
 == New Features in development
 
-+ log des requetes sql executées
-+ CONCURRENCY LOCK OPTIMISTIC AND PESSIMISTIC
-+ Cache sql
-+ Adapter Couche DB
-+ Multibase + transactions multibase
-+ validate on create and on update + http://dizzy.co.uk/ruby_on_rails/cheatsheets/active-record-validations.pdf
+log des requetes sql executées
+CONCURRENCY LOCK OPTIMISTIC AND PESSIMISTIC
+Cache sql
+Adapter Couche DB
+Multibase + transactions multibase
+validate on create and on update
