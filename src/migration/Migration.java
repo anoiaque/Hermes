@@ -80,6 +80,7 @@ public class Migration {
 			if (table.isSingleTableInheritence()) {
 				parent = Table.withKlass(table.getParent(), tables);
 				parent.getColumns().putAll(table.getColumns());
+				parent.addSTIKlassColumn();
 				parent.getForeignKeys().putAll(table.getForeignKeys());
 				tables.remove(table);
 			}

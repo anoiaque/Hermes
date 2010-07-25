@@ -2,8 +2,10 @@ package core;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import adapters.Adapter;
+import adapters.MySql.Mapping;
 
 public class Attribute {
 
@@ -21,6 +23,7 @@ public class Attribute {
 		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 		for (Field field : Introspector.fields(model))
 			if (basic(field, model)) attributes.add(attributize(field, model));
+		if ((model.isSTIModel())) addSTIAttribute(attributes, model);
 		return attributes;
 	}
 
@@ -46,6 +49,11 @@ public class Attribute {
 	}
 
 	// Private methods
+	private static void addSTIAttribute(List<Attribute> attributes, Hermes model) {
+		Attribute sti = new Attribute("klass", Mapping.STRING, model.getClass().getSimpleName());
+		attributes.add(sti);
+	}
+
 	private static Attribute attributize(Field field, Hermes model) {
 		try {
 			field.setAccessible(true);
@@ -62,7 +70,7 @@ public class Attribute {
 
 	private static boolean basic(Field field, Hermes object) {
 		Associations relations = object.getAssociations();
-		
+
 		String attribute = field.getName();
 		if (relations.getHasOneAssociations().containsKey(attribute)) return false;
 		if (relations.getManyToManyAsociations().containsKey(attribute)) return false;

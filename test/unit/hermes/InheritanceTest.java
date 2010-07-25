@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import sample.Address;
 import sample.Car;
 import sample.Man;
+import sample.Person;
 import sample.Pet;
 import core.Hermes;
 import factory.Factory;
@@ -70,6 +71,14 @@ public class InheritanceTest extends TestCase {
 		assertTrue(man.save());
 		Set<Man> humans = (Set<Man>) Hermes.find("pets.name='Medor'", Man.class);
 		assertEquals(1, humans.size());
+	}
+	
+	public void testFindersShouldRetrieveOnlyInstancesOfSubclass(){
+		Person human = new Person("Human", 23, new Address(9, "Avenue de Quimper"));
+		human.save();
+		man.save();
+		Set<Man> men = (Set<Man>) Hermes.all(Man.class);
+		assertEquals(1,men.size());
 	}
 	
 	public void testDelete(){

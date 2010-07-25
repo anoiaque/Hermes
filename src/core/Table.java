@@ -15,5 +15,6 @@ public class Table {
 		if (parent.equals(Hermes.class)) return Inflector.foreignKey(object);
 		return Inflector.foreignKey(Introspector.name(parent));
 	}
+	
 
 }

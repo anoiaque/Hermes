@@ -30,7 +30,15 @@ public class MigrationTest extends TestCase {
 		Migration migration = new Migration("sample", file);
 		Table person = Table.withKlass(Person.class, migration.getTables());
 
-		assertEquals(7 + 2, person.getColumns().size());
+		assertEquals(7 + 2 + 1, person.getColumns().size());
+	}
+	
+	public void testAddKlassColumnForSTITable() {
+		Migration migration = new Migration("sample", file);
+		Table person = Table.withKlass(Person.class, migration.getTables());
+
+		assertTrue(person.getColumns().containsKey("klass"));
+		assertEquals("varchar(50)",person.getColumns().get("klass"));
 	}
 	
 }

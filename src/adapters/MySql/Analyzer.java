@@ -55,7 +55,8 @@ public class Analyzer {
 		Matcher matcher = pattern.matcher(conditions);
 
 		while (matcher.find())
-			if (!(matcher.group(2).contains(" or ") || matcher.group(2).contains(" and "))) conditions = conditions
+			if (!(matcher.group(2).contains(" or ") || matcher.group(2).contains(" and ")
+					|| matcher.group(2).contains(" AND ") || matcher.group(2).contains(" OR "))) conditions = conditions
 					.replace("'" + matcher.group(1) + "'" + matcher.group(2) + "'", "'" + matcher.group(1)
 							+ "''" + matcher.group(2) + "'");
 

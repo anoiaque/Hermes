@@ -5,6 +5,7 @@ import java.util.HashMap;
 import helpers.Database;
 import junit.framework.TestCase;
 import sample.Address;
+import sample.Man;
 import sample.Person;
 import core.Hermes;
 import factory.Factory;
@@ -69,7 +70,21 @@ public class UpdaterTest extends TestCase {
 		assertEquals("joe", human.getName());
 		Hermes.execute("insert into people(age) values(34)");
 		assertEquals(2, Hermes.all(Person.class).size());
+	}
 
+	public void testShouldAddKlassAttributeForSTIModels() {
+		Man man = new Man();
+		assertEquals(null, human.getAttribute("klass"));
+		assertEquals("klass", man.getAttribute("klass").getName());
+		assertEquals("Man", man.getAttribute("klass").getValue());
+	}
+
+	public void testShouldSaveKlassIfSTIInstance() {
+		Man man = new Man("Man", 23, new Address());
+
+		assertTrue(man.save());
+		man = (Man) man.reload();
+		assertEquals("Man", man.getAttribute("klass").getValue());
 	}
 
 }

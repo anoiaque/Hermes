@@ -29,9 +29,19 @@ public class Finder {
 
 	public static Set<?> find(String select, String conditions, String options,
 			Class<? extends Hermes> model) {
+
+		conditions = STIzeCondition(conditions, model);
 		Set<?> objects = adaptor.find(select, conditions, model, options);
 		Loader.loadAssociations(objects);
 		return objects;
+	}
+
+	private static String STIzeCondition(String conditions, Class<? extends Hermes> model) {
+		String stiCondition = "klass = '" + model.getSimpleName() + "'";;
+
+		if (!Introspector.instanciate(model).isSTIModel()) return conditions;
+		if (conditions == null) return stiCondition;
+		return conditions += " and " + stiCondition;
 	}
 
 	public static Set<?> find(int parentId, Jointure join) {

@@ -114,7 +114,7 @@ public class MySql extends Adapter {
 	}
 
 	public ResultSet finder(String sql) {
-		// System.out.println(sql);
+		System.out.println(sql);
 		Connection connexion = null;
 		Pool pool = Pool.getInstance();
 		try {
@@ -136,7 +136,7 @@ public class MySql extends Adapter {
 		Pool pool = Pool.getInstance();
 		ResultSet rs = null;
 		PreparedStatement statement;
-		// System.out.println(sql);
+		//System.out.println(sql);
 		try {
 			connexion = pool.getConnexion();
 			statement = connexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

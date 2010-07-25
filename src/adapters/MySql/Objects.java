@@ -41,6 +41,7 @@ public class Objects {
 		Object value = null;
 		try {
 			for (Attribute attribute : object.getAttributes()) {
+				if (attribute.getName().equals("klass")) continue;
 				value = TypeCast.toJava(rs.getObject(attribute.getName()));
 				Introspector.set(attribute, value, object);
 			}

@@ -74,7 +74,7 @@ public class Hermes {
 	 * <code>
 	 * Hermes.delete("name = 'anonymous' and address.street='rue de Brest'",Person.class)
 	 * /code>
-	 *</pre>
+	 * </pre>
 	 */
 	public static boolean delete(String conditions, Class<? extends Hermes> model) {
 		Set<Hermes> objects = (Set<Hermes>) find(conditions, model);
@@ -321,7 +321,7 @@ public class Hermes {
 	 * <code>
 	 * find("name='Job' and pets.name='Medor'",Person.class)
 	 * </code>
-	 *</pre>
+	 * </pre>
 	 */
 	public static Set<?> find(String conditions, Class<? extends Hermes> model, String options) {
 		return Finder.find("*", conditions, options, model);
@@ -339,7 +339,7 @@ public class Hermes {
 	 * <code>
 	 * find("name='Job' and pets.name='Medor'")
 	 * </code>
-	 *</pre>
+	 * </pre>
 	 */
 	public Set<?> find(String conditions) {
 		return Finder.find("*", conditions, null, this.getClass());
@@ -358,7 +358,7 @@ public class Hermes {
 	 * <code>
 	 * find("name='Job' and pets.name='Medor'","limit => 10")
 	 * </code>
-	 *</pre>
+	 * </pre>
 	 */
 	public Set<?> find(String conditions, String options) {
 		return Finder.find("*", conditions, options, this.getClass());
@@ -379,7 +379,7 @@ public class Hermes {
 	 * <code>
 	 * find("name,age","name='Job' and pets.name='Medor'",Person.class)
 	 * </code>
-	 *</pre>
+	 * </pre>
 	 */
 	public static Set<?> find(String select, String conditions, Class<? extends Hermes> model) {
 		return Finder.find(select, conditions, null, model);
@@ -1004,6 +1004,11 @@ public class Hermes {
 	 */
 	public void setErrors(HashMap<String, List<Error>> errors) {
 		this.errors = errors;
+	}
+
+	public boolean isSTIModel() {
+		Class<?> parent = this.getClass().getSuperclass();
+		return !parent.equals(Hermes.class);
 	}
 
 }

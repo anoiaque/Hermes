@@ -3,6 +3,8 @@ package migration;
 import java.util.Collection;
 import java.util.HashMap;
 
+import adapters.MySql.Mapping;
+
 import core.Hermes;
 import core.Introspector;
 import core.Jointure;
@@ -30,6 +32,10 @@ public class Table {
 		this.name = Introspector.instanciate(klass).getTableName();
 		this.parent = (Class<? extends Hermes>) klass.getSuperclass();
 		this.sti = !parent.equals(Hermes.class);
+	}
+
+	public void addSTIKlassColumn() {
+		this.columns.put("klass", Mapping.STRING);
 	}
 
 	public String sql() {
